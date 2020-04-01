@@ -95,6 +95,17 @@ let g:airline#extensions#tabline#buffer_nr_show = 1
 let g:airline#extensions#bufferline#enabled = 0
 set laststatus=2 " otherwise airline only shows after a split
 let g:bufferline_echo = 0 " with airline we see the bufferlist two times without this
+set timeoutlen=1000 ttimeoutlen=0
+" remove the vcs/git part
+let g:airline_section_b=''
+" remove the filetype part
+let g:airline_section_x=''
+" remove the fileencoding part
+let g:airline_section_y=''
+" remove the current position in the file part
+let g:airline_section_z=''
+" " remove separators for empty sections
+let g:airline_skip_empty_sections = 1
 
 
 "nerdtree"
