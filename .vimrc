@@ -2,15 +2,19 @@ set history=10000
 
 call plug#begin()
 Plug 'tpope/vim-fugitive'
+Plug 'vim-airline/vim-airline'
+Plug 'inkarkat/vim-ReplaceWithRegister'
 Plug 'scrooloose/nerdtree'
 Plug 'machakann/vim-sandwich'
-Plug 'airblade/vim-gitgutter'
-Plug 'scrooloose/nerdcommenter'
+Plug 'preservim/nerdcommenter'
 Plug 'iCyMind/NeoSolarized'
+Plug 'morhetz/gruvbox'
 Plug 'kien/ctrlp.vim'
 Plug 'mileszs/ack.vim'
+Plug 'prabirshrestha/asyncomplete.vim'
 Plug 'prabirshrestha/async.vim'
 Plug 'prabirshrestha/vim-lsp'
+Plug 'prabirshrestha/asyncomplete-lsp.vim'
 Plug 'mattn/vim-lsp-settings'
 Plug 'christoomey/vim-tmux-navigator'
 Plug 'google/vim-maktaba'
@@ -21,7 +25,7 @@ call plug#end()
 "set termguicolors
 syntax enable
 set background=dark
-colorscheme NeoSolarized
+colorscheme gruvbox
 
 let mapleader = ","
 set hidden
@@ -30,6 +34,7 @@ set relativenumber
 set nowrap
 set splitright
 set splitbelow
+set ttimeoutlen=5
 
 nnoremap <C-J> <C-W><C-J>
 nnoremap <C-K> <C-W><C-K>
@@ -94,7 +99,7 @@ let g:airline#extensions#tabline#fnamemod = ':t'
 let g:airline#extensions#tabline#buffer_nr_show = 1
 let g:airline#extensions#bufferline#enabled = 0
 set laststatus=2 " otherwise airline only shows after a split
-let g:bufferline_echo = 0 " with airline we see the bufferlist two times without this
+"let g:bufferline_echo = 0 " with airline we see the bufferlist two times without this
 set timeoutlen=1000 ttimeoutlen=0
 " remove the vcs/git part
 let g:airline_section_b=''
@@ -111,8 +116,8 @@ let g:airline_skip_empty_sections = 1
 "nerdtree"
 syntax on
 filetype plugin indent on
-map <Leader>n :NERDTreeToggle<CR>
-map <Leader>m :NERDTreeFind<CR>
+map <c-n> :NERDTreeToggle<CR>
+map <Leader>n :NERDTreeFind<CR>
 :let g:NERDTreeWinSize=60
 "close vim if nerdtree is last open buffer
 autocmd bufenter * if (winnr("$") == 1 && exists("b:NERDTree") && b:NERDTree.isTabTree()) | q | endif
@@ -122,11 +127,30 @@ autocmd bufenter * if (winnr("$") == 1 && exists("b:NERDTree") && b:NERDTree.isT
 set completeopt+=preview
 "To auto close preview window when completion is done"
 autocmd! CompleteDone * if pumvisible() == 0 | pclose | endif
+let g:asyncomplete_auto_popup = 1
 map <c-]> :LspDefinition<CR>
+function! SwitchSourceHeader()
+    let fileending = expand("%:e")
+        if (fileending == "cpp")
+            exe "e " . split(expand("%:p"), "/src/")[0] . "/**/" . expand("%:t:r") . ".h"
+        else
+            exe "e " . split(expand("%:p"), "/include/")[0] . "/**/" . expand("%:t:r") . ".cpp"
+        endif
+endfunction
+map <F6> :call SwitchSourceHeader()<CR>
 map <F7> :LspDocumentSwitchSourceHeader<CR>
+"index all files in folder (recursivly)
+function! IndexFiles(path)
+    echom "Add all files from path"
+    silent args path + "/**/*.cpp"
+    echom "Opening all files from path"
+    silent argdo e
+    echom "Closing all files from path"
+    silent argdo bw
+endfunction
 
 "Tim Rakowski bazel target goto
-"source ~/buildtools/bazel_vim/bazel.vim
+source ~/buildtools/bazel_vim/bazel.vim
 
 "ack.vim
 let g:ackprg = 'ag --vimgrep'
@@ -137,15 +161,15 @@ autocmd BufWrite :FormatCode *
 augroup autoformat_settings
   autocmd FileType bzl AutoFormatBuffer buildifier
   autocmd FileType c,cpp,proto,javascript AutoFormatBuffer clang-format
-  autocmd FileType dart AutoFormatBuffer dartfmt
-  autocmd FileType go AutoFormatBuffer gofmt
-  autocmd FileType gn AutoFormatBuffer gn
-  autocmd FileType html,css,sass,scss,less,json AutoFormatBuffer js-beautify
-  autocmd FileType java AutoFormatBuffer google-java-format
-  autocmd FileType python AutoFormatBuffer yapf
-  " Alternative: autocmd FileType python AutoFormatBuffer autopep8
-  autocmd FileType rust AutoFormatBuffer rustfmt
-  autocmd FileType vue AutoFormatBuffer prettier
+  "autocmd FileType dart AutoFormatBuffer dartfmt
+  "autocmd FileType go AutoFormatBuffer gofmt
+  "autocmd FileType gn AutoFormatBuffer gn
+  "autocmd FileType html,css,sass,scss,less,json AutoFormatBuffer js-beautify
+  "autocmd FileType java AutoFormatBuffer google-java-format
+  "autocmd FileType python AutoFormatBuffer yapf
+  "Alternative: autocmd FileType python AutoFormatBuffer autopep8
+  "autocmd FileType rust AutoFormatBuffer rustfmt
+  "autocmd FileType vue AutoFormatBuffer prettier
 augroup END
 
 
