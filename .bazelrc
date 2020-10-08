@@ -1,0 +1,5 @@
+import /usr/share/bmwrpp-bootstrap/common_settings_bazelrc
+build --remote_upload_local_results=true
+build --disk_cache=/home/q456457/bazel_disk_cache
+build --experimental_strict_action_env
+
