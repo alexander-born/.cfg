@@ -1,7 +1,9 @@
 set history=10000
 
 call plug#begin()
+Plug 'yegappan/mru'
 Plug 'tpope/vim-fugitive'
+Plug 'tpope/vim-abolish'
 Plug 'vim-airline/vim-airline'
 Plug 'inkarkat/vim-ReplaceWithRegister'
 Plug 'scrooloose/nerdtree'
@@ -9,7 +11,9 @@ Plug 'machakann/vim-sandwich'
 Plug 'preservim/nerdcommenter'
 Plug 'iCyMind/NeoSolarized'
 Plug 'morhetz/gruvbox'
+Plug 'arcticicestudio/nord-vim'
 Plug 'kien/ctrlp.vim'
+Plug 'nixprime/cpsm'
 Plug 'mileszs/ack.vim'
 Plug 'prabirshrestha/asyncomplete.vim'
 Plug 'prabirshrestha/async.vim'
@@ -20,12 +24,16 @@ Plug 'christoomey/vim-tmux-navigator'
 Plug 'google/vim-maktaba'
 Plug 'google/vim-codefmt'
 Plug 'google/vim-glaive'
+Plug 'aymericbeaumet/vim-symlink'
 call plug#end()
                                        
 "set termguicolors
 syntax enable
-set background=dark
+
 colorscheme gruvbox
+set background=dark
+
+set matchpairs+=<:>
 
 let mapleader = ","
 set hidden
@@ -40,6 +48,8 @@ nnoremap <C-J> <C-W><C-J>
 nnoremap <C-K> <C-W><C-K>
 nnoremap <C-L> <C-W><C-L>
 nnoremap <C-H> <C-W><C-H>
+
+nmap <Leader>f :let @*=expand("%")<CR>
 
 set viminfo='100,<50,s10,h,
 
@@ -68,6 +78,8 @@ set wildmode=list:longest,full
 
 set sidescroll=1
 
+vnoremap <C-c> "+y
+
 "ctrlP
 "don't open in nerdtree buffer
 function! CtrlPCommand()
@@ -81,16 +93,22 @@ function! CtrlPCommand()
     exec 'CtrlP'
 endfunction
 
-map <c-t> :CtrlPBuffer<CR>
+map <c-t> :MRU<CR>
 let g:ctrlp_max_height = 30
 let g:ctrlp_cmd = 'call CtrlPCommand()'
 let g:ctrlp_map = '<c-p>'
 "let g:ctrlp_cmd = 'CtrlP'"
-let g:ctrlp_working_path_mode = 'w'
+let g:ctrlp_working_path_mode = 0
+"let g:ctrlp_working_path_mode = 0'w'
 "let g:ctrlp_root_markers = ["bazel"]
-"let g:ctrlp_follow_symlinks = 1
 let g:ctrlp_max_files = 0
 let g:ctrlp_clear_cache_on_exit = 0
+let g:ctrlp_cache_dir = $HOME . '/.cache/ctrlp'
+let g:ctrlp_match_func = {'match': 'cpsm#CtrlPMatch'}
+let g:ctrlp_follow_symlinks = 2
+let g:ctrlp_custom_ignore = {
+\ 'dir':  'bazel-bin\|bazel-ddad\|bazel-out\|bazel-testlogs',
+\ }
 
 
 "airline/bufferline"
@@ -108,8 +126,8 @@ let g:airline_section_x=''
 " remove the fileencoding part
 let g:airline_section_y=''
 " remove the current position in the file part
-let g:airline_section_z=''
-" " remove separators for empty sections
+"let g:airline_section_z=''
+" remove separators for empty sections
 let g:airline_skip_empty_sections = 1
 
 
@@ -130,23 +148,34 @@ autocmd! CompleteDone * if pumvisible() == 0 | pclose | endif
 let g:asyncomplete_auto_popup = 1
 map <c-]> :LspDefinition<CR>
 function! SwitchSourceHeader()
+    let filepath = expand('%:p:h')
+    let filename = expand("%:t:r")
     let fileending = expand("%:e")
-        if (fileending == "cpp")
-            exe "e " . split(expand("%:p"), "/src/")[0] . "/**/" . expand("%:t:r") . ".h"
-        else
-            exe "e " . split(expand("%:p"), "/include/")[0] . "/**/" . expand("%:t:r") . ".cpp"
+    if (fileending == "cpp")
+        let filetype = ".h"
+        if (stridx(filepath, "/src"))
+            let filepath = split(filepath, "/src")[0] . "/**/"
         endif
+    endif
+    if (fileending == "h")
+        let filetype = ".cpp"
+        if (stridx(filepath, "/include"))
+            let filepath = split(filepath, "/include")[0] . "/**/"
+        endif
+    endif
+    exe "find " . filepath . filename . filetype
 endfunction
-map <F6> :call SwitchSourceHeader()<CR>
-map <F7> :LspDocumentSwitchSourceHeader<CR>
+map <F7> :call SwitchSourceHeader()<CR>
 "index all files in folder (recursivly)
 function! IndexFiles(path)
-    echom "Add all files from path"
-    silent args path + "/**/*.cpp"
-    echom "Opening all files from path"
+    echom "Add all files to arglist from " . a:path
+    exe "silent args " . a:path . "/**/*.cpp"
+    echom "Opening all files from " . a:path
     silent argdo e
-    echom "Closing all files from path"
+    echom "Closing all files from " . a:path
     silent argdo bw
+    echom "Clear arglist"
+    argdelete *
 endfunction
 
 "Tim Rakowski bazel target goto
@@ -171,5 +200,4 @@ augroup autoformat_settings
   "autocmd FileType rust AutoFormatBuffer rustfmt
   "autocmd FileType vue AutoFormatBuffer prettier
 augroup END
-
 
