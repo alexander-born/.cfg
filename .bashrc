@@ -1,8 +1,6 @@
 ###Custom
 alias vim="nvim"
 alias vi="nvim"
-alias watch_astas_log='find ~/.ros/ -name "astas_log_file*" | sort | tail -1 | xargs tail -f'
-alias watch_reprossing_log='find ~/temp/repro -name "sut_log.txt*" | sort | tail -1 | xargs tail -f'
 alias git="git "
 alias br="branch"
 alias st="status"
@@ -28,6 +26,11 @@ alias ddad="cd ~/ddad"
 alias adp="cd ~/ddad/application/adp"
 alias xpad-shared="cd ~/ddad/ecu/xpad/xpad-shared"
 alias traces="cd ~/traces"
+
+convert_clipboard_to_unix_path() { xclip -o -sel clip | sed 's/\\/\//g' | sed 's/^file:/smb:/' | xclip -i -sel clip; echo "[INFO] clipboard updated."; }
+
+# bind F8 convert clipboard to unix directory
+bind '"\e[19~": "convert_clipboard_to_unix_path\n"'
 
 bind '"\e[1;5C":forward-word'
 bind '"\e[1;5D":backward-word'

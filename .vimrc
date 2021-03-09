@@ -7,12 +7,10 @@ Plug 'google/vim-codefmt'
 Plug 'google/vim-glaive'
 Plug 'google/vim-maktaba'
 Plug 'inkarkat/vim-ReplaceWithRegister'
-Plug 'kien/ctrlp.vim'
 Plug 'machakann/vim-sandwich'
 Plug 'mattn/vim-lsp-settings'
 Plug 'mileszs/ack.vim'
 Plug 'morhetz/gruvbox'
-Plug 'nixprime/cpsm'
 Plug 'prabirshrestha/async.vim'
 Plug 'prabirshrestha/asyncomplete-lsp.vim'
 Plug 'prabirshrestha/asyncomplete.vim'
@@ -23,7 +21,6 @@ Plug 'tpope/vim-commentary'
 Plug 'tpope/vim-fugitive'
 Plug 'vim-airline/vim-airline'
 Plug 'vimwiki/vimwiki'
-Plug 'yegappan/mru'
 Plug 'wsdjeg/vim-fetch'
 Plug 'nvim-lua/popup.nvim'
 Plug 'nvim-lua/plenary.nvim'
@@ -48,12 +45,15 @@ set splitright
 set splitbelow
 set ttimeoutlen=5
 
+" easy navigation between window splits and tmux panes
 nnoremap <C-J> <C-W><C-J>
 nnoremap <C-K> <C-W><C-K>
 nnoremap <C-L> <C-W><C-L>
 nnoremap <C-H> <C-W><C-H>
 
-nmap <Leader>f :let @*=expand("%")<CR>
+" copy full file path to clipboard
+nmap <Leader>f :let @+=expand("%")<CR>
+
 " Find files using Telescope command-line sugar.
 nnoremap <leader>ff <cmd>Telescope find_files<cr>
 nnoremap <leader>fo <cmd>Telescope oldfiles<cr>
@@ -88,43 +88,13 @@ set wildmode=list:longest,full
 
 set sidescroll=1
 
+" visual mode remaps
 vnoremap <C-c> "+y
 vnoremap p "_dP
 
 autocmd FileType c,cpp,java set commentstring=//\ %s
 
 map <F6> :s/\\/\//g <CR>
-
-"ctrlP
-"don't open in nerdtree buffer
-function! CtrlPCommand()
-    let c = 0
-    let wincount = winnr('$')
-    " Don't open it here if current buffer is not writable (e.g. NERDTree)
-    while !empty(getbufvar(+expand("<abuf>"), "&buftype")) && c < wincount
-        exec 'wincmd w'
-        let c = c + 1
-    endwhile
-    exec 'CtrlP'
-endfunction
-
-map <c-t> :MRU<CR>
-let g:ctrlp_max_height = 30
-let g:ctrlp_cmd = 'call CtrlPCommand()'
-let g:ctrlp_map = '<c-p>'
-"let g:ctrlp_cmd = 'CtrlP'"
-let g:ctrlp_working_path_mode = 0
-"let g:ctrlp_working_path_mode = 0'w'
-"let g:ctrlp_root_markers = ["bazel"]
-let g:ctrlp_max_files = 0
-let g:ctrlp_clear_cache_on_exit = 0
-let g:ctrlp_cache_dir = $HOME . '/.cache/ctrlp'
-let g:ctrlp_match_func = {'match': 'cpsm#CtrlPMatch'}
-let g:ctrlp_follow_symlinks = 2
-let g:ctrlp_custom_ignore = {
-\ 'dir':  'bazel-bin\|bazel-ddad\|bazel-out\|bazel-testlogs',
-\ }
-
 
 "airline/bufferline"
 let g:airline#extensions#tabline#enabled = 1
@@ -215,7 +185,7 @@ augroup autoformat_settings
   "autocmd FileType gn AutoFormatBuffer gn
   "autocmd FileType html,css,sass,scss,less,json AutoFormatBuffer js-beautify
   "autocmd FileType java AutoFormatBuffer google-java-format
-  "autocmd FileType python AutoFormatBuffer yapf
+  autocmd FileType python AutoFormatBuffer black
   "Alternative: autocmd FileType python AutoFormatBuffer autopep8
   "autocmd FileType rust AutoFormatBuffer rustfmt
   "autocmd FileType vue AutoFormatBuffer prettier
