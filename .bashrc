@@ -22,6 +22,12 @@ alias ide="tmux new-session -s shared \; \
   send-keys 'cd ~/ddad' C-m \; \
   split-window -h \; \
   send-keys 'cd ~/ddad/application/adp' C-m \; "
+alias dlt_viewer="cd ~/Applications/dlt_viewer ; LD_LIBRARY_PATH=. ./dlt_viewer &"
+
+alias ddad="cd ~/ddad"
+alias adp="cd ~/ddad/application/adp"
+alias xpad-shared="cd ~/ddad/ecu/xpad/xpad-shared"
+alias traces="cd ~/traces"
 
 bind '"\e[1;5C":forward-word'
 bind '"\e[1;5D":backward-word'
@@ -34,3 +40,5 @@ HISTSIZE=10000
 HISTFILESIZE=20000
 #export PROMPT_COMMAND="history -a; history -c; history -r; $PROMPT_COMMAND"
 export PROMPT_COMMAND="history -a; history -n"
+
+ . ~/Applications/z/z.sh

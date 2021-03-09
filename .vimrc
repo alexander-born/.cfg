@@ -1,30 +1,33 @@
 set history=10000
 
 call plug#begin()
-Plug 'yegappan/mru'
-Plug 'tpope/vim-fugitive'
-Plug 'tpope/vim-abolish'
-Plug 'vim-airline/vim-airline'
-Plug 'inkarkat/vim-ReplaceWithRegister'
-Plug 'scrooloose/nerdtree'
-Plug 'machakann/vim-sandwich'
-Plug 'preservim/nerdcommenter'
-Plug 'iCyMind/NeoSolarized'
-Plug 'morhetz/gruvbox'
-Plug 'arcticicestudio/nord-vim'
-Plug 'kien/ctrlp.vim'
-Plug 'nixprime/cpsm'
-Plug 'mileszs/ack.vim'
-Plug 'prabirshrestha/asyncomplete.vim'
-Plug 'prabirshrestha/async.vim'
-Plug 'prabirshrestha/vim-lsp'
-Plug 'prabirshrestha/asyncomplete-lsp.vim'
-Plug 'mattn/vim-lsp-settings'
+Plug 'aymericbeaumet/vim-symlink'
 Plug 'christoomey/vim-tmux-navigator'
-Plug 'google/vim-maktaba'
 Plug 'google/vim-codefmt'
 Plug 'google/vim-glaive'
-Plug 'aymericbeaumet/vim-symlink'
+Plug 'google/vim-maktaba'
+Plug 'inkarkat/vim-ReplaceWithRegister'
+Plug 'kien/ctrlp.vim'
+Plug 'machakann/vim-sandwich'
+Plug 'mattn/vim-lsp-settings'
+Plug 'mileszs/ack.vim'
+Plug 'morhetz/gruvbox'
+Plug 'nixprime/cpsm'
+Plug 'prabirshrestha/async.vim'
+Plug 'prabirshrestha/asyncomplete-lsp.vim'
+Plug 'prabirshrestha/asyncomplete.vim'
+Plug 'prabirshrestha/vim-lsp'
+Plug 'scrooloose/nerdtree'
+Plug 'tpope/vim-abolish'
+Plug 'tpope/vim-commentary'
+Plug 'tpope/vim-fugitive'
+Plug 'vim-airline/vim-airline'
+Plug 'vimwiki/vimwiki'
+Plug 'yegappan/mru'
+Plug 'wsdjeg/vim-fetch'
+Plug 'nvim-lua/popup.nvim'
+Plug 'nvim-lua/plenary.nvim'
+Plug 'nvim-telescope/telescope.nvim'
 call plug#end()
                                        
 "set termguicolors
@@ -35,7 +38,8 @@ set background=dark
 
 set matchpairs+=<:>
 
-let mapleader = ","
+" let mapleader = ","
+let mapleader = "\<Space>"
 set hidden
 set number
 set relativenumber
@@ -50,6 +54,12 @@ nnoremap <C-L> <C-W><C-L>
 nnoremap <C-H> <C-W><C-H>
 
 nmap <Leader>f :let @*=expand("%")<CR>
+" Find files using Telescope command-line sugar.
+nnoremap <leader>ff <cmd>Telescope find_files<cr>
+nnoremap <leader>fo <cmd>Telescope oldfiles<cr>
+nnoremap <leader>fg <cmd>Telescope live_grep<cr>
+nnoremap <leader>fb <cmd>Telescope buffers<cr>
+nnoremap <leader>fh <cmd>Telescope help_tags<cr>
 
 set viminfo='100,<50,s10,h,
 
@@ -79,6 +89,11 @@ set wildmode=list:longest,full
 set sidescroll=1
 
 vnoremap <C-c> "+y
+vnoremap p "_dP
+
+autocmd FileType c,cpp,java set commentstring=//\ %s
+
+map <F6> :s/\\/\//g <CR>
 
 "ctrlP
 "don't open in nerdtree buffer
@@ -147,23 +162,28 @@ set completeopt+=preview
 autocmd! CompleteDone * if pumvisible() == 0 | pclose | endif
 let g:asyncomplete_auto_popup = 1
 map <c-]> :LspDefinition<CR>
+function! AdaptFilePath(filepath, pattern, replacement)
+    let index = strridx(a:filepath, a:pattern) 
+    if (index != -1)
+        return a:filepath[0:index] . a:replacement
+    endif
+    return a:filepath
+endfunction
 function! SwitchSourceHeader()
     let filepath = expand('%:p:h')
     let filename = expand("%:t:r")
     let fileending = expand("%:e")
     if (fileending == "cpp")
         let filetype = ".h"
-        if (stridx(filepath, "/src"))
-            let filepath = split(filepath, "/src")[0] . "/**/"
-        endif
+        let filepath = AdaptFilePath(filepath, "/src", "includes/**")
+        let filepath = AdaptFilePath(filepath, "/Sources", "Includes/**")
     endif
     if (fileending == "h")
         let filetype = ".cpp"
-        if (stridx(filepath, "/include"))
-            let filepath = split(filepath, "/include")[0] . "/**/"
-        endif
+        let filepath = AdaptFilePath(filepath, "/includes", "src/**")
+        let filepath = AdaptFilePath(filepath, "/Includes", "Sources/**")
     endif
-    exe "find " . filepath . filename . filetype
+    exe "find " . filepath . "/" . filename . filetype
 endfunction
 map <F7> :call SwitchSourceHeader()<CR>
 "index all files in folder (recursivly)
@@ -201,3 +221,29 @@ augroup autoformat_settings
   "autocmd FileType vue AutoFormatBuffer prettier
 augroup END
 
+function! CopyFormatted(line1, line2)
+    execute a:line1 . "," . a:line2 . "TOhtml"
+    %yank +
+    call system('xclip -o -sel clip | xclip -i -sel clip -target text/html')
+    bwipeout!
+endfunction
+
+command! -range=% HtmlClip silent call CopyFormatted(<line1>,<line2>)
+
+let g:vimwiki_list = [{'path': '~/vimwiki/',
+                      \ 'syntax': 'markdown', 'ext': '.md'}]
+let g:mkdp_browser = 'firefox'
+
+function! s:update_oldfiles(file)
+  if !exists('v:oldfiles')
+    return
+  endif
+  let idx = index(v:oldfiles, a:file)
+  if idx != -1
+    call remove(v:oldfiles, idx)
+  endif
+  call insert(v:oldfiles, a:file, 0)
+endfunction
+
+autocmd BufNewFile,BufRead,BufEnter,BufFilePre *
+          \ call s:update_oldfiles(expand('<afile>:p'))
