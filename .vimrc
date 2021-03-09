@@ -25,6 +25,7 @@ Plug 'wsdjeg/vim-fetch'
 Plug 'nvim-lua/popup.nvim'
 Plug 'nvim-lua/plenary.nvim'
 Plug 'nvim-telescope/telescope.nvim'
+Plug 'nvim-telescope/telescope-fzy-native.nvim'
 call plug#end()
                                        
 "set termguicolors
@@ -217,3 +218,15 @@ endfunction
 
 autocmd BufNewFile,BufRead,BufEnter,BufFilePre *
           \ call s:update_oldfiles(expand('<afile>:p'))
+
+lua << EOF
+require('telescope').setup {
+    extensions = {
+        fzy_native = {
+            override_generic_sorter = false,
+            override_file_sorter = true,
+        }
+    }
+}
+require('telescope').load_extension('fzy_native')
+EOF
