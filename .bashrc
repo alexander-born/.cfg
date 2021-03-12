@@ -26,6 +26,7 @@ alias ddad="cd ~/ddad"
 alias adp="cd ~/ddad/application/adp"
 alias xpad-shared="cd ~/ddad/ecu/xpad/xpad-shared"
 alias traces="cd ~/traces"
+alias runrviz="cd ~/ddad/bazel-bin/application/adp/bmw/vehicle/configuration/had/bmw_veh_g12_control/launch/building_blocks/rviz_ad_lite_mpad.launch.sh.runfiles/ddad; ../../rviz_ad_lite_mpad.launch.sh;"
 
 convert_clipboard_to_unix_path() { xclip -o -sel clip | sed 's/\\/\//g' | sed 's/^file:/smb:/' | xclip -i -sel clip; echo "[INFO] clipboard updated."; }
 
