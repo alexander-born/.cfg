@@ -19,6 +19,7 @@ Plug 'scrooloose/nerdtree'
 Plug 'tpope/vim-abolish'
 Plug 'tpope/vim-commentary'
 Plug 'tpope/vim-fugitive'
+Plug 'airblade/vim-gitgutter'
 Plug 'vim-airline/vim-airline'
 Plug 'vimwiki/vimwiki'
 Plug 'wsdjeg/vim-fetch'
@@ -230,3 +231,6 @@ require('telescope').setup {
 }
 require('telescope').load_extension('fzy_native')
 EOF
+
+"git gutter faster update (default 4000)
+set updatetime=100
