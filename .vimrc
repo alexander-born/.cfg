@@ -56,8 +56,8 @@ nnoremap <C-H> <C-W><C-H>
 nmap <Leader>f :let @+=expand("%")<CR>
 
 " Find files using Telescope command-line sugar.
-nnoremap <leader>ff <cmd>Telescope find_files<cr>
-nnoremap <leader>fo <cmd>Telescope oldfiles<cr>
+nnoremap <leader>ff :lua require('telescope.builtin').find_files({previewer = false})<CR>
+nnoremap <leader>fo :lua require('telescope.builtin').oldfiles({previewer = false})<CR>
 nnoremap <leader>fg <cmd>Telescope live_grep<cr>
 nnoremap <leader>fb <cmd>Telescope buffers<cr>
 nnoremap <leader>fh <cmd>Telescope help_tags<cr>
