@@ -240,11 +240,11 @@ hi link LspDiagnosticsVirtualTextError GruvboxRed
 hi link LspDiagnosticsVirtualTextWarning GruvboxGray
 hi link LspDiagnosticsUnderlineError GruvboxRed
 hi link LspDiagnosticsUnderlineWarning GruvboxGray
-
+hi link LspDiagnosticsSignError GruvboxRed
+hi link LspDiagnosticsSignWarning GruvboxGray
 " }}}
 
 " autocompletion {{{
-
 " Use completion-nvim in every buffer
 autocmd BufEnter * lua require'completion'.on_attach()
 
@@ -257,7 +257,6 @@ set completeopt=menuone,noinsert,noselect
 
 " Avoid showing message extra message when using completion
 set shortmess+=c
-
 " }}}
 
 " }}}
@@ -326,7 +325,7 @@ autocmd BufNewFile,BufRead,BufEnter,BufFilePre *
 " git gutter {{{
 " faster update (default 4000)
 set updatetime=100
-let g:gitgutter_sign_allow_clobber = 0
+set signcolumn=auto:3
 " }}}
 
 " }}}
