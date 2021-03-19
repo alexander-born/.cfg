@@ -1,10 +1,10 @@
 ###Custom
 alias vim="nvim"
 alias vi="nvim"
-alias git="git "
-alias br="branch"
-alias st="status"
-alias co="checkout"
+git config --global alias.co checkout
+git config --global alias.br branch
+git config --global alias.ci commit
+git config --global alias.st status
 alias cls='printf "\033c"'
 alias gitdelete_branches_expect_master="git co master && git br | grep -v master | xargs git branch -D"
 alias gitshowbranchesof="git for-each-ref --format='%(committerdate) %09 %(authoremail) %09 %(refname)' | sort -k5n -k2M -k3n -k4n | grep -i"
