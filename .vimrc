@@ -7,6 +7,7 @@ Plug 'christoomey/vim-tmux-navigator'
 Plug 'google/vim-codefmt'
 Plug 'google/vim-glaive'
 Plug 'google/vim-maktaba'
+Plug 'bazelbuild/vim-bazel'
 Plug 'inkarkat/vim-ReplaceWithRegister'
 Plug 'machakann/vim-sandwich'
 Plug 'mileszs/ack.vim'
@@ -15,6 +16,7 @@ Plug 'scrooloose/nerdtree'
 Plug 'tpope/vim-abolish'
 Plug 'tpope/vim-commentary'
 Plug 'tpope/vim-fugitive'
+Plug 'tpope/vim-dispatch'
 Plug 'airblade/vim-gitgutter'
 Plug 'vim-airline/vim-airline'
 Plug 'vimwiki/vimwiki'
@@ -73,6 +75,34 @@ autocmd FileType vim setlocal foldmethod=marker
 " }}}
 
 " custom function {{{
+let g:bazel_config = "adp"
+let g:bazel_compilation_mode = "opt"
+function! BazelGetCurrentBufTarget()
+    let bazel_file_label=system("bazel query " . bufname("%") . " --color no --curses no --noshow_progress | tr -d '[:space:]'")
+    let bazel_file_package=split(bazel_file_label, ":")[0]
+    let g:current_bazel_target=system("bazel query \"attr('srcs', " . bazel_file_label . ", " . bazel_file_package . ":*)\" --color no --curses no --noshow_progress | tr -d '[:space:]'")
+endfunction
+
+function! BazelBuildHere()
+    :call  BazelGetCurrentBufTarget()
+    :execute 'Bazel build --config=' . g:bazel_config . ' ' . '--compilation_mode=' . g:bazel_compilation_mode . ' ' . g:current_bazel_target
+endfunction
+
+function! BazelTestHere()
+    :call BazelGetCurrentBufTarget()
+    :execute 'Bazel test --config=' . g:bazel_config . ' ' . '--compilation_mode=' . g:bazel_compilation_mode . ' ' . g:current_bazel_target
+endfunction
+
+function! BazelTestOptHere()
+    :let g:bazel_compilation_mode = "opt"
+    :call BazelTestHere()
+endfunction
+
+function! BazelTestDebugHere()
+    :let g:bazel_compilation_mode = "dbg"
+    :call BazelTestHere()
+endfunction
+
 function! AdaptFilePath(filepath, pattern, replacement)
     let index = strridx(a:filepath, a:pattern) 
     if (index != -1)
@@ -148,6 +178,10 @@ vnoremap p "_dP
 
 nnoremap <F7> :call SwitchSourceHeader()<CR>
 nnoremap <F6> :s/\\/\//g <CR>
+
+nnoremap <Leader>bt :call BazelTestOptHere()<CR>
+nnoremap <C-b><C-t> :call BazelTestDebugHere()<CR>
+nnoremap <Leader>bb :call BazelBuildHere()<CR>
 
 " }}}
 
@@ -235,15 +269,6 @@ end
 EOF
 " }}}
 
-" formatting {{{
-hi link LspDiagnosticsVirtualTextError GruvboxRed
-hi link LspDiagnosticsVirtualTextWarning GruvboxGray
-hi link LspDiagnosticsUnderlineError GruvboxRed
-hi link LspDiagnosticsUnderlineWarning GruvboxGray
-hi link LspDiagnosticsSignError GruvboxRed
-hi link LspDiagnosticsSignWarning GruvboxGray
-" }}}
-
 " autocompletion {{{
 " Use completion-nvim in every buffer
 autocmd BufEnter * lua require'completion'.on_attach()
@@ -254,9 +279,20 @@ inoremap <expr> <S-Tab> pumvisible() ? "\<C-p>" : "\<S-Tab>"
 
 " Set completeopt to have a better completion experience
 set completeopt=menuone,noinsert,noselect
+let g:completion_matching_strategy_list = ['exact', 'substring', 'fuzzy']
+let g:completion_matching_smart_case = 1
 
 " Avoid showing message extra message when using completion
 set shortmess+=c
+" }}}
+
+" formatting {{{
+hi link LspDiagnosticsVirtualTextError GruvboxRed
+hi link LspDiagnosticsVirtualTextWarning GruvboxGray
+hi link LspDiagnosticsSignError GruvboxRed
+hi link LspDiagnosticsSignWarning GruvboxGray
+hi link LspDiagnosticsUnderlineError GruvboxRed
+hi link LspDiagnosticsUnderlineWarning GruvboxGray
 " }}}
 
 " }}}
@@ -325,7 +361,11 @@ autocmd BufNewFile,BufRead,BufEnter,BufFilePre *
 " git gutter {{{
 " faster update (default 4000)
 set updatetime=100
-set signcolumn=auto:3
+set signcolumn=auto:2
+" }}}
+
+" vim-bazel {{{
+
 " }}}
 
 " }}}
