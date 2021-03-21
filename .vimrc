@@ -190,125 +190,6 @@ nnoremap <Leader>bb :call BazelBuildHere()<CR>
 
 " plugin configuration {{{
 
-" nvim-lsp {{{
-
-" formatting {{{
-hi link LspDiagnosticsVirtualTextError GruvboxRed
-hi link LspDiagnosticsVirtualTextWarning GruvboxGray
-hi link LspDiagnosticsSignError GruvboxRed
-hi link LspDiagnosticsSignWarning GruvboxGray
-hi link LspDiagnosticsUnderlineError GruvboxRed
-hi link LspDiagnosticsUnderlineWarning GruvboxGray
-" }}}
-
-" server configs {{{
-lua << EOF
-
-local lspconfig = require'lspconfig'
-
-lspconfig.clangd.setup{
-root_dir = lspconfig.util.root_pattern("compile_commands.json", "compile_flags.txt") or dirname
-}
-
-lspconfig.pyright.setup{
-}
-
-require'compe'.setup {
-  enabled = true;
-  autocomplete = true;
-  debug = false;
-  min_length = 1;
-  preselect = 'enable';
-  throttle_time = 80;
-  source_timeout = 200;
-  incomplete_delay = 400;
-  max_abbr_width = 100;
-  max_kind_width = 100;
-  max_menu_width = 100;
-  documentation = true;
-
-  source = {
-    path = true;
-    buffer = true;
-    nvim_lsp = true;
-  };
-}
-
-EOF
-
-" }}}
-
-" keybindings {{{
-lua << EOF
-local nvim_lsp = require('lspconfig')
-local on_attach = function(client, bufnr)
-  local function buf_set_keymap(...) vim.api.nvim_buf_set_keymap(bufnr, ...) end
-  local function buf_set_option(...) vim.api.nvim_buf_set_option(bufnr, ...) end
-
-  buf_set_option('omnifunc', 'v:lua.vim.lsp.omnifunc')
-
-  -- Mappings.
-  local opts = { noremap=false, silent=true }
-  buf_set_keymap('n', 'gD', '<Cmd>lua vim.lsp.buf.declaration()<CR>', opts)
-  buf_set_keymap('n', 'gd', '<Cmd>lua vim.lsp.buf.definition()<CR>', opts)
-  buf_set_keymap('n', 'gi', '<cmd>lua vim.lsp.buf.implementation()<CR>', opts)
-  buf_set_keymap('n', '<leader>wa', '<cmd>lua vim.lsp.buf.add_workspace_folder()<CR>', opts)
-  buf_set_keymap('n', '<leader>wr', '<cmd>lua vim.lsp.buf.remove_workspace_folder()<CR>', opts)
-  buf_set_keymap('n', '<leader>wl', '<cmd>lua print(vim.inspect(vim.lsp.buf.list_workspace_folders()))<CR>', opts)
-  buf_set_keymap('n', '<leader>D', '<cmd>lua vim.lsp.buf.type_definition()<CR>', opts)
-  buf_set_keymap('n', '<leader>gr', '<cmd>lua vim.lsp.buf.references()<CR>', opts)
-  buf_set_keymap('n', '<leader>q', '<cmd>lua vim.lsp.diagnostic.set_loclist()<CR>', opts)
-
-end
-
--- Use a loop to conveniently both setup defined servers 
--- and map buffer local keybindings when the language server attaches
-local servers = {"clangd", "pyright"}
-for _, lsp in ipairs(servers) do
-  nvim_lsp[lsp].setup { on_attach = on_attach }
-end
-EOF
-" }}}
-
-" autocompletion {{{
-
-inoremap <silent><expr> <C-Space> compe#complete()
-inoremap <silent><expr> <CR>      compe#confirm('<CR>')
-inoremap <silent><expr> <C-e>     compe#close('<C-e>')
-inoremap <silent><expr> <C-f>     compe#scroll({ 'delta': +4 })
-inoremap <silent><expr> <C-b>     compe#scroll({ 'delta': -4 })
-
-" Set completeopt to have a better completion experience
-set completeopt=menuone,noinsert,noselect
-let g:completion_matching_strategy_list = ['exact', 'substring', 'fuzzy']
-let g:completion_matching_smart_case = 1
-
-" Avoid showing message extra message when using completion
-set shortmess+=c
-
-" }}}
-
-" lspsaga {{{
-lua << EOF
-local saga = require 'lspsaga'
-saga.init_lsp_saga()
-EOF
-
-nnoremap <silent> gh :Lspsaga lsp_finder<CR>
-nnoremap <silent> <leader>ca :Lspsaga code_action<CR>
-vnoremap <silent> <leader>ca :<C-U>Lspsaga range_code_action<CR>
-nnoremap <silent> K :Lspsaga hover_doc<CR>
-nnoremap <silent> <C-f> <cmd>lua require('lspsaga.action').smart_scroll_with_saga(1)<CR>
-nnoremap <silent> <C-b> <cmd>lua require('lspsaga.action').smart_scroll_with_saga(-1)<CR>
-nnoremap <silent> gs :Lspsaga signature_help<CR>
-nnoremap <silent> <leader>rn :Lspsaga rename<CR>
-nnoremap <silent> <leader>gd :Lspsaga preview_definition<CR>
-nnoremap <silent> <leader>cd :Lspsaga show_line_diagnostics<CR>
-nnoremap <silent> [d :Lspsaga diagnostic_jump_next<CR>
-nnoremap <silent> ]d :Lspsaga diagnostic_jump_prev<CR>
-" }}}
-" }}}
-
 " vim-commentary {{{
 autocmd FileType c,cpp,java set commentstring=//\ %s
 " }}}
@@ -444,4 +325,132 @@ nmap <leader>dbp :call vimspector#ClearBreakpoints()<CR>
 nmap <leader>cbp <Plug>VimspectorToggleConditionalBreakpoint
 " }}}
 
+" nvim-lsp {{{
+
+" formatting {{{
+hi link LspDiagnosticsVirtualTextError GruvboxRed
+hi link LspDiagnosticsVirtualTextWarning GruvboxGray
+hi link LspDiagnosticsSignError GruvboxRed
+hi link LspDiagnosticsSignWarning GruvboxGray
+hi link LspDiagnosticsUnderlineError GruvboxRed
+hi link LspDiagnosticsUnderlineWarning GruvboxGray
 " }}}
+
+" server configs {{{
+lua << EOF
+
+local lspconfig = require'lspconfig'
+
+lspconfig.clangd.setup{
+root_dir = lspconfig.util.root_pattern("compile_commands.json", "compile_flags.txt") or dirname
+}
+
+lspconfig.pyright.setup{
+}
+
+require'compe'.setup {
+  enabled = true;
+  autocomplete = true;
+  debug = false;
+  min_length = 1;
+  preselect = 'enable';
+  throttle_time = 80;
+  source_timeout = 200;
+  incomplete_delay = 400;
+  max_abbr_width = 100;
+  max_kind_width = 100;
+  max_menu_width = 100;
+  documentation = true;
+
+  source = {
+    path = true;
+    buffer = true;
+    nvim_lsp = true;
+  };
+}
+
+EOF
+
+" }}}
+
+" keybindings {{{
+lua << EOF
+local nvim_lsp = require('lspconfig')
+local on_attach = function(client, bufnr)
+  local function buf_set_keymap(...) vim.api.nvim_buf_set_keymap(bufnr, ...) end
+  local function buf_set_option(...) vim.api.nvim_buf_set_option(bufnr, ...) end
+
+  buf_set_option('omnifunc', 'v:lua.vim.lsp.omnifunc')
+
+  -- Mappings.
+  local opts = { noremap=false, silent=true }
+  buf_set_keymap('n', 'gD', '<Cmd>lua vim.lsp.buf.declaration()<CR>', opts)
+  buf_set_keymap('n', 'gd', '<Cmd>lua vim.lsp.buf.definition()<CR>', opts)
+  buf_set_keymap('n', 'gi', '<cmd>lua vim.lsp.buf.implementation()<CR>', opts)
+  buf_set_keymap('n', '<leader>wa', '<cmd>lua vim.lsp.buf.add_workspace_folder()<CR>', opts)
+  buf_set_keymap('n', '<leader>wr', '<cmd>lua vim.lsp.buf.remove_workspace_folder()<CR>', opts)
+  buf_set_keymap('n', '<leader>wl', '<cmd>lua print(vim.inspect(vim.lsp.buf.list_workspace_folders()))<CR>', opts)
+  buf_set_keymap('n', '<leader>D', '<cmd>lua vim.lsp.buf.type_definition()<CR>', opts)
+  buf_set_keymap('n', '<leader>gr', '<cmd>lua vim.lsp.buf.references()<CR>', opts)
+  buf_set_keymap('n', '<leader>q', '<cmd>lua vim.lsp.diagnostic.set_loclist()<CR>', opts)
+
+end
+
+-- Use a loop to conveniently both setup defined servers 
+-- and map buffer local keybindings when the language server attaches
+local servers = {"clangd", "pyright"}
+for _, lsp in ipairs(servers) do
+  nvim_lsp[lsp].setup { on_attach = on_attach }
+end
+EOF
+" }}}
+
+" autocompletion {{{
+
+inoremap <silent><expr> <C-Space> compe#complete()
+inoremap <silent><expr> <CR>      compe#confirm('<CR>')
+inoremap <silent><expr> <C-e>     compe#close('<C-e>')
+inoremap <silent><expr> <C-f>     compe#scroll({ 'delta': +4 })
+inoremap <silent><expr> <C-b>     compe#scroll({ 'delta': -4 })
+
+" Set completeopt to have a better completion experience
+set completeopt=menuone,noinsert,noselect
+let g:completion_matching_strategy_list = ['exact', 'substring', 'fuzzy']
+let g:completion_matching_smart_case = 1
+
+" Avoid showing message extra message when using completion
+set shortmess+=c
+
+" }}}
+
+" lspsaga {{{
+lua << EOF
+local saga = require 'lspsaga'
+saga.init_lsp_saga{
+  error_sign = 'E';
+  warn_sign = 'W';
+  hint_sign = 'I';
+  infor_sign = 'I';
+  code_action_icon = '';
+}
+EOF
+
+nnoremap <silent> gh :Lspsaga lsp_finder<CR>
+nnoremap <silent> <leader>ca :Lspsaga code_action<CR>
+vnoremap <silent> <leader>ca :<C-U>Lspsaga range_code_action<CR>
+nnoremap <silent> K :Lspsaga hover_doc<CR>
+nnoremap <silent> <C-f> <cmd>lua require('lspsaga.action').smart_scroll_with_saga(1)<CR>
+nnoremap <silent> <C-b> <cmd>lua require('lspsaga.action').smart_scroll_with_saga(-1)<CR>
+nnoremap <silent> gs :Lspsaga signature_help<CR>
+nnoremap <silent> <leader>rn :Lspsaga rename<CR>
+nnoremap <silent> <leader>gd :Lspsaga preview_definition<CR>
+nnoremap <silent> <leader>cd :Lspsaga show_line_diagnostics<CR>
+nnoremap <silent> [d :Lspsaga diagnostic_jump_next<CR>
+nnoremap <silent> ]d :Lspsaga diagnostic_jump_prev<CR>
+" }}}
+
+" }}}
+
+
+" }}}
+
