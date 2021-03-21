@@ -340,12 +340,15 @@ hi link LspDiagnosticsUnderlineWarning GruvboxGray
 lua << EOF
 
 local lspconfig = require'lspconfig'
+local on_attach = require'compe'.on_attach
 
 lspconfig.clangd.setup{
-root_dir = lspconfig.util.root_pattern("compile_commands.json", "compile_flags.txt") or dirname
+    on_attach = on_attach;
+    root_dir = lspconfig.util.root_pattern("compile_commands.json", "compile_flags.txt") or dirname
 }
 
 lspconfig.pyright.setup{
+    on_attach = on_attach;
 }
 
 require'compe'.setup {
@@ -371,38 +374,6 @@ require'compe'.setup {
 
 EOF
 
-" }}}
-
-" keybindings {{{
-lua << EOF
-local nvim_lsp = require('lspconfig')
-local on_attach = function(client, bufnr)
-  local function buf_set_keymap(...) vim.api.nvim_buf_set_keymap(bufnr, ...) end
-  local function buf_set_option(...) vim.api.nvim_buf_set_option(bufnr, ...) end
-
-  buf_set_option('omnifunc', 'v:lua.vim.lsp.omnifunc')
-
-  -- Mappings.
-  local opts = { noremap=false, silent=true }
-  buf_set_keymap('n', 'gD', '<Cmd>lua vim.lsp.buf.declaration()<CR>', opts)
-  buf_set_keymap('n', 'gd', '<Cmd>lua vim.lsp.buf.definition()<CR>', opts)
-  buf_set_keymap('n', 'gi', '<cmd>lua vim.lsp.buf.implementation()<CR>', opts)
-  buf_set_keymap('n', '<leader>wa', '<cmd>lua vim.lsp.buf.add_workspace_folder()<CR>', opts)
-  buf_set_keymap('n', '<leader>wr', '<cmd>lua vim.lsp.buf.remove_workspace_folder()<CR>', opts)
-  buf_set_keymap('n', '<leader>wl', '<cmd>lua print(vim.inspect(vim.lsp.buf.list_workspace_folders()))<CR>', opts)
-  buf_set_keymap('n', '<leader>D', '<cmd>lua vim.lsp.buf.type_definition()<CR>', opts)
-  buf_set_keymap('n', '<leader>gr', '<cmd>lua vim.lsp.buf.references()<CR>', opts)
-  buf_set_keymap('n', '<leader>q', '<cmd>lua vim.lsp.diagnostic.set_loclist()<CR>', opts)
-
-end
-
--- Use a loop to conveniently both setup defined servers 
--- and map buffer local keybindings when the language server attaches
-local servers = {"clangd", "pyright"}
-for _, lsp in ipairs(servers) do
-  nvim_lsp[lsp].setup { on_attach = on_attach }
-end
-EOF
 " }}}
 
 " autocompletion {{{
@@ -434,7 +405,9 @@ saga.init_lsp_saga{
   code_action_icon = '';
 }
 EOF
+" }}}
 
+" keybindings {{{
 nnoremap <silent> gh :Lspsaga lsp_finder<CR>
 nnoremap <silent> <leader>ca :Lspsaga code_action<CR>
 vnoremap <silent> <leader>ca :<C-U>Lspsaga range_code_action<CR>
@@ -444,13 +417,17 @@ nnoremap <silent> <C-b> <cmd>lua require('lspsaga.action').smart_scroll_with_sag
 nnoremap <silent> gs :Lspsaga signature_help<CR>
 nnoremap <silent> <leader>rn :Lspsaga rename<CR>
 nnoremap <silent> <leader>gd :Lspsaga preview_definition<CR>
-nnoremap <silent> <leader>cd :Lspsaga show_line_diagnostics<CR>
+nnoremap <silent> <leader>sd :Lspsaga show_line_diagnostics<CR>
 nnoremap <silent> [d :Lspsaga diagnostic_jump_next<CR>
 nnoremap <silent> ]d :Lspsaga diagnostic_jump_prev<CR>
+
+nnoremap gd :lua vim.lsp.buf.definition()<CR>
+nnoremap gi :lua vim.lsp.buf.implementation()<CR>
+nnoremap gr :lua vim.lsp.buf.references()<CR>
+nnoremap <leader>q :lua vim.lsp.diagnostic.set_loclist()<CR>
 " }}}
 
 " }}}
-
 
 " }}}
 
