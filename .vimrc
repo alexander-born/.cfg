@@ -78,32 +78,20 @@ autocmd FileType vim setlocal foldmethod=marker
 " }}}
 
 " custom function {{{
-let g:bazel_config = "adp"
-let g:bazel_compilation_mode = "opt"
 function! BazelGetCurrentBufTarget()
     let bazel_file_label=system("bazel query " . bufname("%") . " --color no --curses no --noshow_progress | tr -d '[:space:]'")
     let bazel_file_package=split(bazel_file_label, ":")[0]
     let g:current_bazel_target=system("bazel query \"attr('srcs', " . bazel_file_label . ", " . bazel_file_package . ":*)\" --color no --curses no --noshow_progress | tr -d '[:space:]'")
 endfunction
 
-function! BazelBuildHere()
-    :call  BazelGetCurrentBufTarget()
-    :execute 'Bazel build --config=' . g:bazel_config . ' ' . '--compilation_mode=' . g:bazel_compilation_mode . ' ' . g:current_bazel_target
+function! RunBazel()
+    :execute 'Bazel ' . g:bazel_command . ' ' . g:current_bazel_target
 endfunction
 
-function! BazelTestHere()
+function! RunBazelHere(command)
+    :let g:bazel_command = a:command
     :call BazelGetCurrentBufTarget()
-    :execute 'Bazel test --config=' . g:bazel_config . ' ' . '--compilation_mode=' . g:bazel_compilation_mode . ' ' . g:current_bazel_target
-endfunction
-
-function! BazelTestOptHere()
-    :let g:bazel_compilation_mode = "opt"
-    :call BazelTestHere()
-endfunction
-
-function! BazelTestDebugHere()
-    :let g:bazel_compilation_mode = "dbg"
-    :call BazelTestHere()
+    :call RunBazel()
 endfunction
 
 function! AdaptFilePath(filepath, pattern, replacement)
@@ -182,9 +170,10 @@ vnoremap p "_dP
 nnoremap <F7> :call SwitchSourceHeader()<CR>
 nnoremap <F6> :s/\\/\//g <CR>
 
-nnoremap <Leader>bt :call BazelTestOptHere()<CR>
-nnoremap <C-b><C-t> :call BazelTestDebugHere()<CR>
-nnoremap <Leader>bb :call BazelBuildHere()<CR>
+nnoremap <Leader>bt  :call RunBazelHere("test --config=adp")<CR>
+nnoremap <Leader>bdt :call RunBazelHere("test --config=adp -c dbg")<CR>
+nnoremap <Leader>bb  :call RunBazelHere("build --config=adp")<CR>
+nnoremap <Leader>bl  :call RunBazel()<CR>
 
 " }}}
 
@@ -430,4 +419,3 @@ nnoremap <leader>q :lua vim.lsp.diagnostic.set_loclist()<CR>
 " }}}
 
 " }}}
-
