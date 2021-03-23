@@ -2,43 +2,62 @@
 " plugins {{{
 
 call plug#begin()
-Plug 'aymericbeaumet/vim-symlink'
+" general
+Plug 'inkarkat/vim-ReplaceWithRegister'
+Plug 'machakann/vim-sandwich'
+Plug 'tpope/vim-abolish'
+Plug 'tpope/vim-commentary'
+Plug 'tpope/vim-dispatch'
+Plug 'wsdjeg/vim-fetch'
+" grep
+Plug 'mileszs/ack.vim'
+" airline
+Plug 'vim-airline/vim-airline'
+" wiki
+Plug 'vimwiki/vimwiki'
+" git
+Plug 'tpope/vim-fugitive'
+Plug 'airblade/vim-gitgutter'
+" tmux jump windows
 Plug 'christoomey/vim-tmux-navigator'
+" autoformat
 Plug 'google/vim-codefmt'
 Plug 'google/vim-glaive'
 Plug 'google/vim-maktaba'
+" bazel
 Plug 'bazelbuild/vim-bazel'
-Plug 'inkarkat/vim-ReplaceWithRegister'
-Plug 'machakann/vim-sandwich'
-Plug 'mileszs/ack.vim'
+" colorschemes
 Plug 'morhetz/gruvbox'
+Plug 'arcticicestudio/nord-vim'
+" file explorer
 Plug 'scrooloose/nerdtree'
-Plug 'tpope/vim-abolish'
-Plug 'tpope/vim-commentary'
-Plug 'tpope/vim-fugitive'
-Plug 'tpope/vim-dispatch'
-Plug 'airblade/vim-gitgutter'
-Plug 'vim-airline/vim-airline'
-Plug 'vimwiki/vimwiki'
-Plug 'wsdjeg/vim-fetch'
+" debugging
 Plug 'szw/vim-maximizer'
 Plug 'puremourning/vimspector'
+" telescope
 Plug 'nvim-lua/popup.nvim'
 Plug 'nvim-lua/plenary.nvim'
 Plug 'nvim-telescope/telescope.nvim'
 Plug 'nvim-telescope/telescope-fzy-native.nvim'
+" lsp
 Plug 'neovim/nvim-lspconfig'
 Plug 'hrsh7th/nvim-compe'
 Plug 'glepnir/lspsaga.nvim'
+Plug 'aymericbeaumet/vim-symlink'
 call plug#end()
 
 " }}}
 
-" general {{{
+" color {{{
+
 syntax enable
 colorscheme gruvbox
 set background=dark
+" set termguicolors
+" colorscheme nord
+" }}}
 
+" general {{{
 let mapleader = "\<Space>"
 set hidden
 set number
@@ -173,6 +192,7 @@ nnoremap <F6> :s/\\/\//g <CR>
 nnoremap <Leader>bt  :call RunBazelHere("test --config=adp")<CR>
 nnoremap <Leader>bdt :call RunBazelHere("test --config=adp -c dbg")<CR>
 nnoremap <Leader>bb  :call RunBazelHere("build --config=adp")<CR>
+nnoremap <Leader>bdb :call RunBazelHere("build --config=adp -c dbg")<CR>
 nnoremap <Leader>bl  :call RunBazel()<CR>
 
 " }}}
@@ -212,7 +232,7 @@ autocmd bufenter * if (winnr("$") == 1 && exists("b:NERDTree") && b:NERDTree.isT
 " }}}
 
 " bazel-lsp Tim Rakowski {{{
-" source ~/buildtools/bazel_vim/bazel.vim
+source ~/buildtools/bazel_vim/bazel.vim
 " }}}
 
 " ack.vim {{{
