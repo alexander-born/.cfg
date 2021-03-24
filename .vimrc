@@ -11,7 +11,8 @@ Plug 'tpope/vim-dispatch'
 Plug 'wsdjeg/vim-fetch'
 " appearance
 Plug 'lukas-reineke/indent-blankline.nvim'
-" Plug 'vim-airline/vim-airline'
+Plug 'Yggdroot/indentLine'
+Plug 'vim-airline/vim-airline'
 Plug 'kyazdani42/nvim-web-devicons'
 Plug 'akinsho/nvim-bufferline.lua'
 " colorschemes
@@ -242,7 +243,7 @@ let g:airline_skip_empty_sections = 1
 " }}}
 
 " indent-blankline {{{
-let g:indent_blankline_filetype = ['py']
+let g:indent_blankline_filetype = ['python']
 " }}}
 
 " bufferline {{{
