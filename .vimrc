@@ -669,6 +669,7 @@ EOF
 syntax on
 filetype plugin indent on
 :let g:NERDTreeWinSize=60
+:let g:NERDTreeMapHelp = '<F1>'
 "close vim if nerdtree is last open buffer
 autocmd bufenter * if (winnr("$") == 1 && exists("b:NERDTree") && b:NERDTree.isTabTree()) | q | endif
 " }}}
