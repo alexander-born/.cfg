@@ -204,7 +204,6 @@ nnoremap <Leader>bl  :call RunBazel()<CR>
 
 " plugin configuration {{{
 
-
 " vim-commentary {{{
 autocmd FileType c,cpp,java set commentstring=//\ %s
 " }}}
@@ -378,7 +377,7 @@ autocmd BufNewFile,BufRead,BufEnter,BufFilePre *
           \ call s:update_oldfiles(expand('<afile>:p'))
 " }}}
 
-" git gutter {{{
+" git signs {{{
 " faster update (default 4000)
 set updatetime=100
 set signcolumn=auto:2
