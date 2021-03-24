@@ -14,7 +14,11 @@ Plug 'lukas-reineke/indent-blankline.nvim'
 Plug 'Yggdroot/indentLine'
 Plug 'glepnir/galaxyline.nvim'
 Plug 'kyazdani42/nvim-web-devicons'
+Plug 'ryanoasis/vim-devicons'
 Plug 'akinsho/nvim-bufferline.lua'
+" nerdtree
+Plug 'scrooloose/nerdtree'
+" Plug 'kyazdani42/nvim-tree.lua'
 " colorschemes
 Plug 'morhetz/gruvbox'
 Plug 'sainnhe/gruvbox-material'
@@ -33,9 +37,7 @@ Plug 'google/vim-glaive'
 Plug 'google/vim-maktaba'
 " bazel
 Plug 'bazelbuild/vim-bazel'
-" file explorer
-Plug 'scrooloose/nerdtree'
-Plug 'kyazdani42/nvim-tree.lua'
+" Plug 'kyazdani42/nvim-tree.lua'
 " debugging
 Plug 'szw/vim-maximizer'
 Plug 'puremourning/vimspector'
@@ -650,7 +652,8 @@ EOF
 " }}}
 
 " indent-blankline {{{
-let g:indent_blankline_filetype = ['python']
+" let g:indent_blankline_filetype = ['python']
+let g:indentLine_fileType = ['python', 'json', 'bzl']
 " }}}
 
 " bufferline {{{
@@ -721,9 +724,9 @@ let g:nvim_tree_icons = {
     \   }
     \ }
 
-nnoremap <C-n> :NvimTreeToggle<CR>
-nnoremap <leader>r :NvimTreeRefresh<CR>
-nnoremap <leader>n :NvimTreeFindFile<CR>
+"nnoremap <C-n> :NvimTreeToggle<CR>
+"nnoremap <leader>r :NvimTreeRefresh<CR>
+"nnoremap <leader>n :NvimTreeFindFile<CR>
 " }}}
 
 " icons {{{
