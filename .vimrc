@@ -44,8 +44,6 @@ Plug 'nvim-lua/popup.nvim'
 Plug 'nvim-lua/plenary.nvim'
 Plug 'nvim-telescope/telescope.nvim'
 Plug 'nvim-telescope/telescope-fzy-native.nvim'
-" syntax highlighting
-Plug 'nvim-treesitter/nvim-treesitter'
 " lsp
 Plug 'neovim/nvim-lspconfig'
 Plug 'hrsh7th/nvim-compe'
@@ -206,16 +204,6 @@ nnoremap <Leader>bl  :call RunBazel()<CR>
 
 " plugin configuration {{{
 
-" treesitter {{{
-lua <<EOF
-require'nvim-treesitter.configs'.setup {
-  ensure_installed = "all", -- one of "all", "maintained" (parsers with maintainers), or a list of languages
-  highlight = {
-    enable = true,              -- false will disable the whole extension
-  };
-}
-EOF
-" }}}
 
 " vim-commentary {{{
 autocmd FileType c,cpp,java set commentstring=//\ %s
