@@ -13,6 +13,8 @@ Plug 'wsdjeg/vim-fetch'
 Plug 'mileszs/ack.vim'
 " airline
 Plug 'vim-airline/vim-airline'
+" icons
+Plug 'kyazdani42/nvim-web-devicons'
 " wiki
 Plug 'vimwiki/vimwiki'
 " git
@@ -39,6 +41,8 @@ Plug 'nvim-lua/popup.nvim'
 Plug 'nvim-lua/plenary.nvim'
 Plug 'nvim-telescope/telescope.nvim'
 Plug 'nvim-telescope/telescope-fzy-native.nvim'
+" syntax highlighting
+Plug 'nvim-treesitter/nvim-treesitter'
 " lsp
 Plug 'neovim/nvim-lspconfig'
 Plug 'hrsh7th/nvim-compe'
@@ -199,6 +203,17 @@ nnoremap <Leader>bl  :call RunBazel()<CR>
 
 " plugin configuration {{{
 
+" treesitter {{{
+" lua <<EOF
+" require'nvim-treesitter.configs'.setup {
+"   ensure_installed = "all", -- one of "all", "maintained" (parsers with maintainers), or a list of languages
+"   highlight = {
+"     enable = true,              -- false will disable the whole extension
+"   };
+" }
+" EOF
+" }}}
+
 " vim-commentary {{{
 autocmd FileType c,cpp,java set commentstring=//\ %s
 " }}}
@@ -229,6 +244,16 @@ filetype plugin indent on
 :let g:NERDTreeWinSize=60
 "close vim if nerdtree is last open buffer
 autocmd bufenter * if (winnr("$") == 1 && exists("b:NERDTree") && b:NERDTree.isTabTree()) | q | endif
+" }}}
+
+" icons {{{
+lua << EOF
+require'nvim-web-devicons'.setup {
+ -- globally enable default icons (default to false)
+ -- will get overriden by `get_icons` option
+ default = true;
+}
+EOF
 " }}}
 
 " bazel-lsp Tim Rakowski {{{
@@ -406,13 +431,7 @@ set shortmess+=c
 " lspsaga {{{
 lua << EOF
 local saga = require 'lspsaga'
-saga.init_lsp_saga{
-  error_sign = 'E';
-  warn_sign = 'W';
-  hint_sign = 'I';
-  infor_sign = 'I';
-  code_action_icon = '';
-}
+saga.init_lsp_saga{}
 EOF
 " }}}
 
