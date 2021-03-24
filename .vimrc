@@ -211,7 +211,7 @@ autocmd FileType c,cpp,java set commentstring=//\ %s
 
 " vim-airline {{{
 let g:airline_theme = 'gruvbox_material'
-let g:airline#extensions#tabline#enabled = 1
+let g:airline#extensions#tabline#enabled = 0
 let g:airline#extensions#tabline#fnamemod = ':t'
 let g:airline#extensions#tabline#buffer_nr_show = 1
 let g:airline#extensions#bufferline#enabled = 0
