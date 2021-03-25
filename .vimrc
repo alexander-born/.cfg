@@ -658,6 +658,8 @@ let g:indentLine_fileType = ['python', 'json', 'bzl']
 lua << EOF
 require'bufferline'.setup{
     options = {
+        numbers = "buffer_id",
+        number_style = "",
         max_name_length = 50;
         tab_size = 0,
     }
