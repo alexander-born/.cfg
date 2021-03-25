@@ -1,6 +1,7 @@
 ###Custom
 alias vim="nvim"
 alias vi="nvim"
+git config --global core.editor "nvim"
 git config --global alias.co checkout
 git config --global alias.br branch
 git config --global alias.ci commit
