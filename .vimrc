@@ -176,16 +176,6 @@ nnoremap <C-H> <C-W><C-H>
 " copy full file path to clipboard
 nnoremap <Leader>f :let @+=expand("%")<CR>
 
-nnoremap <leader>ff :lua require('telescope.builtin').find_files({previewer = false})<CR>
-nnoremap <leader>fo :lua require('telescope.builtin').oldfiles({previewer = false})<CR>
-nnoremap <leader>fg <cmd>Telescope live_grep<cr>
-nnoremap <leader>fb <cmd>Telescope buffers<cr>
-nnoremap <leader>fh <cmd>Telescope help_tags<cr>
-
-nnoremap <c-n> :NERDTreeToggle<CR>
-nnoremap <Leader>n :NERDTreeFind<CR>
-nnoremap <Leader>a :Ack!<Space>
-
 " copy visual selection to clipboard with ctrl-c
 vnoremap <C-c> "+y
 " deletes visual selection and pastes without changing default register
@@ -668,6 +658,9 @@ EOF
 " }}}
 
 " nerdtree {{{
+nnoremap <c-n> :NERDTreeToggle<CR>
+nnoremap <Leader>n :NERDTreeFind<CR>
+
 syntax on
 filetype plugin indent on
 :let g:NERDTreeWinSize=60
@@ -691,6 +684,8 @@ source ~/buildtools/bazel_vim/bazel.vim
 " }}}
 
 " ack.vim {{{
+nnoremap <Leader>a :Ack!<Space>
+
 let g:ackprg = 'ag --vimgrep'
 " }}}
 
@@ -718,7 +713,12 @@ let g:mkdp_browser = 'firefox'
 " }}}
 
 " telescope {{{
-" telescope faster fuzzy
+nnoremap <leader>ff :lua require('telescope.builtin').find_files({previewer = false})<CR>
+nnoremap <leader>fo :lua require('telescope.builtin').oldfiles({previewer = false})<CR>
+nnoremap <leader>fg <cmd>Telescope live_grep<cr>
+nnoremap <leader>fb <cmd>Telescope buffers<cr>
+nnoremap <leader>fh <cmd>Telescope help_tags<cr>
+
 lua << EOF
 require('telescope').setup {
     extensions = {
