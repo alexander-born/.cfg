@@ -58,7 +58,6 @@ syntax enable
 set termguicolors
 set background=dark
 let g:gruvbox_material_background = 'soft'
-let g:gruvbox_material_enable_bold = 0
 colorscheme gruvbox-material
 " }}}
 
@@ -106,6 +105,9 @@ function! BazelGetCurrentBufTarget()
     let bazel_file_label=system("bazel query " . bufname("%") . " --color no --curses no --noshow_progress | tr -d '[:space:]'")
     let bazel_file_package=split(bazel_file_label, ":")[0]
     let g:current_bazel_target=system("bazel query \"attr('srcs', " . bazel_file_label . ", " . bazel_file_package . ":*)\" --color no --curses no --noshow_progress | tr -d '[:space:]'")
+    if (len(g:current_bazel_target) == 0)
+        let g:current_bazel_target=system("bazel query \"attr('hdrs', " . bazel_file_label . ", " . bazel_file_package . ":*)\" --color no --curses no --noshow_progress | tr -d '[:space:]'")
+    endif
 endfunction
 
 function! RunBazel()
@@ -861,8 +863,7 @@ set shortmess+=c
 
 " lspsaga {{{
 lua << EOF
-local saga = require 'lspsaga'
-saga.init_lsp_saga{}
+require'lspsaga'.init_lsp_saga{}
 EOF
 " }}}
 
