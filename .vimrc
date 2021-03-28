@@ -53,7 +53,6 @@ call plug#end()
 
 " }}}
 
-source ~/.init.vim
 
 " color {{{
 syntax enable
@@ -100,6 +99,8 @@ set wildmode=list:longest,full
 autocmd FileType vim setlocal foldmethod=marker
 
 " }}}
+
+source ~/.init.vim
 
 " custom function {{{
 function! BazelGetCurrentBufTarget()
