@@ -57,8 +57,6 @@ call plug#end()
 " color {{{
 syntax enable
 set termguicolors
-set background=dark
-let g:gruvbox_material_background = 'soft'
 " }}}
 
 " general {{{
@@ -100,7 +98,7 @@ autocmd FileType vim setlocal foldmethod=marker
 
 " }}}
 
-source ~/.init.vim
+source ~/.user.vim
 
 " custom function {{{
 function! BazelGetCurrentBufTarget()

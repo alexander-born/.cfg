@@ -1,3 +1,5 @@
+let g:gruvbox_material_background = 'soft'
+set background=dark
 colo gruvbox-material
 
 " galaxyline {{{
