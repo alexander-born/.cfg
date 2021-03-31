@@ -8,6 +8,7 @@ Plug 'machakann/vim-sandwich'
 Plug 'tpope/vim-abolish'
 Plug 'tpope/vim-commentary'
 Plug 'tpope/vim-dispatch'
+Plug 'tpope/vim-unimpaired'
 Plug 'wsdjeg/vim-fetch'
 " appearance
 Plug 'lukas-reineke/indent-blankline.nvim' , { 'branch': 'lua' }
@@ -101,6 +102,19 @@ autocmd FileType vim setlocal foldmethod=marker
 source ~/.user.vim
 
 " custom function {{{
+function! OpenErrorInQuickfix()
+    cexpr []
+    caddexpr getline(0,'$')
+    copen
+    let l:qf_list = []
+    for entry in getqflist()
+        if (entry.valid == 1)
+            call add(l:qf_list, entry)
+        endif
+    endfor
+    call setqflist(l:qf_list)
+endfunction
+
 function! BazelGetCurrentBufTarget()
     let bazel_file_label=system("bazel query " . bufname("%") . " --color no --curses no --noshow_progress | tr -d '[:space:]'")
     let bazel_file_package=split(bazel_file_label, ":")[0]
@@ -184,6 +198,7 @@ vnoremap <C-c> "+y
 vnoremap p "_dP
 " go to first file on line
 nnoremap gf ^f/gf
+nnoremap <Leader>e  :call OpenErrorInQuickfix()<CR>
 
 nnoremap <F7> :call SwitchSourceHeader()<CR>
 nnoremap <F6> :s/\\/\//g <CR>
@@ -323,7 +338,12 @@ EOF
 " }}}
 
 " vim-bazel {{{
-
+set errorformat=ERROR:\ %f:%l:%c:%m    
+set errorformat+=%f:%l:%c:%m    
+" Ignore build output lines starting with INFO:, Loading:, or [    
+set errorformat+=%-GINFO:\ %.%#    
+set errorformat+=%-GLoading:\ %.%#    
+set errorformat+=%-G[%.%#    
 " }}}
 
 " vimspector {{{
