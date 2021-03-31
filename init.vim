@@ -10,12 +10,12 @@ Plug 'tpope/vim-commentary'
 Plug 'tpope/vim-dispatch'
 Plug 'wsdjeg/vim-fetch'
 " appearance
-Plug 'lukas-reineke/indent-blankline.nvim'
-Plug 'Yggdroot/indentLine'
+Plug 'lukas-reineke/indent-blankline.nvim' , { 'branch': 'lua' }
 Plug 'glepnir/galaxyline.nvim'
 Plug 'kyazdani42/nvim-web-devicons'
 Plug 'ryanoasis/vim-devicons'
 Plug 'akinsho/nvim-bufferline.lua'
+Plug 'norcalli/nvim-colorizer.lua'
 " nerdtree
 Plug 'scrooloose/nerdtree'
 " colorschemes
@@ -48,11 +48,11 @@ Plug 'nvim-telescope/telescope-fzy-native.nvim'
 Plug 'neovim/nvim-lspconfig'
 Plug 'hrsh7th/nvim-compe'
 Plug 'glepnir/lspsaga.nvim'
+Plug 'onsails/lspkind-nvim'
 Plug 'aymericbeaumet/vim-symlink'
 call plug#end()
 
 " }}}
-
 
 " color {{{
 syntax enable
@@ -182,6 +182,8 @@ nnoremap <Leader>f :let @+=expand("%")<CR>
 vnoremap <C-c> "+y
 " deletes visual selection and pastes without changing default register
 vnoremap p "_dP
+" go to first file on line
+nnoremap gf ^f/gf
 
 nnoremap <F7> :call SwitchSourceHeader()<CR>
 nnoremap <F6> :s/\\/\//g <CR>
@@ -201,8 +203,7 @@ autocmd FileType c,cpp,java set commentstring=//\ %s
 " }}}
 
 " indent-blankline {{{
-" let g:indent_blankline_filetype = ['python']
-let g:indentLine_fileType = ['python', 'json', 'bzl']
+let g:indent_blankline_filetype = ['python', 'json', 'bzl']
 " }}}
 
 " bufferline {{{
@@ -216,6 +217,10 @@ require'bufferline'.setup{
     }
 }
 EOF
+" }}}
+
+" nvim-colorizer {{{
+lua require'colorizer'.setup()
 " }}}
 
 " nerdtree {{{
@@ -424,6 +429,10 @@ set shortmess+=c
 lua << EOF
 require'lspsaga'.init_lsp_saga{}
 EOF
+" }}}
+
+" lspkind {{{
+lua require('lspkind').init()
 " }}}
 
 " keybindings {{{
