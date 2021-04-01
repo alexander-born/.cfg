@@ -1,6 +1,7 @@
 ###Custom
 alias vim="nvim"
 alias vi="nvim"
+setxkbmap -option caps:escape
 git config --global core.editor "nvim"
 git config --global alias.co checkout
 git config --global alias.br branch
@@ -33,7 +34,8 @@ convert_clipboard_to_unix_path() { xclip -o -sel clip | sed 's/\\/\//g' | sed 's
 gencompdb() { 
     cd ~/ddad/application/adp;
     # git cherry-pick origin/compile_commands;
-    ~/ddad/application/adp/tools/compile_commands/generate_compile_commands.sh ~/ddad/compile_commands.json --config=adp //application/adp/aas/... //application/adp/activities/... //application/adp/bmw/reprocessing/... //application/adp/bmw/simulation/... //application/adp/common/... //application/adp/communication/... //application/adp/configuration/... //application/adp/coordination/... //application/adp/customer_functions/... //application/adp/degradation/... //application/adp/diagnostic/... //application/adp/lifecycle/... //application/adp/map/... //application/adp/perception/... //application/adp/planning/... //application/adp/prediction/... //application/adp/ros/simulation/perception/lanes/... //application/adp/test/...;
+    # ~/ddad/application/adp/tools/compile_commands/generate_compile_commands.sh ~/ddad/compile_commands.json --config=adp //application/adp/aas/... //application/adp/activities/... //application/adp/bmw/reprocessing/... //application/adp/bmw/simulation/... //application/adp/common/... //application/adp/communication/... //application/adp/configuration/... //application/adp/coordination/... //application/adp/customer_functions/... //application/adp/degradation/... //application/adp/diagnostic/... //application/adp/lifecycle/... //application/adp/map/... //application/adp/perception/... //application/adp/planning/... //application/adp/prediction/... //application/adp/ros/simulation/perception/lanes/... //application/adp/test/...;
+    ~/ddad/application/adp/tools/compile_commands/generate_compile_commands.sh ~/ddad/compile_commands.json --config=adp //application/adp/... ;
     sed -i 's/-fno-canonical-system-headers//' ~/ddad/compile_commands.json
     # git reset --soft HEAD~1;
     cd -;
