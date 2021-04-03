@@ -204,6 +204,9 @@ nnoremap <C-K> <C-W><C-K>
 nnoremap <C-L> <C-W><C-L>
 nnoremap <C-H> <C-W><C-H>
 
+" esc in terminal leaves insert mode
+tnoremap <ESC> <C-\><C-n>
+
 " copy full file path to clipboard
 nnoremap <Leader>f :let @+=expand("%")<CR>
 
