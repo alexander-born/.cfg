@@ -209,6 +209,7 @@ tnoremap <ESC> <C-\><C-n>
 
 " copy full file path to clipboard
 nnoremap <Leader>f :let @+=expand("%")<CR>
+nnoremap gt :call FindUnitTest(split(getline('.'),  '\.')[-1])<CR>
 
 " copy visual selection to clipboard with ctrl-c
 vnoremap <C-c> "+y
