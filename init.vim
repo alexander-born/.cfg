@@ -31,6 +31,8 @@ Plug 'tpope/vim-fugitive'
 Plug 'lewis6991/gitsigns.nvim'
 " tmux jump windows
 Plug 'christoomey/vim-tmux-navigator'
+" python
+Plug 'alfredodeza/pytest.vim'
 " autoformat
 Plug 'google/vim-codefmt'
 Plug 'google/vim-glaive'
