@@ -45,6 +45,8 @@ Plug 'nvim-lua/popup.nvim'
 Plug 'nvim-lua/plenary.nvim'
 Plug 'nvim-telescope/telescope.nvim'
 Plug 'nvim-telescope/telescope-fzy-native.nvim'
+"treesitter
+Plug 'nvim-treesitter/nvim-treesitter', {'do': ':TSUpdate'}
 " lsp
 Plug 'neovim/nvim-lspconfig'
 Plug 'hrsh7th/nvim-compe'
@@ -424,6 +426,17 @@ nmap <leader>rc <Plug>VimspectorRunToCursor
 nmap <leader>bp <Plug>VimspectorToggleBreakpoint
 nmap <leader>dbp :call vimspector#ClearBreakpoints()<CR>
 nmap <leader>cbp <Plug>VimspectorToggleConditionalBreakpoint
+" }}}
+
+" treesitter {{{
+lua <<EOF
+require'nvim-treesitter.configs'.setup {
+  ensure_installed = "maintained", -- one of "all", "maintained" (parsers with maintainers), or a list of languages
+  highlight = {
+    enable = true,              -- false will disable the whole extension
+  },
+}
+EOF
 " }}}
 
 " nvim-lsp {{{
