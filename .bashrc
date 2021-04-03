@@ -41,6 +41,13 @@ gencompdb() {
     cd -;
 }
 
+# Install neovim nightly
+update_nvim() {
+    curl -L https://github.com/neovim/neovim/releases/download/nightly/nvim.appimage -o /tmp/nvim;
+    chmod +x /tmp/nvim;
+    sudo mv /tmp/nvim /usr/local/bin;
+}
+
 
 # bind F8 convert clipboard to unix directory
 bind '"\e[19~": "convert_clipboard_to_unix_path\n"'
