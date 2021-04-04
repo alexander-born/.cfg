@@ -462,6 +462,11 @@ hi link LspDiagnosticsUnderlineError Red
 hi link LspDiagnosticsUnderlineWarning Yellow
 " }}}
 
+" lspplugins {{{
+lua require('lspsaga').init_lsp_saga{}
+lua require('lspkind').init()
+" }}}
+
 " server configs {{{
 lua << EOF
 
@@ -518,16 +523,6 @@ let g:completion_matching_smart_case = 1
 " Avoid showing message extra message when using completion
 set shortmess+=c
 
-" }}}
-
-" lspsaga {{{
-lua << EOF
-require'lspsaga'.init_lsp_saga{}
-EOF
-" }}}
-
-" lspkind {{{
-lua require('lspkind').init()
 " }}}
 
 " keybindings {{{
