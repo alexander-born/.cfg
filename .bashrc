@@ -19,9 +19,7 @@ alias pinggoogle="tmux new-session -s pinggoogle \; \
 alias ide="tmux new-session -s shared \; \
   send-keys 'cd ~/ddad;nvim' C-m \; \
   new-window 'bash' \; \
-  send-keys 'cd ~/ddad' C-m \; \
-  split-window -h \; \
-  send-keys 'cd ~/ddad/application/adp' C-m \; "
+  send-keys 'cd ~/ddad' C-m \; "
 alias dlt_viewer="cd ~/Applications/dlt_viewer ; LD_LIBRARY_PATH=. ./dlt_viewer &"
 
 alias ddad="cd ~/ddad"
