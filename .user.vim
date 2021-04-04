@@ -1,8 +1,11 @@
-let g:gruvbox_material_background = 'soft'
-set background=dark
-colo gruvbox-material
+" let g:gruvbox_material_background = 'soft'
+" set background=dark
+" colo gruvbox-material
 
+" colo sonokai
+" colo edge
 " colo nord
+colo everforest
 
 " galaxyline {{{
 lua << EOF

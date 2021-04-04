@@ -20,6 +20,9 @@ Plug 'norcalli/nvim-colorizer.lua'
 " nerdtree
 Plug 'scrooloose/nerdtree'
 " colorschemes
+Plug 'sainnhe/everforest'
+Plug 'sainnhe/edge'
+Plug 'sainnhe/sonokai'
 Plug 'sainnhe/gruvbox-material'
 Plug 'ChristianChiarulli/nvcode-color-schemes.vim'
 " grep
@@ -55,6 +58,7 @@ Plug 'hrsh7th/nvim-compe'
 Plug 'glepnir/lspsaga.nvim'
 Plug 'onsails/lspkind-nvim'
 Plug 'aymericbeaumet/vim-symlink'
+Plug 'norcalli/snippets.nvim'
 call plug#end()
 
 " }}}
@@ -443,6 +447,10 @@ require'nvim-treesitter.configs'.setup {
   },
 }
 EOF
+" }}}
+
+" snippets {{{
+lua require'snippets'.use_suggested_mappings()
 " }}}
 
 " nvim-lsp {{{
