@@ -21,8 +21,6 @@ Plug 'norcalli/nvim-colorizer.lua'
 Plug 'scrooloose/nerdtree'
 " colorschemes
 Plug 'sainnhe/everforest'
-Plug 'sainnhe/edge'
-Plug 'sainnhe/sonokai'
 Plug 'sainnhe/gruvbox-material'
 Plug 'ChristianChiarulli/nvcode-color-schemes.vim'
 " grep
