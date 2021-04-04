@@ -15,8 +15,6 @@ local vcs = require 'galaxyline.provider_vcs'
 local lspclient = require 'galaxyline.provider_lsp'
 local condition = require 'galaxyline.condition'
 
-gl.short_line_list = {'vim-plug', 'tagbar', 'Mundo', 'MundoDiff', 'coc-explorer', 'startify'}
-
 local everforest_colors = {
   bg0 = '#3c474d',
   bg1 = '#3c474d',
@@ -315,18 +313,6 @@ gls.left[10] = {
 }
 
 gls.right[1] = {
-  CocStatus = {
-    provider = function ()
-      if not buffer_not_empty() or not wide_enough(110) then return '' end
-      if vim.fn.exists('*coc#rpc#start_server') == 1 then
-        return '  ' .. vim.fn['coc#status']() .. ' '
-      end
-      return ''
-    end,
-    highlight = {colors.fg4, colors.bg1},
-  }
-}
-gls.right[2] = {
   LspStatus = {
     provider = function()
       local connected = diagnostic_exists()
@@ -339,7 +325,7 @@ gls.right[2] = {
     highlight = {colors.fg4, colors.bg1},
   }
 }
-gls.right[3] = {
+gls.right[2] = {
   DiagnosticOk = {
     provider = function()
       if not diagnostic_exists() then return '' end
@@ -353,7 +339,7 @@ gls.right[3] = {
     highlight = {colors.bright_green, colors.bg1},
   }
 }
-gls.right[4] = {
+gls.right[3] = {
   DiagnosticError = {
     provider = function()
       return diag('Error')
@@ -361,7 +347,7 @@ gls.right[4] = {
     highlight = {colors.bright_red, colors.bg1},
   }
 }
-gls.right[5] = {
+gls.right[4] = {
   DiagnosticWarn = {
     provider = function()
       return diag('Warning')
@@ -369,7 +355,7 @@ gls.right[5] = {
     highlight = {colors.bright_yellow, colors.bg1},
   }
 }
-gls.right[6] = {
+gls.right[5] = {
   DiagnosticInfo = {
     provider = function()
       return diag('Information')
@@ -377,7 +363,7 @@ gls.right[6] = {
     highlight = {colors.bright_blue, colors.bg1},
   }
 }
-gls.right[7] = {
+gls.right[6] = {
   DiagnosticHint = {
     provider = function()
       return diag('Hint')
@@ -385,13 +371,13 @@ gls.right[7] = {
     highlight = {colors.bright_yellow, colors.bg1},
   }
 }
-gls.right[8] = {
+gls.right[7] = {
   RightSepNested = {
     provider = function() return sep.right_filled end,
     highlight = 'GalaxyViModeInvNested',
   }
 }
-gls.right[9] = {
+gls.right[8] = {
   FileFormat = {
     provider = function()
       if not buffer_not_empty() or not wide_enough(70) then return '' end
@@ -401,13 +387,13 @@ gls.right[9] = {
     highlight = 'GalaxyViModeNested',
   }
 }
-gls.right[10] = {
+gls.right[9] = {
   RightSep = {
     provider = function() return sep.right_filled end,
     highlight = 'GalaxyViModeInv',
   }
 }
-gls.right[11] = {
+gls.right[10] = {
   PositionInfo = {
     provider = function()
       if not buffer_not_empty() or not wide_enough(60) then return '' end
@@ -419,7 +405,7 @@ gls.right[11] = {
     highlight = 'GalaxyViMode',
   }
 }
-gls.right[12] = {
+gls.right[11] = {
   PercentInfo = {
     provider = function ()
       if not buffer_not_empty() or not wide_enough(65) then return '' end
@@ -429,58 +415,6 @@ gls.right[12] = {
     highlight = 'GalaxyViMode',
     separator = sep.right,
     separator_highlight = 'GalaxyViMode',
-  }
-}
-
-local short_map = {
-  ['vim-plug'] = 'Plugins',
-  ['coc-explorer'] = 'Explorer',
-  ['startify'] = 'Starfity',
-  ['tagbar'] = 'Tagbar',
-  ['Mundo'] = 'History',
-  ['MundoDiff'] = 'Diff',
-}
-
-function has_file_type()
-    local f_type = vim.bo.filetype
-    if not f_type or f_type == '' then
-        return false
-    end
-    return true
-end
-
-gls.short_line_left[1] = {
-  BufferType = {
-    provider = function ()
-      local label, fg, nested_fg = unpack(mode_hl())
-      highlight('GalaxyViMode', colors.bg1, fg)
-      highlight('GalaxyViModeInv', fg, nested_fg)
-      highlight('GalaxyViModeInvNested', nested_fg, colors.bg1)
-      local name = short_map[vim.bo.filetype] or 'Editor'
-      return string.format('  %s ', name)
-    end,
-    highlight = 'GalaxyViMode',
-    condition = has_file_type,
-    separator = sep.left_filled,
-    separator_highlight = 'GalaxyViModeInv',
-  }
-}
-gls.short_line_left[2] = {
-  ShortLeftSepNested = {
-    provider = function() return sep.left_filled end,
-    highlight = 'GalaxyViModeInvNested',
-  }
-}
-gls.short_line_right[1] = {
-  ShortRightSepNested = {
-    provider = function() return sep.right_filled end,
-    highlight = 'GalaxyViModeInvNested',
-  }
-}
-gls.short_line_right[2] = {
-  ShortRightSep = {
-    provider = function() return sep.right_filled end,
-    highlight = 'GalaxyViModeInv',
   }
 }
 EOF
