@@ -1,6 +1,8 @@
-let g:gruvbox_material_background = 'soft'
-set background=dark
-colo gruvbox-material
+" let g:gruvbox_material_background = 'soft'
+" set background=dark
+" colo gruvbox-material
+
+colo nord
 
 " galaxyline {{{
 lua << EOF
@@ -13,42 +15,79 @@ local condition = require 'galaxyline.condition'
 
 gl.short_line_list = {'vim-plug', 'tagbar', 'Mundo', 'MundoDiff', 'coc-explorer', 'startify'}
 
--- Gruvbox
+-- Nord
 local colors = {
-  bg0_h = '#1d2021',
-  bg0 = '#282828',
-  bg1 = '#3c3836',
-  bg2 = '#504945',
-  bg3 = '#665c54',
-  bg4 = '#7c6f64',
-  gray = '#928374',
-  fg0 = '#fbf1c7',
-  fg1 = '#ebdbb2',
-  fg2 = '#d5c4a1',
-  fg3 = '#bdae93',
-  fg4 = '#a89984',
-  bright_red = '#fb4934',
-  bright_green = '#b8bb26',
-  bright_yellow = '#fabd2f',
-  bright_blue = '#83a598',
-  bright_purple = '#d3869b',
-  bright_aqua = '#8ec07c',
-  bright_orange = '#fe8019',
-  neutral_red = '#cc241d',
-  neutral_green = '#98971a',
-  neutral_yellow = '#d79921',
-  neutral_blue = '#458588',
-  neutral_purple = '#b16286',
-  neutral_aqua = '#689d6a',
-  neutral_orange = '#d65d0e',
-  faded_red = '#9d0006',
-  faded_green = '#79740e',
-  faded_yellow = '#b57614',
-  faded_blue = '#076678',
-  faded_purple = '#8f3f71',
-  faded_aqua = '#427b58',
-  faded_orange = '#af3a03',
+  bg0_h = '#2E3440',
+  bg0 = '#2E3440',
+  bg1 = '#3B4252',
+  bg2 = '#434C5E',
+  bg3 = '#4C566A',
+  bg4 = '#616E88',
+  gray = '#5C6370',
+  fg0 = '#D8DEE9',
+  fg1 = '#E5E9F0',
+  fg2 = '#ECEFF4',
+  fg3 = '#ECEFF4',
+  fg4 = '#ECEFF4',
+  bright_red = '#BF616A',
+  bright_green = '#A3BE8C',
+  bright_yellow = '#EBCB8B',
+  bright_blue = '#5E81AC',
+  bright_purple = '#B48EAD',
+  bright_aqua = '#81A1C1',
+  bright_orange = '#D08770',
+  neutral_red = '#BF616A',
+  neutral_green = '#A3BE8C',
+  neutral_yellow = '#EBCB8B',
+  neutral_blue = '#5E81AC',
+  neutral_purple = '#B48EAD',
+  neutral_aqua = '#81A1C1',
+  neutral_orange = '#D08770',
+  faded_red = '#BF616A',
+  faded_green = '#A3BE8C',
+  faded_yellow = '#EBCB8B',
+  faded_blue = '#5E81AC',
+  faded_purple = '#B48EAD',
+  faded_aqua = '#81A1C1',
+  faded_orange = '#D08770',
 }
+
+-- Gruvbox
+-- local colors = {
+--   bg0_h = '#1d2021',
+--   bg0 = '#282828',
+--   bg1 = '#3c3836',
+--   bg2 = '#504945',
+--   bg3 = '#665c54',
+--   bg4 = '#7c6f64',
+--   gray = '#928374',
+--   fg0 = '#fbf1c7',
+--   fg1 = '#ebdbb2',
+--   fg2 = '#d5c4a1',
+--   fg3 = '#bdae93',
+--   fg4 = '#a89984',
+--   bright_red = '#fb4934',
+--   bright_green = '#b8bb26',
+--   bright_yellow = '#fabd2f',
+--   bright_blue = '#83a598',
+--   bright_purple = '#d3869b',
+--   bright_aqua = '#8ec07c',
+--   bright_orange = '#fe8019',
+--   neutral_red = '#cc241d',
+--   neutral_green = '#98971a',
+--   neutral_yellow = '#d79921',
+--   neutral_blue = '#458588',
+--   neutral_purple = '#b16286',
+--   neutral_aqua = '#689d6a',
+--   neutral_orange = '#d65d0e',
+--   faded_red = '#9d0006',
+--   faded_green = '#79740e',
+--   faded_yellow = '#b57614',
+--   faded_blue = '#076678',
+--   faded_purple = '#8f3f71',
+--   faded_aqua = '#427b58',
+--   faded_orange = '#af3a03',
+-- }
 
 local mode_map = {
   ['n'] = {'NORMAL', colors.fg3, colors.bg2},

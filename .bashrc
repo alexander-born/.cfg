@@ -1,6 +1,7 @@
 ###Custom
 alias vim="nvim"
 alias vi="nvim"
+alias tmux='tmux -2'
 setxkbmap -option caps:escape
 git config --global core.editor "nvim"
 git config --global alias.co checkout
