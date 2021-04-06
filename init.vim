@@ -40,6 +40,7 @@ Plug 'google/vim-glaive'
 Plug 'google/vim-maktaba'
 " bazel
 Plug 'bazelbuild/vim-bazel'
+Plug 'alexander-born/bazel-vim'
 " debugging
 Plug 'szw/vim-maximizer'
 Plug 'puremourning/vimspector'
@@ -279,10 +280,6 @@ require'nvim-web-devicons'.setup {
  default = true;
 }
 EOF
-" }}}
-
-" bazel-lsp Tim Rakowski {{{
-source ~/buildtools/bazel_vim/bazel.vim
 " }}}
 
 " ack.vim {{{
