@@ -137,25 +137,6 @@ function! FindUnitTest(test_name)
     exe "Ack! -G '\.cpp' " . a:test_name . " application/adp"
 endfunction
 
-function! BazelGetCurrentBufTarget()
-    let bazel_file_label=system("bazel query " . bufname("%") . " --color no --curses no --noshow_progress | tr -d '[:space:]'")
-    let bazel_file_package=split(bazel_file_label, ":")[0]
-    let g:current_bazel_target=system("bazel query \"attr('srcs', " . bazel_file_label . ", " . bazel_file_package . ":*)\" --color no --curses no --noshow_progress | tr -d '[:space:]'")
-    if (len(g:current_bazel_target) == 0)
-        let g:current_bazel_target=system("bazel query \"attr('hdrs', " . bazel_file_label . ", " . bazel_file_package . ":*)\" --color no --curses no --noshow_progress | tr -d '[:space:]'")
-    endif
-endfunction
-
-function! RunBazel()
-    :execute 'Bazel ' . g:bazel_command . ' ' . g:current_bazel_target
-endfunction
-
-function! RunBazelHere(command)
-    :let g:bazel_command = a:command
-    :call BazelGetCurrentBufTarget()
-    :call RunBazel()
-endfunction
-
 function! AdaptFilePath(filepath, pattern, replacement)
     let index = strridx(a:filepath, a:pattern) 
     if (index != -1)
