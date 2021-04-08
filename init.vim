@@ -143,7 +143,7 @@ function! AdaptVimspectorJson()
     exe '%s/"program": ".*",/"program": "' . g:executable .  '",/g'
     exe '%s/"args": \[.*\],/"args": \["--gtest_filter=' . test_filter . '"\],/g'
     w
-    bw
+    e#
 endfunction
 
 function! DebugThisTest()
