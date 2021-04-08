@@ -113,6 +113,44 @@ exe "colorscheme " . g:color_scheme
 " }}}
 
 " custom function {{{
+lua << EOF
+function _G.get_g_test_name()
+    local ts_utils = require'nvim-treesitter.ts_utils'
+    local node = ts_utils.get_node_at_cursor(0)
+    local test_node = nil
+    while node ~= nil do
+        if node:type() == 'function_definition' then test_node = node end
+        node = node:parent()
+    end
+    if test_node == nil then return end
+    local parameter_list = test_node:named_child(0):named_child(1)
+    local test_suite = parameter_list:named_child(0)
+    local test_name = parameter_list:named_child(1)
+    return ts_utils.get_node_text(test_suite)[1] .. '.' .. ts_utils.get_node_text(test_name)[1]
+end
+EOF
+function! GetExecutableFromBazelTarget()
+    let l:executable = substitute(g:current_bazel_target, ':', '/', '')
+    let l:executable = substitute(l:executable, '//', 'bazel-bin/', '')
+    return substitute(l:executable, '/', '\\/', 'g')
+endfunction
+
+function! AdaptVimspectorJson()
+    let l:test_filter = luaeval("get_g_test_name()")
+    call BazelGetCurrentBufTarget()
+    let g:executable = GetExecutableFromBazelTarget()
+    e .vimspector.json
+    exe '%s/"program": ".*",/"program": "' . g:executable .  '",/g'
+    exe '%s/"args": \[.*\],/"args": \["--gtest_filter=' . test_filter . '"\],/g'
+    w
+    bw
+endfunction
+
+function! DebugThisTest()
+    call AdaptVimspectorJson()
+    call RunBazelHere("test --config=adp -c dbg")
+endfunction
+
 function! OpenErrorInQuickfix()
     cexpr []
     caddexpr getline(0,'$')
@@ -211,7 +249,7 @@ nnoremap <F7> :call SwitchSourceHeader()<CR>
 nnoremap <F6> :s/\\/\//g <CR>
 
 nnoremap <Leader>bt  :call RunBazelHere("test --config=adp")<CR>
-nnoremap <Leader>bdt :call RunBazelHere("test --config=adp -c dbg")<CR>
+nnoremap <Leader>bdt :call DebugThisTest()<CR>
 nnoremap <Leader>bb  :call RunBazelHere("build --config=adp")<CR>
 nnoremap <Leader>bdb :call RunBazelHere("build --config=adp -c dbg")<CR>
 nnoremap <Leader>bl  :call RunBazel()<CR>
