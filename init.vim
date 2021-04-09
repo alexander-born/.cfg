@@ -104,7 +104,7 @@ autocmd FileType vim setlocal foldmethod=marker
 " }}}
 
 " specific user config {{{
-if filereadable("~/.user.vim")
+if filereadable(expand("~/.user.vim"))
     source ~/.user.vim
 endif
 " }}}
