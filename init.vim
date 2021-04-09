@@ -63,6 +63,8 @@ call plug#end()
 " }}}
 
 " general {{{
+let g:color_scheme = 'everforest' " gruvbox-material, nord, everforest
+
 let mapleader = "\<Space>"
 set hidden
 set number
@@ -101,7 +103,11 @@ autocmd FileType vim setlocal foldmethod=marker
 
 " }}}
 
-source ~/.user.vim
+" specific user config {{{
+if filereadable("~/.user.vim")
+    source ~/.user.vim
+endif
+" }}}
 
 " color {{{
 syntax enable
@@ -148,7 +154,7 @@ endfunction
 
 function! DebugThisTest()
     call AdaptVimspectorJson()
-    call RunBazelHere("test --config=adp -c dbg")
+    call RunBazelHere("build --config=adp -c dbg")
 endfunction
 
 function! OpenErrorInQuickfix()
