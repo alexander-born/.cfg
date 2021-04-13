@@ -261,7 +261,7 @@ nnoremap <Leader>bb  :call RunBazelHere("build --config=adp")<CR>
 nnoremap <Leader>bdb :call RunBazelHere("build --config=adp -c dbg")<CR>
 nnoremap <Leader>bl  :call RunBazel()<CR>
 nnoremap <Leader>gl  :G log -n 1000<CR>
-nnoremap <Leader>gs  :G<CR>
+nnoremap <Leader>gs  :G<CR>:MaximizerToggle<CR>
 
 " }}}
 
