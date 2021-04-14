@@ -989,22 +989,27 @@ set shortmess+=c
 " }}}
 
 " keybindings {{{
-nnoremap <silent> gh :Lspsaga lsp_finder<CR>
-nnoremap <silent> <leader>ca :Lspsaga code_action<CR>
-vnoremap <silent> <leader>ca :<C-U>Lspsaga range_code_action<CR>
-nnoremap <silent> K :Lspsaga hover_doc<CR>
-nnoremap <silent> <C-f> <cmd>lua require('lspsaga.action').smart_scroll_with_saga(1)<CR>
-nnoremap <silent> <C-b> <cmd>lua require('lspsaga.action').smart_scroll_with_saga(-1)<CR>
-nnoremap <silent> gs :Lspsaga signature_help<CR>
-nnoremap <silent> <leader>rn :Lspsaga rename<CR>
-nnoremap <silent> <leader>gd :Lspsaga preview_definition<CR>
-nnoremap <silent> <leader>sd :Lspsaga show_line_diagnostics<CR>
-nnoremap <silent> [d :Lspsaga diagnostic_jump_next<CR>
-nnoremap <silent> ]d :Lspsaga diagnostic_jump_prev<CR>
+" nnoremap <silent> gh :Lspsaga lsp_finder<CR>
+" nnoremap <silent> <leader>ca :Lspsaga code_action<CR>
+" vnoremap <silent> <leader>ca :<C-U>Lspsaga range_code_action<CR>
+" nnoremap <silent> K :Lspsaga hover_doc<CR>
+" nnoremap <silent> <C-f> <cmd>lua require('lspsaga.action').smart_scroll_with_saga(1)<CR>
+" nnoremap <silent> <C-b> <cmd>lua require('lspsaga.action').smart_scroll_with_saga(-1)<CR>
+" nnoremap <silent> gs :Lspsaga signature_help<CR>
+" nnoremap <silent> <leader>rn :Lspsaga rename<CR>
+" nnoremap <silent> <leader>gd :Lspsaga preview_definition<CR>
+" nnoremap <silent> <leader>sd :Lspsaga show_line_diagnostics<CR>
+" nnoremap <silent> [d :Lspsaga diagnostic_jump_next<CR>
+" nnoremap <silent> ]d :Lspsaga diagnostic_jump_prev<CR>
+
+nnoremap <leader>rn :lua vim.lsp.buf.rename()<CR>
+nnoremap <leader>ca :lua vim.lsp.buf.code_action()<CR>
+nnoremap <leader>[d :lua vim.lsp.diagnostic.goto_prev()<CR>
+nnoremap <leader>]d :lua vim.lsp.diagnostic.goto_next()<CR>
 
 nnoremap gd :lua vim.lsp.buf.definition()<CR>
 nnoremap gi :lua vim.lsp.buf.implementation()<CR>
-nnoremap gr :lua vim.lsp.buf.references()<CR>
+" nnoremap gr :lua vim.lsp.buf.references()<CR>
 nnoremap <leader>q :lua vim.lsp.diagnostic.set_loclist()<CR>
 " }}}
 
