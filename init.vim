@@ -30,6 +30,7 @@ Plug 'vimwiki/vimwiki'
 " git
 Plug 'tpope/vim-fugitive'
 Plug 'lewis6991/gitsigns.nvim'
+Plug 'rhysd/conflict-marker.vim'
 " tmux jump windows
 Plug 'christoomey/vim-tmux-navigator'
 " python
@@ -801,6 +802,19 @@ set signcolumn=auto:2
 lua << EOF
 require('gitsigns').setup()
 EOF
+
+" disable the default highlight group
+let g:conflict_marker_highlight_group = ''
+
+" Include text after begin and end markers
+let g:conflict_marker_begin = '^<<<<<<< .*$'
+let g:conflict_marker_end   = '^>>>>>>> .*$'
+
+highlight ConflictMarkerBegin guibg=#2f7366
+highlight ConflictMarkerOurs guibg=#2e5049
+highlight ConflictMarkerTheirs guibg=#344f69
+highlight ConflictMarkerEnd guibg=#2f628e
+highlight ConflictMarkerCommonAncestorsHunk guibg=#754a81
 " }}}
 
 " vim-bazel {{{
