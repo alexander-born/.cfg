@@ -526,17 +526,17 @@ gls.left[6] = {
     highlight = {colors.bright_red, colors.bg1},
   }
 }
--- gls.left[7] = {
---   GitBranch = {
---     provider = function ()
---       if in_vcs() and wide_enough(85) then
---         return vcs.get_git_branch()
---       end
---       return ''
---     end,
---     highlight = {colors.fg2, colors.bg1},
---   }
--- }
+gls.left[7] = {
+  GitBranch = {
+    provider = function ()
+      if in_vcs() and wide_enough(85) then
+          return vim.fn.FugitiveHead()
+      end
+      return ''
+    end,
+    highlight = {colors.fg2, colors.bg1},
+  }
+}
 gls.left[8] = {
   DiffAdd = {
     provider = function ()
