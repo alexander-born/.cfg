@@ -973,6 +973,12 @@ lspconfig.clangd.setup{
 lspconfig.pyright.setup{
     on_attach = on_attach;
 }
+lspconfig.vimls.setup{
+    on_attach = on_attach;
+    init_options = {
+      runtimepath = vim.fn.expand("~/.vim/") .. "," .. vim.fn.expand("~/.config/nvim/"),
+    }
+}
 
 require'compe'.setup {
   enabled = true;
