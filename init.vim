@@ -796,7 +796,7 @@ autocmd BufNewFile,BufRead,BufEnter,BufFilePre *
           \ call s:update_oldfiles(expand('<afile>:p'))
 " }}}
 
-" git signs {{{
+" git {{{
 " faster update (default 4000)
 set updatetime=100
 set signcolumn=auto:2
@@ -818,7 +818,7 @@ highlight ConflictMarkerEnd guibg=#2f628e
 highlight ConflictMarkerCommonAncestorsHunk guibg=#754a81
 " }}}
 
-" vim-bazel {{{
+" bazel {{{
 set errorformat=ERROR:\ %f:%l:%c:%m    
 set errorformat+=%f:%l:%c:%m    
 set errorformat+=[\ \ FAILED\ \ ]\ %m\ (%.%#

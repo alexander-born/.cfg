@@ -48,7 +48,7 @@ update_nvim() {
 }
 
 # add ddad to python path
-export PYTHONPATH=$PYTHONPATH:~/ddad
+export PYTHONPATH=$PYTHONPATH:~/ddad:~/.local/bin
 
 # bind F8 convert clipboard to unix directory
 bind '"\e[19~": "convert_clipboard_to_unix_path\n"'
