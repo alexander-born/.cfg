@@ -57,7 +57,6 @@ Plug 'nvim-treesitter/playground'
 " lsp
 Plug 'neovim/nvim-lspconfig'
 Plug 'hrsh7th/nvim-compe'
-Plug 'glepnir/lspsaga.nvim'
 Plug 'onsails/lspkind-nvim'
 Plug 'aymericbeaumet/vim-symlink'
 Plug 'norcalli/snippets.nvim'
@@ -955,7 +954,6 @@ hi link LspDiagnosticsUnderlineWarning Yellow
 " }}}
 
 " lspplugins {{{
-lua require('lspsaga').init_lsp_saga{}
 lua require('lspkind').init()
 " }}}
 
@@ -1013,6 +1011,8 @@ inoremap <silent><expr> <C-e>     compe#close('<C-e>')
 inoremap <silent><expr> <C-f>     compe#scroll({ 'delta': +4 })
 inoremap <silent><expr> <C-b>     compe#scroll({ 'delta': -4 })
 
+autocmd CursorHoldI * silent! lua vim.lsp.buf.signature_help()
+
 " Set completeopt to have a better completion experience
 set completeopt=menuone,noinsert,noselect
 let g:completion_matching_strategy_list = ['exact', 'substring', 'fuzzy']
@@ -1024,18 +1024,6 @@ set shortmess+=c
 " }}}
 
 " keybindings {{{
-" nnoremap <silent> gh :Lspsaga lsp_finder<CR>
-" nnoremap <silent> <leader>ca :Lspsaga code_action<CR>
-" vnoremap <silent> <leader>ca :<C-U>Lspsaga range_code_action<CR>
-" nnoremap <silent> K :Lspsaga hover_doc<CR>
-" nnoremap <silent> <C-f> <cmd>lua require('lspsaga.action').smart_scroll_with_saga(1)<CR>
-" nnoremap <silent> <C-b> <cmd>lua require('lspsaga.action').smart_scroll_with_saga(-1)<CR>
-" nnoremap <silent> gs :Lspsaga signature_help<CR>
-" nnoremap <silent> <leader>rn :Lspsaga rename<CR>
-" nnoremap <silent> <leader>gd :Lspsaga preview_definition<CR>
-" nnoremap <silent> <leader>sd :Lspsaga show_line_diagnostics<CR>
-" nnoremap <silent> [d :Lspsaga diagnostic_jump_next<CR>
-" nnoremap <silent> ]d :Lspsaga diagnostic_jump_prev<CR>
 
 nnoremap <leader>rn :lua vim.lsp.buf.rename()<CR>
 nnoremap <leader>ca :lua vim.lsp.buf.code_action()<CR>
@@ -1044,7 +1032,7 @@ nnoremap <leader>]d :lua vim.lsp.diagnostic.goto_next()<CR>
 
 nnoremap gd :lua vim.lsp.buf.definition()<CR>
 nnoremap gi :lua vim.lsp.buf.implementation()<CR>
-" nnoremap gr :lua vim.lsp.buf.references()<CR>
+nnoremap <leader>r :lua vim.lsp.buf.references()<CR>
 nnoremap <leader>q :lua vim.lsp.diagnostic.set_loclist()<CR>
 " }}}
 
