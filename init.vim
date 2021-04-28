@@ -257,9 +257,9 @@ nnoremap <Leader>e  :call OpenErrorInQuickfix()<CR>
 nnoremap <F7> :call SwitchSourceHeader()<CR>
 nnoremap <F6> :s/\\/\//g <CR>
 
-nnoremap <Leader>bt  :call RunBazelHere("test --config=adp")<CR>
+nnoremap <Leader>bt  :call RunBazelHere("test --config=adp -c opt")<CR>
 nnoremap <Leader>bdt :call DebugThisTest()<CR>
-nnoremap <Leader>bb  :call RunBazelHere("build --config=adp")<CR>
+nnoremap <Leader>bb  :call RunBazelHere("build --config=adp -c opt")<CR>
 nnoremap <Leader>bdb :call RunBazelHere("build --config=adp -c dbg")<CR>
 nnoremap <Leader>bl  :call RunBazel()<CR>
 nnoremap <Leader>gl  :G log -n 1000<CR>
