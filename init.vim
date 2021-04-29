@@ -57,6 +57,7 @@ Plug 'nvim-treesitter/playground'
 " lsp
 Plug 'neovim/nvim-lspconfig'
 Plug 'hrsh7th/nvim-compe'
+Plug 'ray-x/lsp_signature.nvim'
 Plug 'onsails/lspkind-nvim'
 Plug 'aymericbeaumet/vim-symlink'
 Plug 'norcalli/snippets.nvim'
@@ -961,18 +962,14 @@ lua require('lspkind').init()
 lua << EOF
 
 local lspconfig = require'lspconfig'
-local on_attach = require'compe'.on_attach
 
 lspconfig.clangd.setup{
-    on_attach = on_attach;
     root_dir = lspconfig.util.root_pattern("compile_commands.json", "compile_flags.txt") or dirname
 }
 
 lspconfig.pyright.setup{
-    on_attach = on_attach;
 }
 lspconfig.vimls.setup{
-    on_attach = on_attach;
     init_options = {
       runtimepath = vim.fn.expand("~/.vim/") .. "," .. vim.fn.expand("~/.config/nvim/"),
     }
@@ -998,6 +995,8 @@ require'compe'.setup {
     nvim_lsp = true;
   };
 }
+
+require'lsp_signature'.on_attach()
 
 EOF
 
