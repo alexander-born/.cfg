@@ -962,17 +962,23 @@ lua require('lspkind').init()
 lua << EOF
 
 local lspconfig = require'lspconfig'
+local on_attach = function(client, bufnr)
+  require "lsp_signature".on_attach()  -- Note: add in lsp client on-attach
+end
 
 lspconfig.clangd.setup{
-    root_dir = lspconfig.util.root_pattern("compile_commands.json", "compile_flags.txt") or dirname
+    on_attach = on_attach,
+    root_dir = lspconfig.util.root_pattern("compile_commands.json", "compile_flags.txt") or dirname,
 }
 
 lspconfig.pyright.setup{
+    on_attach = on_attach,
 }
 lspconfig.vimls.setup{
+    on_attach = on_attach,
     init_options = {
       runtimepath = vim.fn.expand("~/.vim/") .. "," .. vim.fn.expand("~/.config/nvim/"),
-    }
+    },
 }
 
 require'compe'.setup {
@@ -996,7 +1002,6 @@ require'compe'.setup {
   };
 }
 
-require'lsp_signature'.on_attach()
 
 EOF
 
@@ -1009,8 +1014,6 @@ inoremap <silent><expr> <CR>      compe#confirm('<CR>')
 inoremap <silent><expr> <C-e>     compe#close('<C-e>')
 inoremap <silent><expr> <C-f>     compe#scroll({ 'delta': +4 })
 inoremap <silent><expr> <C-b>     compe#scroll({ 'delta': -4 })
-
-autocmd CursorHoldI * silent! lua vim.lsp.buf.signature_help()
 
 " Set completeopt to have a better completion experience
 set completeopt=menuone,noinsert,noselect
