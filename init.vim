@@ -762,11 +762,13 @@ let g:mkdp_browser = 'firefox'
 " telescope {{{
 nnoremap <leader>ff :lua require('telescope.builtin').find_files({previewer = false})<CR>
 nnoremap <leader>fo :lua require('telescope.builtin').oldfiles({previewer = false})<CR>
+nnoremap <leader>fb :lua require('telescope.builtin').current_buffer_fuzzy_find()<CR>
+nnoremap <leader>fh :lua require('telescope.builtin').command_history()<CR>
 nnoremap <leader>gb :lua require('telescope.builtin').git_branches({cwd = vim.fn.expand("%:p:h")})<CR>
 nnoremap <leader>gc :lua require('telescope.builtin').git_commits({cwd = vim.fn.expand("%:p:h")})<CR>
 nnoremap <leader>fg <cmd>Telescope live_grep<cr>
-nnoremap <leader>fb <cmd>Telescope buffers<cr>
-nnoremap <leader>fh <cmd>Telescope help_tags<cr>
+nnoremap <leader>bu <cmd>Telescope buffers<cr>
+nnoremap <leader>ht <cmd>Telescope help_tags<cr>
 
 lua << EOF
 require('telescope').setup {
