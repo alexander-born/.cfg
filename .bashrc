@@ -67,8 +67,8 @@ bind '"\e[1;5D":backward-word'
 shopt -s histappend
 
 # for setting history length see HISTSIZE and HISTFILESIZE in bash(1)
-HISTSIZE=10000
-HISTFILESIZE=20000
+HISTSIZE=100000
+HISTFILESIZE=200000
 #export PROMPT_COMMAND="history -a; history -c; history -r; $PROMPT_COMMAND"
 export PROMPT_COMMAND="history -a; history -n"
 
