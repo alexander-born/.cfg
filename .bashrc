@@ -47,6 +47,13 @@ update_nvim() {
     sudo mv /tmp/nvim /usr/local/bin;
 }
 
+export GIT_PS1_SHOWDIRTYSTATE='y'
+export GIT_PS1_SHOWSTASHSTATE='y'
+export GIT_PS1_SHOWUNTRACKEDFILES='y'
+export GIT_PS1_DESCRIBE_STYLE='contains'
+export GIT_PS1_SHOWUPSTREAM='auto'
+export PS1='\[\033[32m\]\u@\h\[\033[00m\]:\[\033[34m\]\w\[\033[31m\]$(__git_ps1)\[\033[00m\]\$ '
+
 # add ddad to python path
 export PYTHONPATH=$PYTHONPATH:~/ddad:~/.local/bin
 
