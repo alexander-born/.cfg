@@ -66,3 +66,4 @@ HISTFILESIZE=20000
 export PROMPT_COMMAND="history -a; history -n"
 
  . ~/Applications/z/z.sh
+ . /usr/share/doc/fzf/examples/key-bindings.bash
