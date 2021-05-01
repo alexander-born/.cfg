@@ -103,6 +103,10 @@ set matchpairs+=<:>
 set wildmenu
 set wildmode=list:longest,full
 autocmd FileType vim setlocal foldmethod=marker
+augroup highlight_yank
+    autocmd!
+    au TextYankPost * silent! lua vim.highlight.on_yank{higroup="IncSearch", timeout=300}
+augroup END
 
 " }}}
 
