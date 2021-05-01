@@ -764,11 +764,13 @@ nnoremap <leader>ff :lua require('telescope.builtin').find_files({previewer = fa
 nnoremap <leader>fo :lua require('telescope.builtin').oldfiles({previewer = false})<CR>
 nnoremap <leader>fb :lua require('telescope.builtin').current_buffer_fuzzy_find()<CR>
 nnoremap <leader>fh :lua require('telescope.builtin').command_history()<CR>
+nnoremap <leader>fr :lua require('telescope.builtin').registers()<CR>
 nnoremap <leader>gb :lua require('telescope.builtin').git_branches({cwd = vim.fn.expand("%:p:h")})<CR>
 nnoremap <leader>gc :lua require('telescope.builtin').git_commits({cwd = vim.fn.expand("%:p:h")})<CR>
-nnoremap <leader>fg <cmd>Telescope live_grep<cr>
-nnoremap <leader>bu <cmd>Telescope buffers<cr>
-nnoremap <leader>ht <cmd>Telescope help_tags<cr>
+nnoremap <leader>fg :lua require('telescope.builtin').live_grep()<CR>
+nnoremap <leader>g. :lua require('telescope.builtin').live_grep({search_dirs = {vim.fn.expand("~/.cfg")}})<CR>
+nnoremap <leader>bu :lua require('telescope.builtin').buffers()<CR>
+nnoremap <leader>ht :lua require('telescope.builtin').help_tags()<CR>
 
 lua << EOF
 require('telescope').setup {
