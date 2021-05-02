@@ -63,6 +63,9 @@ bind '"\e[19~": "convert_clipboard_to_unix_path\n"'
 bind '"\e[1;5C":forward-word'
 bind '"\e[1;5D":backward-word'
 
+bind '"\C-n":menu-complete'
+bind '"\C-p":menu-complete-backward'
+
 # append to the history file, don't overwrite it
 shopt -s histappend
 
