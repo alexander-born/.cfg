@@ -777,7 +777,7 @@ nnoremap <leader>ht :lua require('telescope.builtin').help_tags()<CR>
 
 nnoremap <leader>g. :lua require('telescope.builtin').live_grep({cwd = "$HOME/.cfg", vimgrep_arguments = { 'rg', '--color=never', '--no-heading', '--with-filename', '--line-number', '--column', '--smart-case', '--hidden' }, file_ignore_patterns = {".git"}})<CR>
 nnoremap <leader>gw :lua require('telescope.builtin').live_grep({cwd = "$HOME/projects/vimwiki"})<CR>
-nnoremap <leader>gn :lua require('telescope.builtin').live_grep({search_dirs = {vim.fn.expand("~/.config/nvim")}})<CR>
+nnoremap <leader>gn :lua require('telescope.builtin').live_grep({cwd = "$HOME/.config/nvim"})<CR>
 nnoremap <leader>f. :lua require('telescope.builtin').find_files({prompt_title = ".cfg", cwd = "$HOME/.cfg", hidden = true, file_ignore_patterns = {".git"}})<CR>
 nnoremap <leader>fn :lua require('telescope.builtin').find_files({prompt_title = ".config/nvim", cwd = "$HOME/.config/nvim"})<CR>
 
