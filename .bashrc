@@ -35,7 +35,7 @@ gencompdb() {
     sed -i 's/-fno-canonical-system-headers//' ~/ddad/compile_commands.json
 }
 
-# Install neovim nightly
+# Install/update neovim nightly
 update_nvim() {
     curl -L https://github.com/neovim/neovim/releases/download/nightly/nvim.appimage -o /tmp/nvim;
     chmod +x /tmp/nvim;

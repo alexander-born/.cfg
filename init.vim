@@ -154,7 +154,11 @@ function! AdaptVimspectorJson()
     let g:executable = GetExecutableFromBazelTarget()
     e .vimspector.json
     exe '%s/"program": ".*",/"program": "' . g:executable .  '",/g'
-    exe '%s/"args": \[.*\],/"args": \["--gtest_filter=' . test_filter . '"\],/g'
+    if (test_filter == "null")
+        exe '%s/"args": \[.*\],/"args": \[\],/g'
+    else
+        exe '%s/"args": \[.*\],/"args": \["--gtest_filter=' . test_filter . '"\],/g'
+    endif
     w
     e#
 endfunction
