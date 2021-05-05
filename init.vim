@@ -78,7 +78,6 @@ set nowrap
 set splitright
 set splitbelow
 set ttimeoutlen=5
-set viminfo='100,<50,s10,h,
 set history=10000
 set sidescroll=1
 
