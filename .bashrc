@@ -42,6 +42,14 @@ update_nvim() {
     sudo mv /tmp/nvim /usr/local/bin;
 }
 
+find_in_advantage() {
+    local vin=$(echo "$1" | sed -E "s/[0-9]+T[0-9]+_[0-9]+T[0-9]+_[0-9]+_([A-Z0-9]+)_.*.MF4/\1/g")
+    local yy=$(echo "$1" | sed -E "s/^([0-9]{4}).*/\1/g")
+    local mm=$(echo "$1" | sed -E "s/^[0-9]{4}([0-9]{2}).*/\1/g")
+    local dd=$(echo "$1" | sed -E "s/^[0-9]{6}([0-9]{2}).*/\1/g")
+    ssh advantagedp "ls /maprposix/dp.prod.munich/ad-vantage/data/store/collected/car-data/MDF4/ingest/$vin/$yy/$mm/$dd/*/*/BN_EV_FASETH_UC/*/*" | grep "$1"
+}
+
 export GIT_PS1_SHOWDIRTYSTATE='y'
 export GIT_PS1_SHOWSTASHSTATE='y'
 export GIT_PS1_SHOWUNTRACKEDFILES='y'
