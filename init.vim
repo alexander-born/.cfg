@@ -238,7 +238,7 @@ endfunction
 command! -range=% HtmlClip silent call CopyFormatted(<line1>,<line2>)
 " }}}
 
-" keybindings {{{
+" general keybindings {{{
 
 " easy navigation between window splits and tmux panes
 nnoremap <C-J> <C-W><C-J>
@@ -251,7 +251,6 @@ tnoremap <ESC> <C-\><C-n>
 
 " copy full file path to clipboard
 nnoremap <Leader>f :let @+=expand("%")<CR>
-nnoremap gt :call FindUnitTest(split(getline('.'),  '\.')[-1])<CR>
 
 " copy visual selection to clipboard with ctrl-c
 vnoremap <C-c> "+y
@@ -259,18 +258,13 @@ vnoremap <C-c> "+y
 vnoremap p "_dP
 " go to first file on line
 nnoremap gf ^f/gf
+
+" parse errors from terminal and put them in quickfix list
 nnoremap <Leader>e  :call OpenErrorInQuickfix()<CR>
 
+" switch between cpp and header file
 nnoremap <F7> :call SwitchSourceHeader()<CR>
-nnoremap <F6> :s/\\/\//g <CR>
 
-nnoremap <Leader>bt  :call RunBazelHere("test --config=adp -c opt")<CR>
-nnoremap <Leader>bdt :call DebugThisTest()<CR>
-nnoremap <Leader>bb  :call RunBazelHere("build --config=adp -c opt")<CR>
-nnoremap <Leader>bdb :call RunBazelHere("build --config=adp -c dbg")<CR>
-nnoremap <Leader>bl  :call RunBazel()<CR>
-nnoremap <Leader>gl  :G log -n 1000<CR>
-nnoremap <Leader>gs  :G<CR>:MaximizerToggle<CR>
 
 " }}}
 
@@ -813,6 +807,10 @@ autocmd BufNewFile,BufRead,BufEnter,BufFilePre *
 " }}}
 
 " git {{{
+
+nnoremap <Leader>gl  :G log -n 1000<CR>
+nnoremap <Leader>gs  :G<CR>:MaximizerToggle<CR>
+
 " faster update (default 4000)
 set updatetime=100
 set signcolumn=auto:2
@@ -835,9 +833,18 @@ highlight ConflictMarkerCommonAncestorsHunk guibg=#754a81
 " }}}
 
 " bazel {{{
-set errorformat=ERROR:\ %f:%l:%c:%m    
-set errorformat+=%f:%l:%c:%m    
+
+nnoremap <Leader>bt  :call RunBazelHere("test --config=adp -c opt")<CR>
+nnoremap <Leader>bdt :call DebugThisTest()<CR>
+nnoremap <Leader>bb  :call RunBazelHere("build --config=adp -c opt")<CR>
+nnoremap <Leader>bdb :call RunBazelHere("build --config=adp -c dbg")<CR>
+nnoremap <Leader>bl  :call RunBazel()<CR>
+
+" errorformats {{{ 
+set errorformat=ERROR:\ %f:%l:%c:%m
+set errorformat+=%f:%l:%c:%m
 set errorformat+=[\ \ FAILED\ \ ]\ %m\ (%.%#
+
 " Ignore build output lines starting with INFO:, Loading:, or [    
 set errorformat+=%-GINFO:\ %.%#    
 set errorformat+=%-GLoading:\ %.%#    
@@ -878,6 +885,8 @@ set errorformat+=%-G[%.%#
  set errorformat+=%f(%l):\ %tarning:\ %m                " <filename>(<line>): warning: <message>
  set errorformat+=%f:%l:%c:\ %m                         " <filename>:<line>:<col>: <message>
  set errorformat+=%f:%l:\ %m                            " <filename>:<line>: <message>
+" }}}
+
 " }}}
 
 " vimspector {{{
