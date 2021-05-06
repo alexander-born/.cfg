@@ -128,7 +128,7 @@ exe "colorscheme " . g:color_scheme
 lua << EOF
 function _G.get_g_test_name()
     local ts_utils = require'nvim-treesitter.ts_utils'
-    local node = ts_utils.get_node_at_cursor(0)
+    local node = ts_utils.get_node_at_cursor()
     local test_node = nil
     while node ~= nil do
         if node:type() == 'function_definition' then test_node = node end
@@ -274,7 +274,7 @@ nnoremap <Leader>gs  :G<CR>:MaximizerToggle<CR>
 
 " }}}
 
-" plugin configuration {{{
+" plugin configuration
 
 " galaxyline {{{
 lua << EOF
@@ -918,6 +918,7 @@ require'nvim-treesitter.configs'.setup {
   ensure_installed = "maintained", -- one of "all", "maintained" (parsers with maintainers), or a list of languages
   highlight = {
     enable = true,              -- false will disable the whole extension
+    -- disable = {"json"},        -- list of language that will be disabled
   },
 }
 require "nvim-treesitter.configs".setup {
@@ -1056,4 +1057,3 @@ nnoremap <leader>q :lua vim.lsp.diagnostic.set_loclist()<CR>
 
 " }}}
 
-" }}}
