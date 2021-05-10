@@ -1055,8 +1055,8 @@ set shortmess+=c
 
 nnoremap <leader>rn :lua vim.lsp.buf.rename()<CR>
 nnoremap <leader>ca :lua vim.lsp.buf.code_action()<CR>
-nnoremap <leader>[d :lua vim.lsp.diagnostic.goto_prev()<CR>
-nnoremap <leader>]d :lua vim.lsp.diagnostic.goto_next()<CR>
+nnoremap [d :lua vim.lsp.diagnostic.goto_prev()<CR>
+nnoremap ]d :lua vim.lsp.diagnostic.goto_next()<CR>
 
 nnoremap gd :lua vim.lsp.buf.definition()<CR>
 nnoremap gi :lua vim.lsp.buf.implementation()<CR>
