@@ -56,6 +56,7 @@ Plug 'nvim-treesitter/nvim-treesitter-textobjects'
 Plug 'nvim-treesitter/playground'
 " lsp
 Plug 'neovim/nvim-lspconfig'
+Plug 'kabouzeid/nvim-lspinstall'
 Plug 'hrsh7th/nvim-compe'
 Plug 'ray-x/lsp_signature.nvim'
 Plug 'onsails/lspkind-nvim'
@@ -986,26 +987,20 @@ lua require('lspkind').init()
 
 " server configs {{{
 lua << EOF
+require'lspinstall'.setup() -- important
 
-local lspconfig = require'lspconfig'
 local on_attach = function(client, bufnr)
   require "lsp_signature".on_attach()  -- Note: add in lsp client on-attach
 end
 
-lspconfig.clangd.setup{
-    on_attach = on_attach,
-    root_dir = lspconfig.util.root_pattern("compile_commands.json", "compile_flags.txt") or dirname,
-}
-
-lspconfig.pyright.setup{
-    on_attach = on_attach,
-}
-lspconfig.vimls.setup{
-    on_attach = on_attach,
-    init_options = {
-      runtimepath = vim.fn.expand("~/.vim/") .. "," .. vim.fn.expand("~/.config/nvim/"),
-    },
-}
+local servers = require'lspinstall'.installed_servers()
+for _, server in pairs(servers) do
+    local config = { on_attach = on_attach }
+    if server == "vim" then
+        config.init_options = { runtimepath = vim.fn.expand("~/.vim/") .. "," .. vim.fn.expand("~/.config/nvim/") }
+    end
+    require'lspconfig'[server].setup(config)
+end
 
 require'compe'.setup {
   enabled = true;
