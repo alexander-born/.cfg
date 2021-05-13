@@ -64,7 +64,10 @@ Plug 'hrsh7th/nvim-compe'
 Plug 'ray-x/lsp_signature.nvim'
 Plug 'onsails/lspkind-nvim'
 Plug 'aymericbeaumet/vim-symlink'
-Plug 'norcalli/snippets.nvim'
+" snippets
+Plug 'hrsh7th/vim-vsnip'
+Plug 'hrsh7th/vim-vsnip-integ'
+Plug 'rafamadriz/friendly-snippets'
 call plug#end()
 
 " }}}
@@ -925,6 +928,14 @@ nmap <leader>dbp :call vimspector#ClearBreakpoints()<CR>
 nmap <leader>cbp <Plug>VimspectorToggleConditionalBreakpoint
 " }}}
 
+" snippets {{{
+" Jump forward or backward
+imap <expr> <C-j> vsnip#jumpable(1)  ? '<Plug>(vsnip-jump-next)' : '<C-j>'
+smap <expr> <C-j> vsnip#jumpable(1)  ? '<Plug>(vsnip-jump-next)' : '<C-j>'
+imap <expr> <C-k> vsnip#jumpable(-1) ? '<Plug>(vsnip-jump-prev)' : '<C-k>'
+smap <expr> <C-k> vsnip#jumpable(-1) ? '<Plug>(vsnip-jump-prev)' : '<C-k>'
+" }}}
+
 " treesitter {{{
 lua <<EOF
 require'nvim-treesitter.configs'.setup {
@@ -986,10 +997,6 @@ nnoremap <leader>xq <cmd>TroubleToggle quickfix<cr>
 nnoremap <leader>xl <cmd>TroubleToggle loclist<cr>
 " }}}
 
-" snippets {{{
-lua require'snippets'.use_suggested_mappings()
-" }}}
-
 " nvim-lsp {{{
 
 " formatting {{{
@@ -1010,6 +1017,16 @@ require'lspinstall'.setup() -- important
 local on_attach = function(client, bufnr)
   require "lsp_signature".on_attach()  -- Note: add in lsp client on-attach
 end
+
+local capabilities = vim.lsp.protocol.make_client_capabilities()
+capabilities.textDocument.completion.completionItem.snippetSupport = true
+capabilities.textDocument.completion.completionItem.resolveSupport = {
+  properties = {
+    'documentation',
+    'detail',
+    'additionalTextEdits',
+  }
+}
 
 -- Configure lua language server for neovim development
 local lua_settings = {
@@ -1035,7 +1052,10 @@ local lua_settings = {
 
 local servers = require'lspinstall'.installed_servers()
 for _, server in pairs(servers) do
-    local config = { on_attach = on_attach }
+    local config = { 
+        capabilities = capabilities,
+        on_attach = on_attach,
+    }
     if server == "lua" then
       config.settings = lua_settings
     end
@@ -1062,7 +1082,11 @@ require'compe'.setup {
   source = {
     path = true;
     buffer = true;
+    calc = true;
     nvim_lsp = true;
+    nvim_lua = true;
+    vsnip = true;
+    ultisnips = true;
   };
 }
 
