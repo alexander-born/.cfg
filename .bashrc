@@ -30,9 +30,14 @@ alias runrviz="cd ~/ddad/bazel-bin/application/adp/bmw/vehicle/configuration/had
 
 convert_clipboard_to_unix_path() { xclip -o -sel clip | sed 's/\\/\//g' | sed 's/^file:/smb:/' | xclip -i -sel clip; echo "[INFO] clipboard updated."; }
 
-gencompdb() { 
+gencompdbadp() { 
     ~/ddad/application/adp/tools/compile_commands/generate_compile_commands.sh ~/ddad/compile_commands.json --config=adp //application/adp/... ;
     sed -i 's/-fno-canonical-system-headers//' ~/ddad/compile_commands.json
+}
+
+gencompdb() { 
+    bazel-compdb
+    sed -i 's/-fno-canonical-system-headers//' ./compile_commands.json
 }
 
 # Install/update neovim nightly
