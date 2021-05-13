@@ -17,6 +17,7 @@ Plug 'kyazdani42/nvim-web-devicons'
 Plug 'ryanoasis/vim-devicons'
 Plug 'akinsho/nvim-bufferline.lua'
 Plug 'norcalli/nvim-colorizer.lua'
+Plug 'folke/todo-comments.nvim'
 " nerdtree
 Plug 'scrooloose/nerdtree'
 " colorschemes
@@ -50,10 +51,12 @@ Plug 'nvim-lua/popup.nvim'
 Plug 'nvim-lua/plenary.nvim'
 Plug 'nvim-telescope/telescope.nvim'
 Plug 'nvim-telescope/telescope-fzy-native.nvim'
-"treesitter
+" treesitter
 Plug 'nvim-treesitter/nvim-treesitter', {'do': ':TSUpdate'}
 Plug 'nvim-treesitter/nvim-treesitter-textobjects'
 Plug 'nvim-treesitter/playground'
+" trouble
+Plug 'folke/trouble.nvim'
 " lsp
 Plug 'neovim/nvim-lspconfig'
 Plug 'kabouzeid/nvim-lspinstall'
@@ -966,6 +969,21 @@ require "nvim-treesitter.configs".setup {
   }
 }
 EOF
+" }}}
+
+" todo-comments {{{
+lua require("todo-comments").setup {}
+nnoremap <leader>tq :TodoQuickfix<CR>
+nnoremap <leader>ft :TodoTelescope<CR>
+" }}}
+
+" trouble {{{
+lua require("trouble").setup {}
+nnoremap <leader>xx <cmd>TroubleToggle<cr>
+nnoremap <leader>xw <cmd>TroubleToggle lsp_workspace_diagnostics<cr>
+nnoremap <leader>xd <cmd>TroubleToggle lsp_document_diagnostics<cr>
+nnoremap <leader>xq <cmd>TroubleToggle quickfix<cr>
+nnoremap <leader>xl <cmd>TroubleToggle loclist<cr>
 " }}}
 
 " snippets {{{
