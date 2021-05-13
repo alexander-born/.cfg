@@ -1011,9 +1011,34 @@ local on_attach = function(client, bufnr)
   require "lsp_signature".on_attach()  -- Note: add in lsp client on-attach
 end
 
+-- Configure lua language server for neovim development
+local lua_settings = {
+  Lua = {
+    runtime = {
+      -- LuaJIT in the case of Neovim
+      version = 'LuaJIT',
+      path = vim.split(package.path, ';'),
+    },
+    diagnostics = {
+      -- Get the language server to recognize the `vim` global
+      globals = {'vim'},
+    },
+    workspace = {
+      -- Make the server aware of Neovim runtime files
+      library = {
+        [vim.fn.expand('$VIMRUNTIME/lua')] = true,
+        [vim.fn.expand('$VIMRUNTIME/lua/vim/lsp')] = true,
+      },
+    },
+  }
+}
+
 local servers = require'lspinstall'.installed_servers()
 for _, server in pairs(servers) do
     local config = { on_attach = on_attach }
+    if server == "lua" then
+      config.settings = lua_settings
+    end
     if server == "vim" then
         config.init_options = { runtimepath = vim.fn.expand("~/.vim/") .. "," .. vim.fn.expand("~/.config/nvim/") }
     end
