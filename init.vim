@@ -847,6 +847,9 @@ highlight ConflictMarkerCommonAncestorsHunk guibg=#754a81
 " bazel {{{
 let g:bazel_config = get(g:, 'bazel_config', "--config=adp")
 
+autocmd FileType bzl nnoremap <buffer> gd :call GoToBazelDefinition()<CR>
+nnoremap gbt :call GoToBazelTarget()<CR>
+
 nnoremap <Leader>bt  :call RunBazelHere("test -c opt " . g:bazel_config)<CR>
 nnoremap <Leader>bdt :call DebugThisTest()<CR>
 nnoremap <Leader>bb  :call RunBazelHere("build -c opt" . g:bazel_config)<CR>
