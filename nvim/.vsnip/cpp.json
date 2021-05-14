@@ -1,0 +1,13 @@
+{
+  "includeguard": {
+    "prefix": ["includeguard"],
+    "body": [
+        "#ifndef $TM_INCLUDEGUARD",
+        "#define $TM_INCLUDEGUARD",
+        "",
+        "",
+        "#endif // $TM_INCLUDEGUARD"
+    ]
+  }
+}
+
