@@ -28,6 +28,8 @@ Plug 'ChristianChiarulli/nvcode-color-schemes.vim'
 Plug 'mileszs/ack.vim'
 " wiki
 Plug 'vimwiki/vimwiki'
+" markdown
+Plug 'iamcco/markdown-preview.nvim', { 'do': { -> mkdp#util#install() }, 'for': ['markdown', 'vim-plug']}
 " git
 Plug 'tpope/vim-fugitive'
 Plug 'lewis6991/gitsigns.nvim'
