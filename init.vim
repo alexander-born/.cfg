@@ -122,6 +122,9 @@ augroup END
 if filereadable(expand("~/.user.vim"))
     source ~/.user.vim
 endif
+if filereadable(expand("~/.config/nvim/user.vim"))
+    source ~/.config/nvim/user.vim
+endif
 " }}}
 
 " color {{{
@@ -173,7 +176,7 @@ endfunction
 
 function! DebugThisTest()
     call AdaptVimspectorJson()
-    call RunBazelHere("build --config=adp -c dbg")
+    call RunBazelHere("build -c dbg " . g:bazel_config)
 endfunction
 
 function! OpenErrorInQuickfix()
@@ -842,11 +845,12 @@ highlight ConflictMarkerCommonAncestorsHunk guibg=#754a81
 " }}}
 
 " bazel {{{
+let g:bazel_config = get(g:, 'bazel_config', "--config=adp")
 
-nnoremap <Leader>bt  :call RunBazelHere("test --config=adp -c opt")<CR>
+nnoremap <Leader>bt  :call RunBazelHere("test -c opt " . g:bazel_config)<CR>
 nnoremap <Leader>bdt :call DebugThisTest()<CR>
-nnoremap <Leader>bb  :call RunBazelHere("build --config=adp -c opt")<CR>
-nnoremap <Leader>bdb :call RunBazelHere("build --config=adp -c dbg")<CR>
+nnoremap <Leader>bb  :call RunBazelHere("build -c opt" . g:bazel_config)<CR>
+nnoremap <Leader>bdb :call RunBazelHere("build -c dbg" . g:bazel_config)<CR>
 nnoremap <Leader>bl  :call RunBazel()<CR>
 
 " errorformats {{{ 
