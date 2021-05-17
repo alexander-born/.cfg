@@ -8,6 +8,15 @@
         "",
         "#endif // $TM_INCLUDEGUARD"
     ]
+  },
+  "bmwcopyright": {
+    "prefix": ["bmwcopyright"],
+    "body": [
+        "///",
+        "/// @file",
+        "/// @copyright Copyright (C) $CURRENT_YEAR, Bayerische Motoren Werke Aktiengesellschaft (BMW AG)",
+        "///"
+    ]
   }
 }
 
