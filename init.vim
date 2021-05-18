@@ -526,7 +526,10 @@ set errorformat+=%-G[%.%#
 
 " }}}
 
-" vimspector {{{
+" debugger {{{
+
+" send gdb commands with '-exec <command>' in vimspector console window
+
 let g:vimspector_install_gadgets = [ 'debugpy', 'vscode-cpptools' ]
 fun! GotoWindow(id)
     call win_gotoid(a:id)
