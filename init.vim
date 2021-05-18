@@ -168,7 +168,7 @@ function! AdaptVimspectorJson()
     if (test_filter == "null")
         exe '%s/"args": \[.*\],/"args": \[\],/g'
     else
-        exe '%s/"args": \[.*\],/"args": \["--gtest_filter=' . test_filter . '"\],/g'
+        exe '%s/"args": \[.*\],/"args": \["--gtest_filter=*' . test_filter . '*"\],/g'
     endif
     w
     e#
@@ -176,7 +176,7 @@ endfunction
 
 function! DebugThisTest()
     call AdaptVimspectorJson()
-    call RunBazelHere("build -c dbg " . g:bazel_config)
+    call RunBazelHere("build " . g:bazel_config . " -c dbg ")
 endfunction
 
 function! OpenErrorInQuickfix()
@@ -475,10 +475,10 @@ let g:bazel_config = get(g:, 'bazel_config', "--config=adp")
 autocmd FileType bzl nnoremap <buffer> gd :call GoToBazelDefinition()<CR>
 nnoremap gbt :call GoToBazelTarget()<CR>
 
-nnoremap <Leader>bt  :call RunBazelHere("test -c opt " . g:bazel_config)<CR>
+nnoremap <Leader>bt  :call RunBazelHere("test " . g:bazel_config . " -c opt" )<CR>
 nnoremap <Leader>bdt :call DebugThisTest()<CR>
-nnoremap <Leader>bb  :call RunBazelHere("build -c opt" . g:bazel_config)<CR>
-nnoremap <Leader>bdb :call RunBazelHere("build -c dbg" . g:bazel_config)<CR>
+nnoremap <Leader>bb  :call RunBazelHere("build " . g:bazel_config . " -c opt")<CR>
+nnoremap <Leader>bdb :call RunBazelHere("build " . g:bazel_config . " -c dbg")<CR>
 nnoremap <Leader>bl  :call RunBazel()<CR>
 
 " errorformats {{{ 
