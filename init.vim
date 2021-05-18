@@ -285,9 +285,7 @@ nnoremap <F7> :call SwitchSourceHeader()<CR>
 " lualine {{{
 lua << EOF
 
-local function diagnostic_exists()
-  return not vim.tbl_isempty(vim.lsp.buf_get_clients(0))
-end
+local function diagnostic_exists() return not vim.tbl_isempty(vim.lsp.buf_get_clients(0)) end
 
 local function diagnostics_ok()
     if not diagnostic_exists() then return '' end
