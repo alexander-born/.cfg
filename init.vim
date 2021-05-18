@@ -293,8 +293,6 @@ local function diagnostics_ok()
     if not diagnostic_exists() then return '' end
     local w = vim.lsp.diagnostic.get_count(0, 'Warning')
     local e = vim.lsp.diagnostic.get_count(0, 'Error')
-    local i = vim.lsp.diagnostic.get_count(0, 'Information')
-    local h = vim.lsp.diagnostic.get_count(0, 'Hint')
     if w ~= 0 or e ~= 0 or i ~= 0 or h ~= 0 then return '' end
     return ' '
  end
