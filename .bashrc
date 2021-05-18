@@ -55,6 +55,14 @@ find_in_advantage() {
     ssh advantagedp "ls /maprposix/dp.prod.munich/ad-vantage/data/store/collected/car-data/MDF4/ingest/$vin/$yy/$mm/$dd/*/*/BN_EV_FASETH_UC/*/*" | grep "$1"
 }
 
+download_trace() {
+    scp -r advantagedp:"$1" .
+    chmod -R u+rwX ./*
+    local mt_re=$(echo "$1" | sed -E "s/BN_EV_FASETH_UC/MT_RE/g")
+    scp -r advantagedp:"$mt_re" .
+    chmod -R u+rwX ./*
+}
+
 export GIT_PS1_SHOWDIRTYSTATE='y'
 export GIT_PS1_SHOWSTASHSTATE='y'
 export GIT_PS1_SHOWUNTRACKEDFILES='y'
