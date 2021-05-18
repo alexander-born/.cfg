@@ -296,7 +296,7 @@ local function diagnostics_ok()
     local i = vim.lsp.diagnostic.get_count(0, 'Information')
     local h = vim.lsp.diagnostic.get_count(0, 'Hint')
     if w ~= 0 or e ~= 0 or i ~= 0 or h ~= 0 then return '' end
-    return ''
+    return ' '
  end
 
 local function get_colors()
@@ -308,9 +308,7 @@ end
 local colors = get_colors()
 
 require'lualine'.setup {
-  options = {
-    theme = vim.g.color_scheme,
-  },
+  options = { theme = vim.g.color_scheme },
   sections = {
     lualine_a = {'mode'},
     lualine_b = {'branch'},
