@@ -285,13 +285,13 @@ nnoremap <F7> :call SwitchSourceHeader()<CR>
 " lualine {{{
 lua << EOF
 
-local function diagnostic_exists() return not vim.tbl_isempty(vim.lsp.buf_get_clients(0)) end
+local function lsp_not_active() return vim.tbl_isempty(vim.lsp.buf_get_clients(0)) end
 
 local function diagnostics_ok()
-    if not diagnostic_exists() then return '' end
+    if lsp_not_active() then return '' end
     local w = vim.lsp.diagnostic.get_count(0, 'Warning')
     local e = vim.lsp.diagnostic.get_count(0, 'Error')
-    if w ~= 0 or e ~= 0 or i ~= 0 or h ~= 0 then return '' end
+    if w ~= 0 or e ~= 0 then return '' end
     return ' '
  end
 
@@ -309,7 +309,7 @@ require'lualine'.setup {
     lualine_a = {'mode'},
     lualine_b = {'branch'},
     lualine_c = {{'filename', path = 1}, { 'diff', color_added = colors.green, color_modified = colors.orange, color_removed = colors.red, symbols = {added = ' ', modified = ' ', removed = ' '} }},
-    lualine_x = {{ 'diagnostics', sources = {'nvim_lsp'}, color_error = colors.red, color_warn = colors.yellow, color_info = nil, symbols = {error = ' ', warn = ' ', info = ' '}}, {diagnostics_ok}, 'filetype' }, 
+    lualine_x = {{'diagnostics', sources = {'nvim_lsp'}, color_error = colors.red, color_warn = colors.yellow, color_info = nil, symbols = {error = ' ', warn = ' ', info = ' '}}, {diagnostics_ok}, 'filetype' }, 
     lualine_y = {'progress'},
     lualine_z = {'location'}
   },
