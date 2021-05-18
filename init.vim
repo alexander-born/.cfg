@@ -312,7 +312,7 @@ require'lualine'.setup {
   sections = {
     lualine_a = {'mode'},
     lualine_b = {'branch'},
-    lualine_c = {'filename', { 'diff', color_added = colors.green, color_modified = colors.orange, color_removed = colors.red, symbols = {added = ' ', modified = ' ', removed = ' '} }},
+    lualine_c = {{'filename', path = 1}, { 'diff', color_added = colors.green, color_modified = colors.orange, color_removed = colors.red, symbols = {added = ' ', modified = ' ', removed = ' '} }},
     lualine_x = {{ 'diagnostics', sources = {'nvim_lsp'}, color_error = colors.red, color_warn = colors.yellow, color_info = nil, symbols = {error = ' ', warn = ' ', info = ' '}}, {diagnostics_ok}, 'filetype' }, 
     lualine_y = {'progress'},
     lualine_z = {'location'}
@@ -703,6 +703,9 @@ for _, server in pairs(servers) do
     end
     if server == "vim" then
         config.init_options = { runtimepath = vim.fn.expand("~/.vim/") .. "," .. vim.fn.expand("~/.config/nvim/") }
+    end
+    if server == "cpp" then
+        config.cmd = {require"lspinstall.util".install_path("cpp") .. "/clangd/bin/clangd", "--background-index", "--cross-file-rename"};
     end
     require'lspconfig'[server].setup(config)
 end
