@@ -697,22 +697,33 @@ local lua_settings = {
   }
 }
 
-local servers = require'lspinstall'.installed_servers()
-for _, server in pairs(servers) do
-    local config = { 
-        capabilities = capabilities,
-        on_attach = on_attach,
-    }
-    if server == "lua" then
-      config.settings = lua_settings
+local function setup_servers()
+    local servers = require'lspinstall'.installed_servers()
+    for _, server in pairs(servers) do
+        local config = { 
+            capabilities = capabilities,
+            on_attach = on_attach,
+        }
+        if server == "lua" then
+          config.settings = lua_settings
+        end
+        if server == "vim" then
+            config.init_options = { runtimepath = vim.fn.expand("~/.vim/") .. "," .. vim.fn.expand("~/.config/nvim/") }
+        end
+        if server == "cpp" then
+            config.cmd = {require"lspinstall.util".install_path("cpp") .. "/clangd/bin/clangd", "--background-index", "--cross-file-rename"};
+            -- config.cmd = {require"lspinstall.util".install_path("cpp") .. "/clangd/bin/clangd", "--background-index", "--cross-file-rename", "--compile-commands-dir=<path>"};
+        end
+        require'lspconfig'[server].setup(config)
     end
-    if server == "vim" then
-        config.init_options = { runtimepath = vim.fn.expand("~/.vim/") .. "," .. vim.fn.expand("~/.config/nvim/") }
-    end
-    if server == "cpp" then
-        config.cmd = {require"lspinstall.util".install_path("cpp") .. "/clangd/bin/clangd", "--background-index", "--cross-file-rename"};
-    end
-    require'lspconfig'[server].setup(config)
+end
+
+setup_servers()
+
+-- Automatically reload after `:LspInstall <server>` so we don't have to restart neovim
+require'lspinstall'.post_install_hook = function ()
+  setup_servers() -- reload installed servers
+  vim.cmd("bufdo e") -- this triggers the FileType autocmd that starts the server
 end
 
 require'compe'.setup {
