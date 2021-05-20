@@ -233,9 +233,9 @@ function! IndexFiles(path)
     echom "Add all files to arglist from " . a:path
     exe "silent args " . a:path . "/**/*.cpp"
     echom "Opening all files from " . a:path
-    silent argdo e
+    silent! argdo e
     echom "Closing all files from " . a:path
-    silent argdo bw
+    silent! argdo bw
     echom "Clear arglist"
     argdelete *
 endfunction
@@ -285,6 +285,7 @@ nnoremap <F7> :call SwitchSourceHeader()<CR>
 " lualine {{{
 lua << EOF
 
+local function get_filename() return vim.fn.expand('%:~:.') end
 local function lsp_not_active() return vim.tbl_isempty(vim.lsp.buf_get_clients(0)) end
 
 local function diagnostics_ok()
@@ -314,7 +315,7 @@ require'lualine'.setup {
   sections = {
     lualine_a = {'mode'},
     lualine_b = {{get_git_branch}},
-    lualine_c = {{'filename', path = 1}, { 'diff', color_added = colors.green, color_modified = colors.orange, color_removed = colors.red, symbols = {added = ' ', modified = ' ', removed = ' '} }},
+    lualine_c = {{get_filename}, { 'diff', color_added = colors.green, color_modified = colors.orange, color_removed = colors.red, symbols = {added = ' ', modified = ' ', removed = ' '} }},
     lualine_x = {{'diagnostics', sources = {'nvim_lsp'}, color_error = colors.red, color_warn = colors.yellow, color_info = nil, symbols = {error = ' ', warn = ' ', info = ' '}}, {diagnostics_ok}, 'filetype' }, 
     lualine_y = {'progress'},
     lualine_z = {'location'}
@@ -712,7 +713,7 @@ local function setup_servers()
         end
         if server == "cpp" then
             config.cmd = {require"lspinstall.util".install_path("cpp") .. "/clangd/bin/clangd", "--background-index", "--cross-file-rename"};
-            -- config.cmd = {require"lspinstall.util".install_path("cpp") .. "/clangd/bin/clangd", "--background-index", "--cross-file-rename", "--compile-commands-dir=<path>"};
+            -- config.cmd = {require"lspinstall.util".install_path("cpp") .. "/clangd/bin/clangd", "--background-index", "--cross-file-rename", "--compile-commands-dir=" .. vim.fn.getcwd()};
         end
         require'lspconfig'[server].setup(config)
     end
