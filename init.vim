@@ -268,6 +268,8 @@ nnoremap <Leader>f :let @+=expand("%")<CR>
 
 " copy visual selection to clipboard with ctrl-c
 vnoremap <C-c> "+y
+" Y will yank to end of line
+nnoremap Y y$
 " deletes visual selection and pastes without changing default register
 vnoremap p "_dP
 " go to first file on line
