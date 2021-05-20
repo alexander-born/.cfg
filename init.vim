@@ -10,6 +10,8 @@ Plug 'tpope/vim-commentary'
 Plug 'tpope/vim-dispatch'
 Plug 'tpope/vim-unimpaired'
 Plug 'wsdjeg/vim-fetch'
+" undotree
+Plug 'mbbill/undotree'
 " appearance
 Plug 'lukas-reineke/indent-blankline.nvim' , { 'branch': 'lua' }
 Plug 'hoob3rt/lualine.nvim'
@@ -541,6 +543,22 @@ set errorformat+=%-G[%.%#
  set errorformat+=%f:%l:\ %m                            " <filename>:<line>: <message>
 " }}}
 
+" }}}
+
+" undotree {{{
+nnoremap <Leader>ut :UndotreeToggle<CR>
+if has("persistent_undo")
+   let target_path = expand('~/.local/nvim/.undodir')
+
+    " create the directory and any parent directories
+    " if the location does not exist.
+    if !isdirectory(target_path)
+        call mkdir(target_path, "p", 0700)
+    endif
+
+    let &undodir=target_path
+    set undofile
+endif
 " }}}
 
 " debugger {{{
