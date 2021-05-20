@@ -285,7 +285,16 @@ nnoremap <F7> :call SwitchSourceHeader()<CR>
 " lualine {{{
 lua << EOF
 
-local function get_filename() return vim.fn.expand('%:~:.') end
+local function get_filename()
+    local data = vim.fn.expand('%:~:.')
+    if vim.bo.modified then
+        data = data .. ' [+]'
+    elseif vim.bo.modifiable == false or vim.bo.readonly == true then
+        data = data .. ' [-]'
+    end
+    return data
+end
+
 local function lsp_not_active() return vim.tbl_isempty(vim.lsp.buf_get_clients(0)) end
 
 local function diagnostics_ok()
