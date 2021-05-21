@@ -134,6 +134,7 @@ syntax enable
 set termguicolors
 let g:gruvbox_material_background = 'soft'
 let g:everforest_background = 'hard'
+let g:everforest_disable_italic_comment = 1
 set background=dark
 exe "colorscheme " . g:color_scheme
 " }}}
@@ -417,6 +418,7 @@ let g:mkdp_browser = 'firefox'
 nnoremap <leader>ff :lua require('telescope.builtin').find_files({previewer = false})<CR>
 nnoremap <leader>fo :lua require('telescope.builtin').oldfiles({previewer = false})<CR>
 nnoremap <leader>fb :lua require('telescope.builtin').current_buffer_fuzzy_find()<CR>
+nnoremap <leader>fq :lua require('telescope.builtin').quickfix()<CR>
 nnoremap <leader>fh :lua require('telescope.builtin').command_history()<CR>
 nnoremap <leader>fr :lua require('telescope.builtin').registers()<CR>
 nnoremap <leader>gb :lua require('telescope.builtin').git_branches({cwd = vim.fn.expand("%:p:h")})<CR>
