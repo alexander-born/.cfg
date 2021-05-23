@@ -141,7 +141,7 @@ exe "colorscheme " . g:color_scheme
 
 " custom function {{{
 lua << EOF
-function _G.get_g_test_name()
+function _G.get_gtest_info()
     local ts_utils = require'nvim-treesitter.ts_utils'
     local node = ts_utils.get_node_at_cursor()
     local test_node = nil
@@ -150,37 +150,59 @@ function _G.get_g_test_name()
         node = node:parent()
     end
     if test_node == nil then return end
+    local test_type = ts_utils.get_node_text(test_node:named_child(0):named_child(0))[1]
     local parameter_list = test_node:named_child(0):named_child(1)
-    local test_suite = parameter_list:named_child(0)
-    local test_name = parameter_list:named_child(1)
-    return ts_utils.get_node_text(test_suite)[1] .. '.' .. ts_utils.get_node_text(test_name)[1]
+    local test_suite = ts_utils.get_node_text(parameter_list:named_child(0))[1]
+    local test_name = ts_utils.get_node_text(parameter_list:named_child(1))[1]
+    return { test_type = test_type, test_suite = test_suite, test_name = test_name }
+end
+function _G.get_gtest_filter()
+    local test_info = get_gtest_info()
+    local test_filter = test_info.test_suite .. '.' .. test_info.test_name
+    if test_info.test_type == 'TEST_P' then test_filter = '*' .. test_filter .. '*' end
+    if test_info.test_type == 'TYPED_TEST_P' then test_filter = '*' .. test_info.test_suite .. '*' .. test_info.test_name end
+    return test_filter
+end
+function _G.get_bazel_test_executable()
+    vim.fn.BazelGetCurrentBufTarget()
+    local executable = vim.g.current_bazel_target:gsub(':', '/')
+    return executable:gsub('///', 'bazel-bin/')
+
+end
+function _G.write_to_file(filename, lines)
+    vim.cmd('e ' .. filename)
+    vim.cmd('%delete')
+    for _,line in pairs(lines) do
+        vim.cmd("call append(line('$'), '" .. line .. "')")
+    end
+    vim.cmd('1d')
+    vim.cmd('w')
+    vim.cmd('e#')
+end
+function _G.create_cpp_vimspector_json_for_bazel_test()
+    local test_filter = get_gtest_filter()
+    local executable = get_bazel_test_executable()
+    local lines = {
+        '{',
+        '  "configurations": {',
+        '    "GTest": {',
+        '      "adapter": "vscode-cpptools",',
+        '      "configuration": {',
+        '        "request": "launch",',
+        '        "program": "' .. executable .. '",',
+        '        "args": ["--gtest_filter=' .. test_filter .. '"],',
+        '        "stopOnEntry": false',
+        '      }',
+        '    }',
+        '  }',
+        '}'}
+    write_to_file('.vimspector.json', lines)
+end
+function _G.debug_this_test()
+    create_cpp_vimspector_json_for_bazel_test()
+    vim.fn.RunBazelHere("build " .. vim.g.bazel_config .. " -c dbg ")
 end
 EOF
-function! GetExecutableFromBazelTarget()
-    let l:executable = substitute(g:current_bazel_target, ':', '/', '')
-    let l:executable = substitute(l:executable, '//', 'bazel-bin/', '')
-    return substitute(l:executable, '/', '\\/', 'g')
-endfunction
-
-function! AdaptVimspectorJson()
-    let l:test_filter = luaeval("get_g_test_name()")
-    call BazelGetCurrentBufTarget()
-    let g:executable = GetExecutableFromBazelTarget()
-    e .vimspector.json
-    exe '%s/"program": ".*",/"program": "' . g:executable .  '",/g'
-    if (test_filter == "null")
-        exe '%s/"args": \[.*\],/"args": \[\],/g'
-    else
-        exe '%s/"args": \[.*\],/"args": \["--gtest_filter=*' . test_filter . '*"\],/g'
-    endif
-    w
-    e#
-endfunction
-
-function! DebugThisTest()
-    call AdaptVimspectorJson()
-    call RunBazelHere("build " . g:bazel_config . " -c dbg ")
-endfunction
 
 function! OpenErrorInQuickfix()
     cexpr []
@@ -495,10 +517,10 @@ autocmd FileType bzl nnoremap <buffer> gd :call GoToBazelDefinition()<CR>
 nnoremap gbt :call GoToBazelTarget()<CR>
 
 nnoremap <Leader>bt  :call RunBazelHere("test " . g:bazel_config . " -c opt" )<CR>
-nnoremap <Leader>bdt :call DebugThisTest()<CR>
 nnoremap <Leader>bb  :call RunBazelHere("build " . g:bazel_config . " -c opt")<CR>
 nnoremap <Leader>bdb :call RunBazelHere("build " . g:bazel_config . " -c dbg")<CR>
 nnoremap <Leader>bl  :call RunBazel()<CR>
+nnoremap <Leader>bdt :lua debug_this_test()<CR>
 
 " errorformats {{{ 
 set errorformat=ERROR:\ %f:%l:%c:%m
