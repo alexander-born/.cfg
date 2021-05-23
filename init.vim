@@ -141,7 +141,17 @@ exe "colorscheme " . g:color_scheme
 
 " custom function {{{
 lua << EOF
-function _G.get_gtest_info()
+local function contains(tbl, item)
+    for key, value in pairs(tbl) do
+        if value == item then return key end
+    end
+    return false
+end
+local function is_gtest(test_type)
+    local gtest_types = {'TEST', 'TEST_F', 'TEST_P', 'TYPED_TEST_P'}
+    return contains(gtest_types, test_type)
+end
+local function get_gtest_info()
     local ts_utils = require'nvim-treesitter.ts_utils'
     local node = ts_utils.get_node_at_cursor()
     local test_node = nil
@@ -149,27 +159,28 @@ function _G.get_gtest_info()
         if node:type() == 'function_definition' then test_node = node end
         node = node:parent()
     end
-    if test_node == nil then return end
+    if test_node == nil then return error('Cursor not in a gtest') end
     local test_type = ts_utils.get_node_text(test_node:named_child(0):named_child(0))[1]
+    if not is_gtest(test_type) then return error('Cursor not in a gtest') end
     local parameter_list = test_node:named_child(0):named_child(1)
     local test_suite = ts_utils.get_node_text(parameter_list:named_child(0))[1]
     local test_name = ts_utils.get_node_text(parameter_list:named_child(1))[1]
     return { test_type = test_type, test_suite = test_suite, test_name = test_name }
 end
-function _G.get_gtest_filter()
+local function get_gtest_filter()
     local test_info = get_gtest_info()
     local test_filter = test_info.test_suite .. '.' .. test_info.test_name
     if test_info.test_type == 'TEST_P' then test_filter = '*' .. test_filter .. '*' end
     if test_info.test_type == 'TYPED_TEST_P' then test_filter = '*' .. test_info.test_suite .. '*' .. test_info.test_name end
     return test_filter
 end
-function _G.get_bazel_test_executable()
+local function get_bazel_test_executable()
     vim.fn.BazelGetCurrentBufTarget()
     local executable = vim.g.current_bazel_target:gsub(':', '/')
     return executable:gsub('///', 'bazel-bin/')
 
 end
-function _G.write_to_file(filename, lines)
+local function write_to_file(filename, lines)
     vim.cmd('e ' .. filename)
     vim.cmd('%delete')
     for _,line in pairs(lines) do
@@ -179,7 +190,7 @@ function _G.write_to_file(filename, lines)
     vim.cmd('w')
     vim.cmd('e#')
 end
-function _G.create_cpp_vimspector_json_for_bazel_test()
+local function create_cpp_vimspector_json_for_bazel_test()
     local test_filter = get_gtest_filter()
     local executable = get_bazel_test_executable()
     local lines = {
@@ -198,6 +209,11 @@ function _G.create_cpp_vimspector_json_for_bazel_test()
         '}'}
     write_to_file('.vimspector.json', lines)
 end
+function _G.DebugThisTest()
+    create_cpp_vimspector_json_for_bazel_test()
+    vim.cmd('new')
+    vim.cmd('call termopen("bazel build " . g:bazel_config . " -c dbg " . g:current_bazel_target, {"on_exit": "StartVimspector"})')
+end
 EOF
 function! StartVimspector(job_id, code, event) dict
     if a:code == 0
@@ -205,12 +221,6 @@ function! StartVimspector(job_id, code, event) dict
         call vimspector#Launch()
     endif
 endfun
-
-function! DebugThisTest()
-    lua create_cpp_vimspector_json_for_bazel_test()
-    new
-    call termopen("bazel build " . g:bazel_config . " -c dbg " . g:current_bazel_target, {'on_exit': 'StartVimspector'})
-endfunction
 
 function! OpenErrorInQuickfix()
     cexpr []
@@ -527,7 +537,7 @@ nnoremap gbt :call GoToBazelTarget()<CR>
 nnoremap <Leader>bt  :call RunBazelHere("test " . g:bazel_config . " -c opt" )<CR>
 nnoremap <Leader>bb  :call RunBazelHere("build " . g:bazel_config . " -c opt")<CR>
 nnoremap <Leader>bdb :call RunBazelHere("build " . g:bazel_config . " -c dbg")<CR>
-nnoremap <Leader>bdt :call DebugThisTest()<CR>
+nnoremap <Leader>bdt :lua  DebugThisTest()<CR>
 nnoremap <Leader>bl  :call RunBazel()<CR>
 
 " errorformats {{{ 
