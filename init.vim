@@ -198,11 +198,19 @@ function _G.create_cpp_vimspector_json_for_bazel_test()
         '}'}
     write_to_file('.vimspector.json', lines)
 end
-function _G.debug_this_test()
-    create_cpp_vimspector_json_for_bazel_test()
-    vim.fn.RunBazelHere("build " .. vim.g.bazel_config .. " -c dbg ")
-end
 EOF
+function! StartVimspector(job_id, code, event) dict
+    if a:code == 0
+        close
+        call vimspector#Launch()
+    endif
+endfun
+
+function! DebugThisTest()
+    lua create_cpp_vimspector_json_for_bazel_test()
+    new
+    call termopen("bazel build " . g:bazel_config . " -c dbg " . g:current_bazel_target, {'on_exit': 'StartVimspector'})
+endfunction
 
 function! OpenErrorInQuickfix()
     cexpr []
@@ -519,8 +527,8 @@ nnoremap gbt :call GoToBazelTarget()<CR>
 nnoremap <Leader>bt  :call RunBazelHere("test " . g:bazel_config . " -c opt" )<CR>
 nnoremap <Leader>bb  :call RunBazelHere("build " . g:bazel_config . " -c opt")<CR>
 nnoremap <Leader>bdb :call RunBazelHere("build " . g:bazel_config . " -c dbg")<CR>
+nnoremap <Leader>bdt :call DebugThisTest()<CR>
 nnoremap <Leader>bl  :call RunBazel()<CR>
-nnoremap <Leader>bdt :lua debug_this_test()<CR>
 
 " errorformats {{{ 
 set errorformat=ERROR:\ %f:%l:%c:%m
