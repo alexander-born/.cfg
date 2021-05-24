@@ -148,7 +148,7 @@ local function contains(tbl, item)
     return false
 end
 local function is_gtest(test_type)
-    local gtest_types = {'TEST', 'TEST_F', 'TEST_P', 'TYPED_TEST_P'}
+    local gtest_types = {'TEST', 'TEST_F', 'TEST_P', 'TYPED_TEST_P', 'TYPED_TEST'}
     return contains(gtest_types, test_type)
 end
 local function get_gtest_info()
@@ -171,13 +171,13 @@ local function get_gtest_filter()
     local test_info = get_gtest_info()
     local test_filter = test_info.test_suite .. '.' .. test_info.test_name
     if test_info.test_type == 'TEST_P' then test_filter = '*' .. test_filter .. '*' end
-    if test_info.test_type == 'TYPED_TEST_P' then test_filter = '*' .. test_info.test_suite .. '*' .. test_info.test_name end
+    if contains({'TYPED_TEST', 'TYPED_TEST_P'}, test_info.test_type) then test_filter = '*' .. test_info.test_suite .. '*' .. test_info.test_name end
     return test_filter
 end
 local function get_bazel_test_executable()
     vim.fn.BazelGetCurrentBufTarget()
     local executable = vim.g.current_bazel_target:gsub(':', '/')
-    return executable:gsub('///', 'bazel-bin/')
+    return executable:gsub('//', 'bazel-bin/')
 
 end
 local function write_to_file(filename, lines)
