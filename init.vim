@@ -461,8 +461,6 @@ nnoremap <leader>fb :lua require('telescope.builtin').current_buffer_fuzzy_find(
 nnoremap <leader>fq :lua require('telescope.builtin').quickfix()<CR>
 nnoremap <leader>fh :lua require('telescope.builtin').command_history()<CR>
 nnoremap <leader>fr :lua require('telescope.builtin').registers()<CR>
-nnoremap <leader>gb :lua require('telescope.builtin').git_branches({cwd = vim.fn.expand("%:p:h")})<CR>
-nnoremap <leader>gc :lua require('telescope.builtin').git_commits({cwd = vim.fn.expand("%:p:h")})<CR>
 nnoremap <leader>fg :lua require('telescope.builtin').live_grep()<CR>
 nnoremap <leader>bu :lua require('telescope.builtin').buffers()<CR>
 nnoremap <leader>ht :lua require('telescope.builtin').help_tags()<CR>
@@ -505,6 +503,8 @@ autocmd BufNewFile,BufRead,BufEnter,BufFilePre *
 
 nnoremap <Leader>gl  :G log -n 1000<CR>
 nnoremap <Leader>gs  :G<CR>:MaximizerToggle<CR>
+nnoremap <leader>gb :lua require('telescope.builtin').git_branches({cwd = vim.fn.expand("%:p:h")})<CR>
+nnoremap <leader>gc :lua require('telescope.builtin').git_commits({cwd = vim.fn.expand("%:p:h")})<CR>
 
 " faster update (default 4000)
 set updatetime=100
