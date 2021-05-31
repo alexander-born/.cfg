@@ -461,6 +461,7 @@ nnoremap <leader>fb :lua require('telescope.builtin').current_buffer_fuzzy_find(
 nnoremap <leader>fq :lua require('telescope.builtin').quickfix()<CR>
 nnoremap <leader>fh :lua require('telescope.builtin').command_history()<CR>
 nnoremap <leader>fr :lua require('telescope.builtin').registers()<CR>
+nnoremap <leader>fl :lua require('telescope.builtin').live_grep({cwd = "$HOME/ddad/application/adp/perception/lanes"})<CR>
 nnoremap <leader>fg :lua require('telescope.builtin').live_grep()<CR>
 nnoremap <leader>bu :lua require('telescope.builtin').buffers()<CR>
 nnoremap <leader>ht :lua require('telescope.builtin').help_tags()<CR>
