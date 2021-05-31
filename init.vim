@@ -460,8 +460,9 @@ nnoremap <leader>fo :lua require('telescope.builtin').oldfiles({previewer = fals
 nnoremap <leader>fb :lua require('telescope.builtin').current_buffer_fuzzy_find()<CR>
 nnoremap <leader>fq :lua require('telescope.builtin').quickfix()<CR>
 nnoremap <leader>fh :lua require('telescope.builtin').command_history()<CR>
-nnoremap <leader>fr :lua require('telescope.builtin').registers()<CR>
-nnoremap <leader>fl :lua require('telescope.builtin').live_grep({cwd = "$HOME/ddad/application/adp/perception/lanes"})<CR>
+" nnoremap <leader>fr :lua require('telescope.builtin').registers()<CR>
+nnoremap <leader>fl :lua require('telescope.builtin').live_grep({search_dirs = {"$HOME/ddad/application/adp/perception/lanes", "$HOME/ddad/application/adp/ros/simulation/perception/lanes", "$HOME/ddad/application/adp/activities/lanes"}})<CR>
+nnoremap <leader>fr :lua require('telescope.builtin').live_grep({search_dirs = {"$HOME/ddad/application/adp/perception/road", "$HOME/ddad/application/adp/map", "$HOME/ddad/application/adp/activities/road"}})<CR>
 nnoremap <leader>fg :lua require('telescope.builtin').live_grep()<CR>
 nnoremap <leader>bu :lua require('telescope.builtin').buffers()<CR>
 nnoremap <leader>ht :lua require('telescope.builtin').help_tags()<CR>
