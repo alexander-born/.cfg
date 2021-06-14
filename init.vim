@@ -34,6 +34,7 @@ Plug 'vimwiki/vimwiki'
 Plug 'iamcco/markdown-preview.nvim', { 'do': { -> mkdp#util#install() }, 'for': ['markdown', 'vim-plug']}
 " git
 Plug 'tpope/vim-fugitive'
+Plug 'tpope/vim-rhubarb'
 Plug 'lewis6991/gitsigns.nvim'
 Plug 'rhysd/conflict-marker.vim'
 " tmux jump windows
@@ -527,6 +528,8 @@ highlight ConflictMarkerOurs guibg=#2e5049
 highlight ConflictMarkerTheirs guibg=#344f69
 highlight ConflictMarkerEnd guibg=#2f628e
 highlight ConflictMarkerCommonAncestorsHunk guibg=#754a81
+
+let g:github_enterprise_urls = ['https://cc-github.bmwgroup.net']
 " }}}
 
 " bazel {{{
