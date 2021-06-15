@@ -10,6 +10,7 @@ Plug 'tpope/vim-commentary'
 Plug 'tpope/vim-dispatch'
 Plug 'tpope/vim-unimpaired'
 Plug 'wsdjeg/vim-fetch'
+Plug 'ggandor/lightspeed.nvim'
 " undotree
 Plug 'mbbill/undotree'
 " appearance
@@ -430,6 +431,10 @@ EOF
 nnoremap <Leader>a :Ack!<Space>
 
 let g:ackprg = 'ag --vimgrep'
+" }}}
+
+" lightspeed {{{
+lua require'lightspeed'.setup { }
 " }}}
 
 " vim-codefmt {{{
