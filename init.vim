@@ -324,6 +324,10 @@ nnoremap <Leader>e  :call OpenErrorInQuickfix()<CR>
 " switch between cpp and header file
 nnoremap <F7> :call SwitchSourceHeader()<CR>
 
+" single line diffput/diffget shortcuts
+nnoremap <leader>dp V:diffput<cr>
+nnoremap <leader>do V:diffget<cr>
+
 
 " }}}
 
@@ -687,7 +691,7 @@ nnoremap <leader>dt :call GotoWindow(g:vimspector_session_windows.tagpage)<CR>
 nnoremap <leader>dv :call GotoWindow(g:vimspector_session_windows.variables)<CR>
 nnoremap <leader>dw :call GotoWindow(g:vimspector_session_windows.watches)<CR>
 nnoremap <leader>ds :call GotoWindow(g:vimspector_session_windows.stack_trace)<CR>
-nnoremap <leader>do :call GotoWindow(g:vimspector_session_windows.output)<CR>
+" nnoremap <leader>do :call GotoWindow(g:vimspector_session_windows.output)<CR>
 nnoremap <leader>de :call vimspector#Reset()<CR>
 
 nnoremap <leader>dtcb :call vimspector#CleanLineBreakpoint()<CR>
