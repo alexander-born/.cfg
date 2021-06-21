@@ -139,6 +139,7 @@ let g:everforest_background = 'hard'
 let g:everforest_disable_italic_comment = 1
 set background=dark
 exe "colorscheme " . g:color_scheme
+autocmd ColorScheme everforest call everforest#highlight('DiffText', ['NONE', 'NONE', 'NONE'], ['#546b76', '17', 'LightBlue'])
 " }}}
 
 " custom function {{{
