@@ -37,6 +37,11 @@ gencompdbadp() {
     sed -i 's/-fno-canonical-system-headers//' ~/ddad/compile_commands.json
 }
 
+gencompdblanes() { 
+    ~/ddad/application/adp/tools/compile_commands/generate_compile_commands.sh ~/ddad/compile_commands.json --config=adp  //application/adp/activities/lanes/...  //application/adp/common/...   //application/adp/map/... //application/adp/perception/lanes/...;
+    sed -i 's/-fno-canonical-system-headers//' ~/ddad/compile_commands.json
+}
+
 gencompdb() { 
     bazel-compdb
     sed -i 's/-fno-canonical-system-headers//' ./compile_commands.json

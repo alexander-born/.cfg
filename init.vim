@@ -193,7 +193,7 @@ local function write_to_file(filename, lines)
     vim.cmd('w')
     vim.cmd('e#')
 end
-local function create_cpp_vimspector_json_for_bazel_test()
+function _G.create_cpp_vimspector_json_for_bazel_test()
     local test_filter = get_gtest_filter()
     local executable = get_bazel_test_executable()
     local lines = {
@@ -475,6 +475,7 @@ nnoremap <leader>fq :lua require('telescope.builtin').quickfix()<CR>
 nnoremap <leader>fh :lua require('telescope.builtin').command_history()<CR>
 " nnoremap <leader>fr :lua require('telescope.builtin').registers()<CR>
 nnoremap <leader>fl :lua require('telescope.builtin').live_grep({search_dirs = {"$HOME/ddad/application/adp/perception/lanes", "$HOME/ddad/application/adp/ros/simulation/perception/lanes", "$HOME/ddad/application/adp/activities/lanes"}})<CR>
+nnoremap <leader>fm :lua require('telescope.builtin').live_grep({search_dirs = {"$HOME/ddad/application/adp/map"}})<CR>
 nnoremap <leader>fr :lua require('telescope.builtin').live_grep({search_dirs = {"$HOME/ddad/application/adp/perception/road", "$HOME/ddad/application/adp/map", "$HOME/ddad/application/adp/activities/road"}})<CR>
 nnoremap <leader>fg :lua require('telescope.builtin').live_grep()<CR>
 nnoremap <leader>bu :lua require('telescope.builtin').buffers()<CR>
