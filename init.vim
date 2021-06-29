@@ -571,7 +571,7 @@ function! s:diff_current_quickfix_entry_with_git_status() abort
         let diff = s:get_current_qf_diff_entry(l:qf)
         let fugitive_file = s:get_fugitive_file(l:diff)
         let file = s:get_modified_file(l:diff)
-        call s:open_git_status_on_left(l:file)
+        call s:open_git_status_on_bottom(l:file)
         call s:open_modified_file()
         call s:diff_with(l:fugitive_file)
         wincmd p
@@ -600,10 +600,21 @@ function! s:qf_has_diff_items(qf) abort
     return get(a:qf, 'idx') && type(get(a:qf, 'context')) == type({}) && type(get(a:qf.context, 'items')) == type([])
 endfunction
 
+function! s:open_git_status_on_bottom(file) abort
+  Git
+  wincmd o
+  exe "silent! norm /" . substitute(a:file, "\/", "\\\\\/", "g") . "\r"
+  nnoremap <buffer><CR> :call <SID>open_diff_from_git_status()<CR>
+  call s:add_diff_mappings()
+  aboveleft wincmd s
+  wincmd p
+  resize 15
+endfunction
+
 function! s:open_git_status_on_left(file) abort
   Git
   wincmd o
-  exe "silent! norm /" . a:file . "\r"
+  exe "silent! norm /" . substitute(a:file, "\/", "\\\\\/", "g") . "\r"
   nnoremap <buffer><CR> :call <SID>open_diff_from_git_status()<CR>
   call s:add_diff_mappings()
   wincmd v
@@ -633,7 +644,7 @@ function! s:open_diff_from_git_status() abort
 endfunction
 
 function! s:open_modified_file() abort
-    2wincmd w
+    wincmd p
     cc
     call s:add_diff_mappings()
 endfunction
