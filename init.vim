@@ -14,7 +14,7 @@ Plug 'ggandor/lightspeed.nvim'
 " undotree
 Plug 'mbbill/undotree'
 " appearance
-Plug 'lukas-reineke/indent-blankline.nvim' , { 'branch': 'lua' }
+Plug 'lukas-reineke/indent-blankline.nvim'
 Plug 'hoob3rt/lualine.nvim'
 Plug 'kyazdani42/nvim-web-devicons'
 Plug 'ryanoasis/vim-devicons'
