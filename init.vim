@@ -688,7 +688,7 @@ endfunction
 
 " bazel {{{
 " Info: to make tab completion work copy '/etc/bash_completion.d/bazel-complete.bash' to '/etc/bash_completion.d/bazel'
-let g:bazel_config = get(g:, 'bazel_config', "--config=adp")
+let g:bazel_config = get(g:, 'bazel_config', "--config=adp_clang11")
 
 autocmd FileType bzl nnoremap <buffer> gd :call GoToBazelDefinition()<CR>
 nnoremap gbt :call GoToBazelTarget()<CR>
