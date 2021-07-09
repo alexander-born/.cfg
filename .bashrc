@@ -78,7 +78,6 @@ export GIT_PS1_SHOWUPSTREAM='auto'
 export PS1='\[\033[32m\]\u@\h\[\033[00m\]:\[\033[34m\]\w\[\033[31m\]$(__git_ps1)\[\033[00m\]\$ '
 
 # add ddad to python path
-export PYTHONPATH=$PYTHONPATH:~/ddad:~/.local/bin
 
 # bind F8 convert clipboard to unix directory
 bind '"\e[19~": "convert_clipboard_to_unix_path\n"'

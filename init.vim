@@ -951,6 +951,9 @@ local function setup_servers()
         if server == "vim" then
             config.init_options = { runtimepath = vim.fn.expand("~/.vim/") .. "," .. vim.fn.expand("~/.config/nvim/") }
         end
+        if server == "python" then 
+            config.settings = { python = { analysis = { extraPaths = { vim.fn.getcwd() } } } }
+        end
         if server == "cpp" then
             config.cmd = {require"lspinstall.util".install_path("cpp") .. "/clangd/bin/clangd", "--background-index", "--cross-file-rename"};
             -- config.cmd = {require"lspinstall.util".install_path("cpp") .. "/clangd/bin/clangd", "--background-index", "--cross-file-rename", "--compile-commands-dir=" .. vim.fn.getcwd()};
