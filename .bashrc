@@ -55,11 +55,12 @@ update_nvim() {
 }
 
 find_in_advantage() {
-    local vin=$(echo "$1" | sed -E "s/[0-9]+T[0-9]+_[0-9]+T[0-9]+_[0-9]+_([A-Z0-9]+)_.*.MF4/\1/g")
+    local mf=$(echo "$1" | sed -E "s/[0-9\-]+[T_][0-9\-]+_[0-9\-]+[T_][0-9\-]+_[0-9]+_[A-Z0-9]+_(.*?).MF4/\1/g" | sed -E "s/(.*?)_[0-9]+/\1/g")
+    local vin=$(echo "$1" | sed -E "s/[0-9\-]+[T_][0-9\-]+_[0-9\-]+[T_][0-9\-]+_[0-9]+_([A-Z0-9]+)_.*?(_0-9+)?.MF4/\1/g")
     local yy=$(echo "$1" | sed -E "s/^([0-9]{4}).*/\1/g")
-    local mm=$(echo "$1" | sed -E "s/^[0-9]{4}([0-9]{2}).*/\1/g")
-    local dd=$(echo "$1" | sed -E "s/^[0-9]{6}([0-9]{2}).*/\1/g")
-    ssh advantagedp "ls /maprposix/dp.prod.munich/ad-vantage/data/store/collected/car-data/MDF4/ingest/$vin/$yy/$mm/$dd/*/*/BN_EV_FASETH_UC/*/*" | grep "$1"
+    local mm=$(echo "$1" | sed -E "s/^[0-9]{4}-?([0-9]{2}).*/\1/g")
+    local dd=$(echo "$1" | sed -E "s/^[0-9]{4}-?[0-9]{2}-?([0-9]{2}).*/\1/g")
+    ssh advantagedp "find /maprposix/dp.prod.munich/ad-vantage/data/store/collected/car-data/MDF4/ingest/$vin/$yy/$mm/$dd/*/*/$mf/" | grep "$1"
 }
 
 download_trace() {
