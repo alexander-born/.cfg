@@ -34,15 +34,15 @@ ide() {
 }
 
 gencompdbadp() { 
-    # ~/ddad/application/adp/tools/compile_commands/generate_compile_commands.sh ~/ddad/compile_commands.json --config=adp_clang11 //application/adp/... ;
-    ~/ddad/application/adp/tools/compile_commands/generate_compile_commands.sh ~/ddad/compile_commands.json --config=adp_clang11 //application/adp/aas/... //application/adp/activities/... //application/adp/bmw/simulation/... //application/adp/common/... //application/adp/communication/... //application/adp/configuration/... //application/adp/coordination/... //application/adp/customer_functions/... //application/adp/degradation/... //application/adp/diagnostic/... //application/adp/lifecycle/... //application/adp/map/... //application/adp/perception/... //application/adp/planning/... //application/adp/prediction/...;
-    # ~/ddad/application/adp/tools/compile_commands/generate_compile_commands.sh ~/ddad/compile_commands.json --config=adp_clang11 //application/adp/aas/... //application/adp/activities/... //application/adp/bmw/reprocessing/... //application/adp/bmw/simulation/... //application/adp/common/... //application/adp/communication/... //application/adp/configuration/... //application/adp/coordination/... //application/adp/customer_functions/... //application/adp/degradation/... //application/adp/diagnostic/... //application/adp/lifecycle/... //application/adp/map/... //application/adp/perception/... //application/adp/planning/... //application/adp/prediction/...;
-    sed -i 's/-fno-canonical-system-headers//' ~/ddad/compile_commands.json
+    # ~/ddad/application/adp/tools/compile_commands/generate_compile_commands.sh ~/ddad/compile_commands.json --config=adp //application/adp/... ;
+    application/adp/tools/compile_commands/generate_compile_commands.sh ./compile_commands.json --config=adp //application/adp/aas/... //application/adp/activities/...  //application/adp/common/... //application/adp/communication/... //application/adp/configuration/... //application/adp/coordination/... //application/adp/customer_functions/... //application/adp/degradation/... //application/adp/diagnostic/... //application/adp/lifecycle/... //application/adp/map/... //application/adp/perception/... ;
+    # ~/ddad/application/adp/tools/compile_commands/generate_compile_commands.sh ~/ddad/compile_commands.json --config=adp //application/adp/aas/... //application/adp/activities/... //application/adp/bmw/reprocessing/... //application/adp/bmw/simulation/... //application/adp/common/... //application/adp/communication/... //application/adp/configuration/... //application/adp/coordination/... //application/adp/customer_functions/... //application/adp/degradation/... //application/adp/diagnostic/... //application/adp/lifecycle/... //application/adp/map/... //application/adp/perception/... //application/adp/planning/... //application/adp/prediction/...;
+    sed -i 's/-fno-canonical-system-headers//' ./compile_commands.json
 }
 
 gencompdblanes() { 
-    ~/ddad/application/adp/tools/compile_commands/generate_compile_commands.sh ~/ddad/compile_commands.json --config=adp_clang11  //application/adp/activities/lanes/...  //application/adp/common/...   //application/adp/map/... //application/adp/perception/lanes/...;
-    sed -i 's/-fno-canonical-system-headers//' ~/ddad/compile_commands.json
+    application/adp/tools/compile_commands/generate_compile_commands.sh ./compile_commands.json --config=adp //application/adp/activities/lanes/...  //application/adp/common/...   //application/adp/map/... //application/adp/perception/lanes/...;
+    sed -i 's/-fno-canonical-system-headers//' ./compile_commands.json
 }
 
 gencompdb() { 
