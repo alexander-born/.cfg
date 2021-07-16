@@ -16,10 +16,6 @@ alias gitmegamagic="git rm --cached -r .; git reset --hard"
 alias pinggoogle="tmux new-session -s pinggoogle \; \
   send-keys 'watch -n60 curl http://www.google.com/' C-m \; \
   detach"
-alias ide="tmux new-session -s shared \; \
-  send-keys 'cd ~/ddad;nvim' C-m \; \
-  new-window 'bash' \; \
-  send-keys 'cd ~/ddad' C-m \; "
 alias dlt_viewer="cd ~/Applications/dlt_viewer ; LD_LIBRARY_PATH=. ./dlt_viewer &"
 
 alias ddad="cd ~/ddad"
@@ -29,6 +25,13 @@ alias traces="cd ~/traces"
 alias runrviz="cd ~/ddad/bazel-bin/application/adp/bmw/vehicle/configuration/had/bmw_veh_g12_control/launch/building_blocks/rviz_ad_lite_mpad.launch.sh.runfiles/ddad; ../../rviz_ad_lite_mpad.launch.sh;"
 
 convert_clipboard_to_unix_path() { xclip -o -sel clip | sed 's/\\/\//g' | sed 's/^file:/smb:/' | xclip -i -sel clip; echo "[INFO] clipboard updated."; }
+
+ide() {
+    tmux new-session -s "$1" \; \
+        send-keys "cd $1;nvim" C-m \; \
+        new-window "bash" \; \
+        send-keys "cd $1" C-m \; 
+}
 
 gencompdbadp() { 
     # ~/ddad/application/adp/tools/compile_commands/generate_compile_commands.sh ~/ddad/compile_commands.json --config=adp_clang11 //application/adp/... ;
