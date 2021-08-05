@@ -204,7 +204,7 @@ function _G.create_cpp_vimspector_json_for_bazel_test()
         '      "configuration": {',
         '        "request": "launch",',
         '        "program": "' .. executable .. '",',
-        '        "args": ["--gtest_filter=' .. test_filter .. '"],',
+        '        "args": ["--gtest_filter=\'\'' .. test_filter .. '\'\'"],',
         '        "stopOnEntry": false',
         '      }',
         '    }',
