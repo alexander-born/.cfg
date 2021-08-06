@@ -414,6 +414,8 @@ lua require'colorizer'.setup()
 nnoremap <c-n> :NERDTreeToggle<CR>
 nnoremap <Leader>n :NERDTreeFind<CR>
 
+autocmd FileType nerdtree nnoremap <buffer> <Leader>gr :lua require('telescope.builtin').live_grep({search_dirs = {vim.fn.eval('g:NERDTreeDirNode.GetSelected().path.str()')}})<CR>
+
 syntax on
 filetype plugin indent on
 :let g:NERDTreeWinSize=60
@@ -470,20 +472,22 @@ let g:mkdp_browser = 'firefox'
 " telescope {{{
 nnoremap <leader>ff :lua require('telescope.builtin').find_files({previewer = false})<CR>
 nnoremap <leader>fo :lua require('telescope.builtin').oldfiles({previewer = false})<CR>
-nnoremap <leader>fb :lua require('telescope.builtin').current_buffer_fuzzy_find()<CR>
 nnoremap <leader>fq :lua require('telescope.builtin').quickfix()<CR>
 nnoremap <leader>fh :lua require('telescope.builtin').command_history()<CR>
-" nnoremap <leader>fr :lua require('telescope.builtin').registers()<CR>
-nnoremap <leader>fl :lua require('telescope.builtin').live_grep({search_dirs = {"$HOME/ddad/application/adp/perception/lanes", "$HOME/ddad/application/adp/ros/simulation/perception/lanes", "$HOME/ddad/application/adp/activities/lanes"}})<CR>
-nnoremap <leader>fm :lua require('telescope.builtin').live_grep({search_dirs = {"$HOME/ddad/application/adp/map"}})<CR>
-nnoremap <leader>fr :lua require('telescope.builtin').live_grep({search_dirs = {"$HOME/ddad/application/adp/perception/road", "$HOME/ddad/application/adp/map", "$HOME/ddad/application/adp/activities/road"}})<CR>
+nnoremap <leader>fr :lua require('telescope.builtin').registers()<CR>
+nnoremap <leader>grb :lua require('telescope.builtin').current_buffer_fuzzy_find()<CR>
+nnoremap <leader>grl :lua require('telescope.builtin').live_grep({search_dirs = {"application/adp/perception/lanes", "application/adp/ros/simulation/perception/lanes", "application/adp/activities/lanes"}})<CR>
+nnoremap <leader>grm :lua require('telescope.builtin').live_grep({search_dirs = {"application/adp/map"}})<CR>
+nnoremap <leader>gra :lua require('telescope.builtin').live_grep({search_dirs = {"application/adp"}})<CR>
+nnoremap <leader>grr :lua require('telescope.builtin').live_grep({search_dirs = {"application/adp/perception/road", "application/adp/map", "application/adp/activities/road"}})<CR>
 nnoremap <leader>fg :lua require('telescope.builtin').live_grep()<CR>
-nnoremap <leader>bu :lua require('telescope.builtin').buffers()<CR>
+nnoremap <leader>gr :lua require('telescope.builtin').live_grep()<CR>
+nnoremap <leader>fb :lua require('telescope.builtin').buffers()<CR>
 nnoremap <leader>ht :lua require('telescope.builtin').help_tags()<CR>
 
-nnoremap <leader>g. :lua require('telescope.builtin').live_grep({cwd = "$HOME/.cfg", vimgrep_arguments = { 'rg', '--color=never', '--no-heading', '--with-filename', '--line-number', '--column', '--smart-case', '--hidden' }, file_ignore_patterns = {".git"}})<CR>
-nnoremap <leader>gw :lua require('telescope.builtin').live_grep({cwd = "$HOME/projects/vimwiki"})<CR>
-nnoremap <leader>gn :lua require('telescope.builtin').live_grep({cwd = "$HOME/.config/nvim"})<CR>
+nnoremap <leader>gr. :lua require('telescope.builtin').live_grep({cwd = "$HOME/.cfg", vimgrep_arguments = { 'rg', '--color=never', '--no-heading', '--with-filename', '--line-number', '--column', '--smart-case', '--hidden' }, file_ignore_patterns = {".git"}})<CR>
+nnoremap <leader>grw :lua require('telescope.builtin').live_grep({cwd = "$HOME/projects/vimwiki"})<CR>
+nnoremap <leader>grn :lua require('telescope.builtin').live_grep({cwd = "$HOME/.config/nvim"})<CR>
 nnoremap <leader>f. :lua require('telescope.builtin').find_files({prompt_title = ".cfg", cwd = "$HOME/.cfg", hidden = true, file_ignore_patterns = {".git"}})<CR>
 nnoremap <leader>fn :lua require('telescope.builtin').find_files({prompt_title = ".config/nvim", cwd = "$HOME/.config/nvim"})<CR>
 
