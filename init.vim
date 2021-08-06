@@ -21,8 +21,8 @@ Plug 'ryanoasis/vim-devicons'
 Plug 'akinsho/nvim-bufferline.lua'
 Plug 'norcalli/nvim-colorizer.lua'
 Plug 'folke/todo-comments.nvim'
-" nerdtree
-Plug 'scrooloose/nerdtree'
+" filetree
+Plug 'kyazdani42/nvim-tree.lua'
 " colorschemes
 Plug 'sainnhe/everforest'
 Plug 'sainnhe/gruvbox-material'
@@ -122,7 +122,7 @@ augroup END
 
 " }}}
 
-" specific user config {{{
+" spcific user config {{{
 if filereadable(expand("~/.user.vim"))
     source ~/.user.vim
 endif
@@ -410,18 +410,42 @@ EOF
 lua require'colorizer'.setup()
 " }}}
 
-" nerdtree {{{
-nnoremap <c-n> :NERDTreeToggle<CR>
-nnoremap <Leader>n :NERDTreeFind<CR>
+" filetree {{{
+nnoremap <c-n> :lua NvimTreeToggleProject()<CR>
+nnoremap <Leader>n :lua nvim_tree_find_file()<CR>
 
-autocmd FileType nerdtree nnoremap <buffer> <Leader>gr :lua require('telescope.builtin').live_grep({search_dirs = {vim.fn.eval('g:NERDTreeDirNode.GetSelected().path.str()')}})<CR>
+lua << EOF
+vim.g.project_path = vim.fn.getcwd()
+vim.g.nvim_tree_width = 60
+vim.g.nvim_tree_bindings = { { key = {"<Leader>gr", "gr" }, cb = ":lua grep_at_current_tree_node()<CR>"} }
 
-syntax on
-filetype plugin indent on
-:let g:NERDTreeWinSize=60
-:let g:NERDTreeMapHelp = '<F1>'
-"close vim if nerdtree is last open buffer
-autocmd bufenter * if (winnr("$") == 1 && exists("b:NERDTree") && b:NERDTree.isTabTree()) | q | endif
+function nvim_tree_find_file()
+  local function starts_with(String, Start)
+    return string.sub(String, 1, string.len(Start)) == Start
+  end
+
+  local cur_path = vim.fn.expand('%:p:h')
+
+  if starts_with(cur_path, vim.g.project_path) then
+    require('nvim-tree').find_file(true)
+  else
+    require('nvim-tree').refresh()
+    require('nvim-tree.lib').change_dir(cur_path)
+    require('nvim-tree').find_file(true)
+  end
+end
+
+function NvimTreeToggleProject()
+    vim.cmd('lcd ' .. vim.g.project_path)
+    require'nvim-tree'.toggle()
+end
+function grep_at_current_tree_node()
+    local node = require('nvim-tree.lib').get_node_at_cursor()
+    if not node then return end
+    require('telescope.builtin').live_grep({search_dirs = {node.absolute_path}})
+end
+EOF
+
 " }}}
 
 " icons {{{
