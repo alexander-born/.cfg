@@ -17,7 +17,6 @@ Plug 'mbbill/undotree'
 Plug 'lukas-reineke/indent-blankline.nvim'
 Plug 'hoob3rt/lualine.nvim'
 Plug 'kyazdani42/nvim-web-devicons'
-Plug 'ryanoasis/vim-devicons'
 Plug 'akinsho/nvim-bufferline.lua'
 Plug 'norcalli/nvim-colorizer.lua'
 Plug 'folke/todo-comments.nvim'
@@ -144,45 +143,6 @@ autocmd ColorScheme everforest call everforest#highlight('DiffText', ['NONE', 'N
 
 " custom function {{{
 lua << EOF
-local function contains(tbl, item)
-    for key, value in pairs(tbl) do
-        if value == item then return key end
-    end
-    return false
-end
-local function is_gtest(test_type)
-    local gtest_types = {'TEST', 'TEST_F', 'TEST_P', 'TYPED_TEST_P', 'TYPED_TEST'}
-    return contains(gtest_types, test_type)
-end
-local function get_gtest_info()
-    local ts_utils = require'nvim-treesitter.ts_utils'
-    local node = ts_utils.get_node_at_cursor()
-    local test_node = nil
-    while node ~= nil do
-        if node:type() == 'function_definition' then test_node = node end
-        node = node:parent()
-    end
-    if test_node == nil then return error('Cursor not in a gtest') end
-    local test_type = ts_utils.get_node_text(test_node:named_child(0):named_child(0))[1]
-    if not is_gtest(test_type) then return error('Cursor not in a gtest') end
-    local parameter_list = test_node:named_child(0):named_child(1)
-    local test_suite = ts_utils.get_node_text(parameter_list:named_child(0))[1]
-    local test_name = ts_utils.get_node_text(parameter_list:named_child(1))[1]
-    return { test_type = test_type, test_suite = test_suite, test_name = test_name }
-end
-local function get_gtest_filter()
-    local test_info = get_gtest_info()
-    local test_filter = test_info.test_suite .. '.' .. test_info.test_name
-    if test_info.test_type == 'TEST_P' then test_filter = '*' .. test_filter .. '*' end
-    if contains({'TYPED_TEST', 'TYPED_TEST_P'}, test_info.test_type) then test_filter = '*' .. test_info.test_suite .. '*' .. test_info.test_name end
-    return test_filter
-end
-local function get_bazel_test_executable()
-    vim.fn.BazelGetCurrentBufTarget()
-    local executable = vim.g.current_bazel_target:gsub(':', '/')
-    return executable:gsub('//', 'bazel-bin/')
-
-end
 local function write_to_file(filename, lines)
     vim.cmd('e ' .. filename)
     vim.cmd('%delete')
@@ -193,9 +153,10 @@ local function write_to_file(filename, lines)
     vim.cmd('w')
     vim.cmd('e#')
 end
+
 function _G.create_cpp_vimspector_json_for_bazel_test()
-    local test_filter = get_gtest_filter()
-    local executable = get_bazel_test_executable()
+    local test_filter = require('bazel').get_gtest_filter()
+    local executable =  require('bazel').get_bazel_test_executable()
     local lines = {
         '{',
         '  "configurations": {',
@@ -212,12 +173,14 @@ function _G.create_cpp_vimspector_json_for_bazel_test()
         '}'}
     write_to_file('.vimspector.json', lines)
 end
+
 function _G.DebugThisTest()
     create_cpp_vimspector_json_for_bazel_test()
     vim.cmd('new')
     vim.cmd('call termopen("bazel build " . g:bazel_config . " -c dbg " . g:current_bazel_target, {"on_exit": "StartVimspector"})')
 end
 EOF
+
 function! StartVimspector(job_id, code, event) dict
     if a:code == 0
         close
