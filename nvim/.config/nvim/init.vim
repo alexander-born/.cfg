@@ -1005,7 +1005,7 @@ nnoremap ]d :lua vim.lsp.diagnostic.goto_next()<CR>
 nnoremap gd :lua vim.lsp.buf.definition()<CR>
 nnoremap gi :lua vim.lsp.buf.implementation()<CR>
 nnoremap <leader>r :lua vim.lsp.buf.references()<CR>
-nnoremap <leader>q :lua vim.lsp.diagnostic.set_loclist()<CR>
+nnoremap <leader>q :lua vim.lsp.diagnostic.set_qflist()<CR>
 " }}}
 
 " }}}
