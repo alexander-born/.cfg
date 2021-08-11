@@ -413,13 +413,7 @@ EOF
 " }}}
 
 " icons {{{
-lua << EOF
-require'nvim-web-devicons'.setup {
- -- globally enable default icons (default to false)
- -- will get overriden by `get_icons` option
- default = true;
-}
-EOF
+lua require('nvim-web-devicons').setup()
 " }}}
 
 " ack.vim {{{
@@ -431,7 +425,7 @@ let g:ackprg = 'ag --vimgrep'
 " lightspeed {{{
 nmap ,s <Plug>Lightspeed_s
 nmap ,S <Plug>Lightspeed_S
-lua require'lightspeed'.setup { }
+lua require'lightspeed'.setup({})
 " }}}
 
 " vim-codefmt {{{
@@ -835,13 +829,13 @@ EOF
 " }}}
 
 " todo-comments {{{
-lua require("todo-comments").setup {}
+lua require("todo-comments").setup()
 nnoremap <leader>tq :TodoQuickfix<CR>
 nnoremap <leader>ft :TodoTelescope<CR>
 " }}}
 
 " trouble {{{
-lua require("trouble").setup {}
+lua require("trouble").setup()
 nnoremap <leader>xx <cmd>TroubleToggle<cr>
 nnoremap <leader>xw <cmd>TroubleToggle lsp_workspace_diagnostics<cr>
 nnoremap <leader>xd <cmd>TroubleToggle lsp_document_diagnostics<cr>
@@ -934,6 +928,12 @@ require'lspinstall'.post_install_hook = function ()
   vim.cmd("bufdo e") -- this triggers the FileType autocmd that starts the server
 end
 
+EOF
+
+" }}}
+
+" autocompletion {{{
+lua << EOF
 require'compe'.setup {
   enabled = true;
   source = {
@@ -945,13 +945,7 @@ require'compe'.setup {
     vsnip = true;
   };
 }
-
-
 EOF
-
-" }}}
-
-" autocompletion {{{
 
 inoremap <silent><expr> <C-Space> compe#complete()
 inoremap <silent><expr> <CR>      compe#confirm('<CR>')
