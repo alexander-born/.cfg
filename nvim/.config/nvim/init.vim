@@ -378,6 +378,7 @@ nnoremap <c-n> :lua NvimTreeToggleProject()<CR>
 nnoremap <Leader>n :lua nvim_tree_find_file()<CR>
 
 lua << EOF
+vim.g.nvim_tree_disable_netrw = 0
 vim.g.project_path = vim.fn.getcwd()
 vim.g.nvim_tree_width = 60
 vim.g.nvim_tree_bindings = { { key = {"<Leader>gr", "gr" }, cb = ":lua grep_at_current_tree_node()<CR>"} }
