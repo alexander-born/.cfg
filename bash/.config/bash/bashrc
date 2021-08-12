@@ -74,6 +74,11 @@ download_trace() {
     chmod -R u+rwX ./*
 }
 
+download_trigger() {
+    local trigger_folder=$(find_in_advantage "$1" | xargs dirname)
+    download_trace "$trigger_folder"
+}
+
 export GIT_PS1_SHOWDIRTYSTATE='y'
 export GIT_PS1_SHOWSTASHSTATE='y'
 export GIT_PS1_SHOWUNTRACKEDFILES='y'
