@@ -10,7 +10,7 @@ Plug 'tpope/vim-commentary'
 Plug 'tpope/vim-dispatch'
 Plug 'tpope/vim-unimpaired'
 Plug 'wsdjeg/vim-fetch'
-Plug 'ggandor/lightspeed.nvim'
+" Plug 'ggandor/lightspeed.nvim'
 " undotree
 Plug 'mbbill/undotree'
 " appearance
@@ -424,9 +424,9 @@ let g:ackprg = 'ag --vimgrep'
 " }}}
 
 " lightspeed {{{
-nmap ,s <Plug>Lightspeed_s
-nmap ,S <Plug>Lightspeed_S
-lua require'lightspeed'.setup({})
+" nmap ,s <Plug>Lightspeed_s
+" nmap ,S <Plug>Lightspeed_S
+" lua require'lightspeed'.setup({})
 " }}}
 
 " vim-codefmt {{{
