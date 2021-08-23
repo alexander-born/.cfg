@@ -92,6 +92,7 @@ set splitbelow
 set ttimeoutlen=5
 set history=10000
 set sidescroll=1
+set mouse=a
 
 "search options"
 set incsearch
