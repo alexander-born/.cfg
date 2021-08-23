@@ -33,21 +33,37 @@ ide() {
         send-keys "cd $1" C-m \; 
 }
 
+cleanup_compile_commands()
+{
+    echo "cleanup compile commands"
+    sed -i 's/-ftree-loop-vectorize //g' "$1"
+    sed -i 's/-fno-canonical-system-headers //g' "$1"
+    # perl -ni.bak -e 'print unless /.*\.h(pp)?"},?/' "$1"
+    echo "cleanup compile commands - done"
+}
+
+compdb() {
+    echo "gen compile commands"
+    bazel build --aspects=application/adp/bazel/compile_commands/compile_commands.bzl%compilation_database_aspect_force_cpp --output_groups=compdb_files --keep_going "${@:2}"
+    echo "construct single compile commands"
+    ./application/adp/tools/compile_commands/construct_single_compile_commands_database.sh "$1"
+}
+
 gencompdbadp() { 
     # ~/ddad/application/adp/tools/compile_commands/generate_compile_commands.sh ~/ddad/compile_commands.json --config=adp //application/adp/... ;
-    application/adp/tools/compile_commands/generate_compile_commands.sh ./compile_commands.json --config=adp //application/adp/aas/... //application/adp/activities/...  //application/adp/common/... //application/adp/communication/... //application/adp/configuration/... //application/adp/coordination/... //application/adp/customer_functions/... //application/adp/degradation/... //application/adp/diagnostic/... //application/adp/lifecycle/... //application/adp/map/... //application/adp/perception/... ;
+    compdb ./compile_commands.json --config=adp //application/adp/aas/... //application/adp/activities/...  //application/adp/common/... //application/adp/communication/... //application/adp/configuration/... //application/adp/coordination/... //application/adp/customer_functions/... //application/adp/degradation/... //application/adp/diagnostic/... //application/adp/lifecycle/... //application/adp/map/... //application/adp/perception/... ;
     # ~/ddad/application/adp/tools/compile_commands/generate_compile_commands.sh ~/ddad/compile_commands.json --config=adp //application/adp/aas/... //application/adp/activities/... //application/adp/bmw/reprocessing/... //application/adp/bmw/simulation/... //application/adp/common/... //application/adp/communication/... //application/adp/configuration/... //application/adp/coordination/... //application/adp/customer_functions/... //application/adp/degradation/... //application/adp/diagnostic/... //application/adp/lifecycle/... //application/adp/map/... //application/adp/perception/... //application/adp/planning/... //application/adp/prediction/...;
-    sed -i 's/-fno-canonical-system-headers//' ./compile_commands.json
+    cleanup_compile_commands ./compile_commands.json
 }
 
 gencompdblanes() { 
-    application/adp/tools/compile_commands/generate_compile_commands.sh ./compile_commands.json --config=adp //application/adp/activities/lanes/...  //application/adp/common/...   //application/adp/map/... //application/adp/perception/lanes/...;
-    sed -i 's/-fno-canonical-system-headers//' ./compile_commands.json
+    compdb ./compile_commands.json --config=adp //application/adp/activities/lanes/...  //application/adp/common/...   //application/adp/map/... //application/adp/perception/lanes/...;
+    cleanup_compile_commands ./compile_commands.json
 }
 
 gencompdb() { 
     bazel-compdb
-    sed -i 's/-fno-canonical-system-headers//' ./compile_commands.json
+    cleanup_compile_commands ./compile_commands.json
 }
 
 # Install/update neovim nightly
