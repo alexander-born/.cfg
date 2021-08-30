@@ -361,8 +361,7 @@ let g:indent_blankline_filetype = ['python', 'json', 'bzl']
 lua << EOF
 require'bufferline'.setup{
     options = {
-        numbers = "buffer_id",
-        number_style = "",
+        numbers = function(opts) return '' end,
         max_name_length = 50;
         tab_size = 0,
     }
@@ -465,7 +464,7 @@ nnoremap <leader>gra :lua require('telescope.builtin').live_grep({search_dirs = 
 nnoremap <leader>grr :lua require('telescope.builtin').live_grep({search_dirs = {"application/adp/perception/road", "application/adp/map", "application/adp/activities/road"}})<CR>
 nnoremap <leader>fg :lua require('telescope.builtin').live_grep()<CR>
 nnoremap <leader>gr :lua require('telescope.builtin').live_grep()<CR>
-nnoremap <leader>fb :lua require('telescope.builtin').buffers()<CR>
+nnoremap <leader>fb :lua require('telescope.builtin').buffers({sort_mru = true})<CR>
 nnoremap <leader>ht :lua require('telescope.builtin').help_tags()<CR>
 
 nnoremap <leader>gr. :lua require('telescope.builtin').live_grep({cwd = "$HOME/.cfg", vimgrep_arguments = { 'rg', '--color=never', '--no-heading', '--with-filename', '--line-number', '--column', '--smart-case', '--hidden' }, file_ignore_patterns = {".git"}})<CR>
