@@ -1,81 +1,5 @@
 
-" plugins {{{
-
-call plug#begin()
-" general
-Plug 'inkarkat/vim-ReplaceWithRegister'
-Plug 'machakann/vim-sandwich'
-Plug 'tpope/vim-abolish'
-Plug 'tpope/vim-commentary'
-Plug 'tpope/vim-dispatch'
-Plug 'tpope/vim-unimpaired'
-Plug 'wsdjeg/vim-fetch'
-" Plug 'ggandor/lightspeed.nvim'
-" undotree
-Plug 'mbbill/undotree'
-" appearance
-Plug 'lukas-reineke/indent-blankline.nvim'
-Plug 'hoob3rt/lualine.nvim'
-Plug 'kyazdani42/nvim-web-devicons'
-Plug 'akinsho/nvim-bufferline.lua'
-Plug 'norcalli/nvim-colorizer.lua'
-Plug 'folke/todo-comments.nvim'
-" filetree
-Plug 'kyazdani42/nvim-tree.lua'
-" colorschemes
-Plug 'sainnhe/everforest'
-Plug 'sainnhe/gruvbox-material'
-Plug 'ChristianChiarulli/nvcode-color-schemes.vim'
-" grep
-Plug 'mileszs/ack.vim'
-" wiki
-Plug 'vimwiki/vimwiki'
-" markdown
-Plug 'iamcco/markdown-preview.nvim', { 'do': { -> mkdp#util#install() }, 'for': ['markdown', 'vim-plug']}
-" git
-Plug 'tpope/vim-fugitive'
-Plug 'tpope/vim-rhubarb'
-Plug 'lewis6991/gitsigns.nvim'
-Plug 'rhysd/conflict-marker.vim'
-" tmux jump windows
-Plug 'christoomey/vim-tmux-navigator'
-" python
-Plug 'alfredodeza/pytest.vim'
-" autoformat
-Plug 'google/vim-codefmt'
-Plug 'google/vim-glaive'
-Plug 'google/vim-maktaba'
-" bazel
-Plug 'bazelbuild/vim-bazel'
-Plug 'alexander-born/bazel-vim'
-" debugging
-Plug 'szw/vim-maximizer'
-Plug 'puremourning/vimspector'
-" telescope
-Plug 'nvim-lua/popup.nvim'
-Plug 'nvim-lua/plenary.nvim'
-Plug 'nvim-telescope/telescope.nvim'
-Plug 'nvim-telescope/telescope-fzy-native.nvim'
-" treesitter
-Plug 'nvim-treesitter/nvim-treesitter', {'do': ':TSUpdate'}
-Plug 'nvim-treesitter/nvim-treesitter-textobjects'
-Plug 'nvim-treesitter/playground'
-" trouble
-Plug 'folke/trouble.nvim'
-" lsp
-Plug 'neovim/nvim-lspconfig'
-Plug 'kabouzeid/nvim-lspinstall'
-Plug 'hrsh7th/nvim-compe'
-Plug 'ray-x/lsp_signature.nvim'
-Plug 'onsails/lspkind-nvim'
-Plug 'aymericbeaumet/vim-symlink'
-" snippets
-Plug 'hrsh7th/vim-vsnip'
-Plug 'hrsh7th/vim-vsnip-integ'
-Plug 'rafamadriz/friendly-snippets'
-call plug#end()
-
-" }}}
+lua require('plugins')
 
 " general {{{
 let g:color_scheme = 'everforest' " gruvbox-material, nord, everforest
@@ -369,10 +293,6 @@ require'bufferline'.setup{
 EOF
 " }}}
 
-" nvim-colorizer {{{
-lua require'colorizer'.setup()
-" }}}
-
 " filetree {{{
 nnoremap <c-n> :lua NvimTreeToggleProject()<CR>
 nnoremap <Leader>n :lua nvim_tree_find_file()<CR>
@@ -410,10 +330,6 @@ function grep_at_current_tree_node()
 end
 EOF
 
-" }}}
-
-" icons {{{
-lua require('nvim-web-devicons').setup()
 " }}}
 
 " ack.vim {{{
@@ -829,13 +745,11 @@ EOF
 " }}}
 
 " todo-comments {{{
-lua require("todo-comments").setup()
 nnoremap <leader>tq :TodoQuickfix<CR>
 nnoremap <leader>ft :TodoTelescope<CR>
 " }}}
 
 " trouble {{{
-lua require("trouble").setup()
 nnoremap <leader>xx <cmd>TroubleToggle<cr>
 nnoremap <leader>xw <cmd>TroubleToggle lsp_workspace_diagnostics<cr>
 nnoremap <leader>xd <cmd>TroubleToggle lsp_document_diagnostics<cr>
