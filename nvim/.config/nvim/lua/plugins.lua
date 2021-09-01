@@ -18,21 +18,21 @@ return require('packer').startup(function(use)
     use 'tpope/vim-dispatch'
     use 'tpope/vim-unimpaired'
     use 'wsdjeg/vim-fetch'
-    -- use 'ggandor/lightspeed.nvim'
+    -- use {'ggandor/lightspeed.nvim', config = function() require'lightspeed'.setup({}) end }
 
     -- undotree
     use 'mbbill/undotree'
 
     -- appearance
-    use 'lukas-reineke/indent-blankline.nvim'
-    use 'hoob3rt/lualine.nvim'
-    use {'kyazdani42/nvim-web-devicons', config= function() require('nvim-web-devicons').setup() end }
-    use 'akinsho/nvim-bufferline.lua'
+    use {'lukas-reineke/indent-blankline.nvim', config = function() require'indent_blankline'.setup {filetype = {'python', 'json', 'bzl'} } end }
+    use {'hoob3rt/lualine.nvim', config = function() require'config.lualine'.setup() end }
+    use {'kyazdani42/nvim-web-devicons', config = function() require'nvim-web-devicons'.setup() end }
     use {'norcalli/nvim-colorizer.lua', config = function() require'colorizer'.setup() end }
     use {'folke/todo-comments.nvim', config = function() require'todo-comments'.setup() end }
+    use {'akinsho/nvim-bufferline.lua', config = function() require'config.bufferline'.setup() end }
 
     -- filetree
-    use 'kyazdani42/nvim-tree.lua'
+    use {'kyazdani42/nvim-tree.lua', config = function() require'config.nvimtree'.setup() end }
 
     -- colorschemes
     use 'sainnhe/everforest'
@@ -51,7 +51,7 @@ return require('packer').startup(function(use)
     -- git
     use 'tpope/vim-fugitive'
     use 'tpope/vim-rhubarb'
-    use 'lewis6991/gitsigns.nvim'
+    use {'lewis6991/gitsigns.nvim', config = function() require'gitsigns'.setup() end }
     use 'rhysd/conflict-marker.vim'
 
     -- tmux jump windows
@@ -67,7 +67,7 @@ return require('packer').startup(function(use)
 
     -- bazel
     use 'bazelbuild/vim-bazel'
-    use 'alexander-born/bazel-vim'
+    use {'alexander-born/bazel-vim', config = function() require'config.bazel'.setup() end }
 
     -- debugging
     use 'szw/vim-maximizer'
@@ -76,11 +76,11 @@ return require('packer').startup(function(use)
     -- telescope
     use 'nvim-lua/popup.nvim'
     use 'nvim-lua/plenary.nvim'
-    use 'nvim-telescope/telescope.nvim'
     use 'nvim-telescope/telescope-fzy-native.nvim'
+    use {'nvim-telescope/telescope.nvim', config = function() require'config.telescope'.setup() end }
 
     -- treesitter
-    use {'nvim-treesitter/nvim-treesitter', run = ':TSUpdate'}
+    use {'nvim-treesitter/nvim-treesitter', run = ':TSUpdate', config = function() require'config.treesitter'.setup() end }
     use 'nvim-treesitter/nvim-treesitter-textobjects'
     use 'nvim-treesitter/playground'
 
@@ -88,11 +88,12 @@ return require('packer').startup(function(use)
     use {'folke/trouble.nvim', config = function() require'trouble'.setup() end }
 
     -- lsp
-    use 'neovim/nvim-lspconfig'
-    use 'kabouzeid/nvim-lspinstall'
-    use 'hrsh7th/nvim-compe'
+    use {'kabouzeid/nvim-lspinstall', config = function() require'lspinstall'.setup() end }
+    use {'neovim/nvim-lspconfig', config = function() require'config.lsp'.setup() end }
+    use {'hrsh7th/nvim-compe', config = function() require'config.compe'.setup() end }
     use 'ray-x/lsp_signature.nvim'
-    use 'onsails/lspkind-nvim'
+    use {'onsails/lspkind-nvim', config = function() require'lspkind'.init() end }
+
     use 'aymericbeaumet/vim-symlink'
 
     -- snippets
