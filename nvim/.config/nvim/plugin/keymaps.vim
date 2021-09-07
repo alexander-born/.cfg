@@ -44,6 +44,7 @@ nnoremap <leader>grn :lua require('telescope.builtin').live_grep({search_dirs = 
 nnoremap <Leader>gl :G log -n 1000<CR>
 nnoremap <Leader>gd :GitDiff<CR>
 nnoremap <Leader>gs :G<CR>:MaximizerToggle<CR>
+vnoremap <Leader>gb :GBrowse<CR>
 nnoremap <leader>gb :lua require('telescope.builtin').git_branches({cwd = vim.fn.expand("%:p:h")})<CR>
 nnoremap <leader>gc :lua require('telescope.builtin').git_commits({cwd = vim.fn.expand("%:p:h")})<CR>
 
