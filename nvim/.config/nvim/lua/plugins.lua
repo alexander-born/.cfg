@@ -90,22 +90,22 @@ return require('packer').startup(function(use)
     -- lsp
     use {'kabouzeid/nvim-lspinstall', config = function() require'lspinstall'.setup() end }
     use {'neovim/nvim-lspconfig', config = function() require'config.lsp'.setup() end }
-    use 'ray-x/lsp_signature.nvim'
+    use { 'ray-x/lsp_signature.nvim', config = function() require'lsp_signature'.setup({hint_enable = false}) end }
     use 'aymericbeaumet/vim-symlink'
 
     -- completion
-    use {'hrsh7th/nvim-compe', config = function() require'config.compe'.setup() end }
     use {'onsails/lspkind-nvim', config = function() require'lspkind'.init() end }
 
     -- cmp
-    -- use {'hrsh7th/nvim-cmp', config = function() require'config.cmp'.setup() end }
-    -- use 'hrsh7th/cmp-nvim-lsp'
-    -- use 'hrsh7th/cmp-path'
-    -- use 'hrsh7th/cmp-buffer'
+    use {'hrsh7th/nvim-cmp', config = function() require'config.cmp'.setup() end }
+    use 'hrsh7th/cmp-nvim-lsp'
+    use 'hrsh7th/cmp-path'
+    use 'hrsh7th/cmp-buffer'
+    use 'hrsh7th/cmp-vsnip'
 
     -- snippets
     use 'hrsh7th/vim-vsnip'
-    use 'hrsh7th/vim-vsnip-integ'
     use 'rafamadriz/friendly-snippets'
+
 
 end)
