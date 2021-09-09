@@ -8,20 +8,20 @@ vim.cmd([[autocmd BufWritePost plugins.lua source <afile> | PackerCompile]])
 
 return require('packer').startup(function(use)
     -- Packer can manage itself
-    use 'wbthomason/packer.nvim'
+    use {'wbthomason/packer.nvim'}
 
     -- general
-    use 'inkarkat/vim-ReplaceWithRegister'
-    use 'machakann/vim-sandwich'
-    use 'tpope/vim-abolish'
-    use 'tpope/vim-commentary'
-    use 'tpope/vim-dispatch'
-    use 'tpope/vim-unimpaired'
-    use 'wsdjeg/vim-fetch'
+    use {'inkarkat/vim-ReplaceWithRegister'}
+    use {'machakann/vim-sandwich'}
+    use {'tpope/vim-abolish'}
+    use {'tpope/vim-commentary'}
+    use {'tpope/vim-dispatch'}
+    use {'tpope/vim-unimpaired'}
+    use {'wsdjeg/vim-fetch'}
     -- use {'ggandor/lightspeed.nvim', config = function() require'lightspeed'.setup({}) end }
 
     -- undotree
-    use 'mbbill/undotree'
+    use {'mbbill/undotree'}
 
     -- appearance
     use {'lukas-reineke/indent-blankline.nvim', config = function() require'indent_blankline'.setup {filetype = {'python', 'json', 'bzl'} } end }
@@ -35,54 +35,54 @@ return require('packer').startup(function(use)
     use {'kyazdani42/nvim-tree.lua', config = function() require'config.nvimtree'.setup() end }
 
     -- colorschemes
-    use 'sainnhe/everforest'
-    use 'sainnhe/gruvbox-material'
-    use 'ChristianChiarulli/nvcode-color-schemes.vim'
+    use {'sainnhe/everforest'}
+    use {'sainnhe/gruvbox-material'}
+    use {'ChristianChiarulli/nvcode-color-schemes.vim'}
 
     -- grep
-    use 'mileszs/ack.vim'
+    use {'mileszs/ack.vim'}
 
     -- wiki
-    use 'vimwiki/vimwiki'
+    use {'vimwiki/vimwiki'}
 
     -- markdown
     use {'iamcco/markdown-preview.nvim', ft = {'markdown'}, run = 'vim.cmd("mkdp#util#install()")'}
 
     -- git
-    use 'tpope/vim-fugitive'
-    use 'tpope/vim-rhubarb'
+    use {'tpope/vim-fugitive'}
+    use {'tpope/vim-rhubarb'}
     use {'lewis6991/gitsigns.nvim', config = function() require'gitsigns'.setup() end }
-    use 'rhysd/conflict-marker.vim'
+    use {'rhysd/conflict-marker.vim'}
 
     -- tmux jump windows
-    use 'christoomey/vim-tmux-navigator'
+    use {'christoomey/vim-tmux-navigator'}
 
     -- python
-    use 'alfredodeza/pytest.vim'
+    use {'alfredodeza/pytest.vim'}
 
     -- autoformat
-    use 'google/vim-codefmt'
-    use 'google/vim-glaive'
-    use 'google/vim-maktaba'
+    use {'google/vim-codefmt'}
+    use {'google/vim-glaive'}
+    use {'google/vim-maktaba'}
 
     -- bazel
-    use 'bazelbuild/vim-bazel'
+    use {'bazelbuild/vim-bazel'}
     use {'alexander-born/bazel-vim', config = function() require'config.bazel'.setup() end }
 
     -- debugging
-    use 'szw/vim-maximizer'
-    use 'puremourning/vimspector'
+    use {'szw/vim-maximizer'}
+    use {'puremourning/vimspector'}
 
     -- telescope
-    use 'nvim-lua/popup.nvim'
-    use 'nvim-lua/plenary.nvim'
-    use 'nvim-telescope/telescope-fzy-native.nvim'
+    use {'nvim-lua/popup.nvim'}
+    use {'nvim-lua/plenary.nvim'}
+    use {'nvim-telescope/telescope-fzy-native.nvim'}
     use {'nvim-telescope/telescope.nvim', config = function() require'config.telescope'.setup() end }
 
     -- treesitter
     use {'nvim-treesitter/nvim-treesitter', run = ':TSUpdate', config = function() require'config.treesitter'.setup() end }
-    use 'nvim-treesitter/nvim-treesitter-textobjects'
-    use 'nvim-treesitter/playground'
+    use {'nvim-treesitter/nvim-treesitter-textobjects'}
+    use {'nvim-treesitter/playground'}
 
     -- trouble
     use {'folke/trouble.nvim', config = function() require'trouble'.setup() end }
@@ -90,22 +90,22 @@ return require('packer').startup(function(use)
     -- lsp
     use {'kabouzeid/nvim-lspinstall', config = function() require'lspinstall'.setup() end }
     use {'neovim/nvim-lspconfig', config = function() require'config.lsp'.setup() end }
-    use { 'ray-x/lsp_signature.nvim', config = function() require'lsp_signature'.setup({hint_enable = false}) end }
-    use 'aymericbeaumet/vim-symlink'
+    use {'ray-x/lsp_signature.nvim', config = function() require'lsp_signature'.setup({hint_enable = false}) end }
+    use {'aymericbeaumet/vim-symlink'}
 
     -- completion
     use {'onsails/lspkind-nvim', config = function() require'lspkind'.init() end }
 
     -- cmp
     use {'hrsh7th/nvim-cmp', config = function() require'config.cmp'.setup() end }
-    use 'hrsh7th/cmp-nvim-lsp'
-    use 'hrsh7th/cmp-path'
-    use 'hrsh7th/cmp-buffer'
-    use 'hrsh7th/cmp-vsnip'
+    use {'hrsh7th/cmp-nvim-lsp'}
+    use {'hrsh7th/cmp-path'}
+    use {'hrsh7th/cmp-buffer'}
+    use {'hrsh7th/cmp-vsnip'}
 
     -- snippets
-    use 'hrsh7th/vim-vsnip'
-    use 'rafamadriz/friendly-snippets'
+    use {'hrsh7th/vim-vsnip'}
+    use {'rafamadriz/friendly-snippets'}
 
 
 end)
