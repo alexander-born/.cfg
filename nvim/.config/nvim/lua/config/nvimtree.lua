@@ -31,7 +31,7 @@ function M.setup()
     vim.g.project_path = vim.fn.getcwd()
     vim.g.nvim_tree_disable_netrw = 0
     vim.g.nvim_tree_width = 60
-    vim.g.nvim_tree_bindings = { { key = {"<Leader>gr", "gr" }, cb = ":lua require'config.lualine'.grep_at_current_tree_node()<CR>"} }
+    vim.g.nvim_tree_bindings = { { key = {"<Leader>gr", "gr" }, cb = ":lua require'config.nvimtree'.grep_at_current_tree_node()<CR>"} }
 end
 
 return M
