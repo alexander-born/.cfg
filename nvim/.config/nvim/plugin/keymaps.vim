@@ -74,16 +74,16 @@ nnoremap <leader>ds :call GotoWindow(g:vimspector_session_windows.stack_trace)<C
 nnoremap <leader>de :call vimspector#Reset()<CR>
 nnoremap <leader>dtcb :call vimspector#CleanLineBreakpoint()<CR>
 
-nnoremap <leader>l <Plug>VimspectorStepInto
-nnoremap <leader>j <Plug>VimspectorStepOver
-nnoremap <leader>k <Plug>VimspectorStepOut
-nnoremap <leader>dr <Plug>VimspectorRestart
+nnoremap <leader>l :call vimspector#StepInto()<CR>
+nnoremap <leader>j :call vimspector#StepOver()<CR>
+nnoremap <leader>k :call vimspector#StepOut()<CR>
+nnoremap <leader>dr :call vimspector#Restart()<CR>
 nnoremap <leader>d<space> :call vimspector#Continue()<CR>
 
-nnoremap <leader>rc <Plug>VimspectorRunToCursor
-nnoremap <leader>bp <Plug>VimspectorToggleBreakpoint
+nnoremap <leader>rc :call vimspector#RunToCursor()<CR>
+nnoremap <leader>bp :call vimspector#ToggleBreakpoint()<CR>
 nnoremap <leader>dbp :call vimspector#ClearBreakpoints()<CR>
-nnoremap <leader>cbp <Plug>VimspectorToggleConditionalBreakpoint
+" nnoremap <leader>cbp :call vimspector#ToggleBreakpoint( { trigger expr, hit count expr } )<CR>
 
 " todo-comments
 nnoremap <leader>tq :TodoQuickfix<CR>
