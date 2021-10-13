@@ -10,7 +10,6 @@ source <sfile>:h/plugin/index_files.vim
 source <sfile>:h/plugin/keymaps.vim
 source <sfile>:h/plugin/open_errors_in_qf.vim
 source <sfile>:h/plugin/switch_source_header.vim
-source <sfile>:h/plugin/update_oldfiles.vim
 source <sfile>:h/plugin/vimspector.vim
 source <sfile>:h/plugin/vimwiki.vim
 source <sfile>:h/plugin/vsnip.vim
