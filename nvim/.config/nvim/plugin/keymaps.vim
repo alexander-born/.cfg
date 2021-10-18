@@ -26,6 +26,7 @@ nnoremap <leader>fh :lua require('telescope.builtin').command_history()<CR>
 nnoremap <leader>fr :lua require('telescope.builtin').registers()<CR>
 nnoremap <leader>fb :lua require('telescope.builtin').buffers({sort_mru = true})<CR>
 nnoremap <leader>ht :lua require('telescope.builtin').help_tags()<CR>
+nnoremap <leader>fy :lua require('telescope').extensions.neoclip.default()<CR>
 
 nnoremap <leader>f. :lua require('telescope.builtin').find_files({prompt_title = ".cfg", cwd = "$HOME/.cfg", hidden = true, file_ignore_patterns = {".git"}})<CR>
 nnoremap <leader>fn :lua require('telescope.builtin').find_files({prompt_title = ".config/nvim", search_dirs = {"$HOME/.config/nvim", "$HOME/.local/share/nvim/site/pack/packer"}})<CR>
@@ -119,6 +120,10 @@ vnoremap p "_dP
 
 " go to first file on line
 nnoremap gf ^f/gf
+
+" beginning/end of line
+nnoremap H ^
+nnoremap L $
 
 " single line diffput/diffget shortcuts
 nnoremap <leader>dp V:diffput<cr>
