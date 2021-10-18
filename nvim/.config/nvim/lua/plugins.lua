@@ -78,6 +78,7 @@ return require('packer').startup(function(use)
     use {'nvim-lua/plenary.nvim'}
     use {'nvim-telescope/telescope-fzy-native.nvim'}
     use {'nvim-telescope/telescope.nvim', config = function() require'config.telescope'.setup() end }
+    use {'AckslD/nvim-neoclip.lua', config = function() require('neoclip').setup() end }
 
     -- treesitter
     use {'nvim-treesitter/nvim-treesitter', run = ':TSUpdate', config = function() require'config.treesitter'.setup() end }
