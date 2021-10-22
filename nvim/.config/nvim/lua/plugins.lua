@@ -25,7 +25,7 @@ return require('packer').startup(function(use)
 
     -- appearance
     use {'lukas-reineke/indent-blankline.nvim', config = function() require'indent_blankline'.setup {filetype = {'python', 'json', 'bzl'} } end }
-    use {'hoob3rt/lualine.nvim', config = function() require'config.lualine'.setup() end }
+    use {'nvim-lualine/lualine.nvim', config = function() require'config.lualine'.setup() end }
     use {'kyazdani42/nvim-web-devicons', config = function() require'nvim-web-devicons'.setup() end }
     use {'norcalli/nvim-colorizer.lua', config = function() require'colorizer'.setup() end }
     use {'folke/todo-comments.nvim', config = function() require'todo-comments'.setup() end }

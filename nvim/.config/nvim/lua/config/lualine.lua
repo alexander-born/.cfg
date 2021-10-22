@@ -39,7 +39,7 @@ function M.setup()
     sections = {
       lualine_a = {'mode'},
       lualine_b = {{get_git_branch}},
-      lualine_c = {{get_filename}, { 'diff', color_added = colors.green, color_modified = colors.orange, color_removed = colors.red, symbols = {added = ' ', modified = ' ', removed = ' '} }},
+      lualine_c = {{get_filename}, { 'diff', diff_color = { added = { fg = colors.green }, modified = { fg = colors.orange }, removed = { fg = colors.red }}, symbols = {added = ' ', modified = ' ', removed = ' '} }},
       lualine_x = {{'diagnostics', sources = {'nvim_lsp'}, color_error = colors.red, color_warn = colors.yellow, color_info = nil, symbols = {error = ' ', warn = ' ', info = ' '}}, {diagnostics_ok}, 'filetype' }, 
       lualine_y = {'progress'},
       lualine_z = {'location'}
