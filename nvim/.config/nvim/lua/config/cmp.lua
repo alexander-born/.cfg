@@ -20,9 +20,10 @@ function M.setup()
       },
       sources = {
         { name = 'nvim_lsp' },
+        { name = 'vsnip' },
+        { name = 'bazel' },
         { name = 'path' },
         { name = 'buffer' },
-        { name = 'vsnip' },
       },
     }
 
