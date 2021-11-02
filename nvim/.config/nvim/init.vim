@@ -15,7 +15,6 @@ source <sfile>:h/plugin/vimwiki.vim
 source <sfile>:h/plugin/vsnip.vim
 
 let mapleader = "\<Space>"
-set hidden
 set number
 set relativenumber
 set cursorcolumn
@@ -24,20 +23,15 @@ set nowrap
 set splitright
 set splitbelow
 set ttimeoutlen=5
-set history=10000
-set sidescroll=1
 set mouse=a
 set termguicolors
 
 "search options"
-set incsearch
 set ignorecase
 set smartcase
 set showmatch
-set hlsearch
 
 "indent options"
-set autoindent
 set smartindent
 set tabstop=4
 set shiftwidth=4
@@ -47,7 +41,6 @@ set list
 set listchars=tab:>-,trail:·
 set matchpairs+=<:>
 
-set wildmenu
 set wildmode=list:longest,full
 
 augroup highlight_yank
