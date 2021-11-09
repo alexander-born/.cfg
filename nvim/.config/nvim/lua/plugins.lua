@@ -30,6 +30,7 @@ return require('packer').startup(function(use)
     use {'norcalli/nvim-colorizer.lua', config = function() require'colorizer'.setup() end }
     use {'folke/todo-comments.nvim', config = function() require'todo-comments'.setup() end }
     use {'akinsho/nvim-bufferline.lua', config = function() require'config.bufferline'.setup() end }
+    use {'luukvbaal/stabilize.nvim', config = function() require("stabilize").setup() end }
 
     -- filetree
     use {'kyazdani42/nvim-tree.lua', config = function() require'config.nvimtree'.setup() end }
