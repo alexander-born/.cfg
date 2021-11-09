@@ -12,6 +12,9 @@ function M.setup()
           vim.fn["vsnip#anonymous"](args.body)
         end,
      },
+     formatting = {
+       format = require'lspkind'.cmp_format({})
+     },
       mapping = {
         ['<CR>'] = cmp.mapping.confirm {
           behavior = cmp.ConfirmBehavior.Replace,
