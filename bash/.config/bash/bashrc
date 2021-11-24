@@ -23,6 +23,8 @@ alias runrviz="cd ~/ddad/bazel-bin/application/adp/bmw/vehicle/configuration/had
 
 convert_clipboard_to_unix_path() { xclip -o -sel clip | sed 's/\\/\//g' | sed 's/^file:/smb:/' | xclip -i -sel clip; echo "[INFO] clipboard updated."; }
 
+convert_bene_trigger_to_markdown() { xclip -o -sel clip | tr -d " " | sed 's/\(^\/maprposix.*\)/ - [ ] **Trigger: \1** \n```\n\1\n```/g' | sed -e 's/Trigger.*BN_EV_FASETH_UC\/\(.*\)\//Trigger \1:/' | xclip -i -sel clip; echo "[INFO] clipboard updated."; }
+
 pinggoogle() {
     tmux new-session -s "pinggoogle" -d
     tmux send-keys -t "pinggoogle:0" "watch -n60 curl http://www.google.com/" C-m
