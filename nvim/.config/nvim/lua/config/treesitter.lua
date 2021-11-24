@@ -22,6 +22,15 @@ function M.setup()
           swap_previous = { ["<leader>sA"] = "@parameter.inner", },
         },
       },
+    incremental_selection = {
+      enable = true,
+      keymaps = {
+        init_selection = "vn",
+        node_incremental = "<C-n>",
+        scope_incremental = "<C-s>",
+        node_decremental = "<C-p>",
+      },
+  },
       playground = { enable = true }
     }
 end
