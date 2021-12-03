@@ -90,7 +90,7 @@ return require('packer').startup(function(use)
     use {'folke/trouble.nvim', config = function() require'trouble'.setup() end }
 
     -- lsp
-    use {'kabouzeid/nvim-lspinstall', config = function() require'lspinstall'.setup() end }
+    use {'williamboman/nvim-lsp-installer'}
     use {'neovim/nvim-lspconfig', config = function() require'config.lsp'.setup() end }
     use {'ray-x/lsp_signature.nvim', config = function() require'lsp_signature'.setup({hint_enable = false}) end }
     use {'aymericbeaumet/vim-symlink'}

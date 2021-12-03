@@ -30,9 +30,19 @@ local lua_settings = {
 
 local M = {}
 function M.setup()
-    require'lspinstall'.setup()
-    local servers = require'lspinstall'.installed_servers()
-    for _, server in pairs(servers) do
+    local lsp_installer = require("nvim-lsp-installer")
+    -- Register a handler that will be called for all installed servers.
+    -- Alternatively, you may also register handlers on specific server instances instead (see example below).
+    lsp_installer.on_server_ready(function(server)
+        local opts = {}
+
+        -- (optional) Customize the options passed to the server
+        -- if server.name == "tsserver" then
+        --     opts.root_dir = function() ... end
+        -- end
+
+        -- This setup() function is exactly the same as lspconfig's setup function.
+        -- Refer to https://github.com/neovim/nvim-lspconfig/blob/master/doc/server_configurations.md
         local config = {
             capabilities = capabilities,
             on_attach = on_attach,
@@ -48,18 +58,12 @@ function M.setup()
             config.settings = { python = { analysis = { extraPaths = { vim.fn.getcwd() } } } }
         end
         if server == "cpp" then
-            config.cmd = {require"lspinstall.util".install_path("cpp") .. "/clangd/bin/clangd", "--background-index", "--cross-file-rename"};
+            -- config.cmd = {require"lspinstall.util".install_path("cpp") .. "/clangd/bin/clangd", "--background-index", "--cross-file-rename"};
             -- config.cmd = {require"lspinstall.util".install_path("cpp") .. "/clangd/bin/clangd", "--background-index", "--cross-file-rename", "--compile-commands-dir=" .. vim.fn.getcwd()};
         end
-        require'lspconfig'[server].setup(config)
-    end
+        server:setup(config)
+    end)
 
-end
-
--- Automatically reload after `:LspInstall <server>` so we don't have to restart neovim
-require'lspinstall'.post_install_hook = function ()
-  setup_servers() -- reload installed servers
-  vim.cmd("bufdo e") -- this triggers the FileType autocmd that starts the server
 end
 
 return M
