@@ -13,115 +13,12 @@ alias gitdelete_branches_expect_master="git co master && git br | grep -v master
 alias gitshowbranchesof="git for-each-ref --format='%(committerdate) %09 %(authoremail) %09 %(refname)' | sort -k5n -k2M -k3n -k4n | grep -i"
 alias gitmagic="cp /dev/null .gitattributes && git status && git checkout -- .gitattributes"
 alias gitmegamagic="git rm --cached -r .; git reset --hard"
-alias dlt_viewer="cd ~/Applications/dlt_viewer ; LD_LIBRARY_PATH=. ./dlt_viewer &"
-
-alias ddad="cd ~/ddad"
-alias adp="cd ~/ddad/application/adp"
-alias xpad-shared="cd ~/ddad/ecu/xpad/xpad-shared"
-alias traces="cd ~/traces"
-alias runrviz="cd ~/ddad/bazel-bin/application/adp/bmw/vehicle/configuration/had/bmw_veh_g12_control/launch/building_blocks/rviz_ad_lite_mpad.launch.sh.runfiles/ddad; ../../rviz_ad_lite_mpad.launch.sh;"
 
 convert_clipboard_to_unix_path() { xclip -o -sel clip | sed 's/\\/\//g' | sed 's/^file:/smb:/' | xclip -i -sel clip; echo "[INFO] clipboard updated."; }
-
-convert_bene_trigger_to_markdown() { xclip -o -sel clip | tr -d " " | sed 's/\(^\/maprposix.*\)/ - [ ] **Trigger: \1** \n```\n\1\n```/g' | sed -e 's/Trigger.*BN_EV_FASETH_UC\/\(.*\)\//Trigger \1:/' | xclip -i -sel clip; echo "[INFO] clipboard updated."; }
-
-create_input_json() {
-    bazel run //application/adp/bmw/reprocessing/scripts:create_input_json -- ~/traces $1 && ls ~/traces | grep -E "input.+\.json" | xargs -I {} mv ~/traces/{} ~/traces/input.json
-}
-
-pinggoogle() {
-    tmux new-session -s "pinggoogle" -d
-    tmux send-keys -t "pinggoogle:0" "watch -n60 curl http://www.google.com/" C-m
-}
-
-ide() {
-    pushd "$1"
-    tmux new-session -s "$1" -d 
-    tmux send-keys -t "$1:0" "nvim" C-m
-    tmux new-window -t "$1:1" -n "bash"
-    tmux new-window -t "$1:2" -n "traces"
-    tmux send-keys -t "$1:2" "cd ~/traces" C-m
-    tmux new-window -t "$1:3" -n "ros"
-    tmux send-keys -t "$1:3" "bazel run --config=adp -c opt //application/adp/ros/launch:rviz_ad_lite"
-    tmux new-window -t "$1:4" -n "reprocessing"
-    tmux send-keys -t "$1:4" "bazel run --config=adp -c opt --build_tag_filters="" //application/adp/bmw/reprocessing/units/mpad:mpad_ipc_ros_2021cw21 -- --input-json ~/traces/input.json --output-path ~/tmp --logger COUT --log_level DEBUG --skip_writer --customer-function swa_us --step_manual  > ~/tmp/log"
-    tmux split-window -t "$1:4"
-    tmux send-keys -t "$1:4" "tail -f ~/tmp/log | grep 'RelativeTime: .* '" C-m
-    tmux split-window -t "$1:4"
-    tmux send-keys -t "$1:4" "tail -f ~/tmp/log | grep -P '(LF: Reaction(?! priority side))|(LaneFusionActivity::ExecuteStep Start)'" C-m
-    tmux split-window -t "$1:4"
-    tmux send-keys -t "$1:4" "tail -f ~/tmp/log | grep -E '(\w+ fused with assignment \w+ )|(LaneFusionActivity::ExecuteStep Start)'" C-m
-    tmux select-window -t "$1:1"
-    popd
-    tmux -2 attach-session -t "$1"
-}
-
-cleanup_compile_commands()
-{
-    echo "cleanup compile commands"
-    sed -i 's/-ftree-loop-vectorize //g' "$1"
-    sed -i 's/-fno-canonical-system-headers //g' "$1"
-    # perl -ni.bak -e 'print unless /.*\.h(pp)?"},?/' "$1"
-    echo "cleanup compile commands - done"
-}
-
-compdb() {
-    echo "gen compile commands"
-    bazel build --aspects=application/adp/bazel/compile_commands/compile_commands.bzl%compilation_database_aspect_force_cpp --output_groups=compdb_files --keep_going "${@:2}"
-    echo "construct single compile commands"
-    ./application/adp/tools/compile_commands/construct_single_compile_commands_database.sh "$1"
-}
-
-gencompdbadp() { 
-    # ~/ddad/application/adp/tools/compile_commands/generate_compile_commands.sh ~/ddad/compile_commands.json --config=adp //application/adp/... ;
-    compdb ./compile_commands.json --config=adp //application/adp/aas/... //application/adp/activities/...  //application/adp/common/... //application/adp/communication/... //application/adp/configuration/... //application/adp/coordination/... //application/adp/customer_functions/... //application/adp/degradation/... //application/adp/diagnostic/... //application/adp/lifecycle/... //application/adp/map/... //application/adp/perception/... ;
-    # ~/ddad/application/adp/tools/compile_commands/generate_compile_commands.sh ~/ddad/compile_commands.json --config=adp //application/adp/aas/... //application/adp/activities/... //application/adp/bmw/reprocessing/... //application/adp/bmw/simulation/... //application/adp/common/... //application/adp/communication/... //application/adp/configuration/... //application/adp/coordination/... //application/adp/customer_functions/... //application/adp/degradation/... //application/adp/diagnostic/... //application/adp/lifecycle/... //application/adp/map/... //application/adp/perception/... //application/adp/planning/... //application/adp/prediction/...;
-    cleanup_compile_commands ./compile_commands.json
-}
-
-gencompdblanes() { 
-    compdb ./compile_commands.json --config=adp //application/adp/activities/lanes/...  //application/adp/common/...   //application/adp/map/... //application/adp/perception/lanes/...;
-    cleanup_compile_commands ./compile_commands.json
-}
 
 gencompdb() { 
     bazel-compdb
     cleanup_compile_commands ./compile_commands.json
-}
-
-# Install/update neovim nightly
-update_nvim() {
-    curl -L https://github.com/neovim/neovim/releases/download/nightly/nvim.appimage -o /tmp/nvim;
-    chmod +x /tmp/nvim;
-    sudo mv /tmp/nvim /usr/local/bin;
-}
-
-find_in_advantage() {
-    local mf=$(echo "$1" | sed -E "s/[0-9\-]+[T_][0-9\-]+_[0-9\-]+[T_][0-9\-]+_[0-9]+_[A-Z0-9]+_(.*?).MF4/\1/g" | sed -E "s/(.*?)_[0-9]+/\1/g")
-    local vin=$(echo "$1" | sed -E "s/[0-9\-]+[T_][0-9\-]+_[0-9\-]+[T_][0-9\-]+_[0-9]+_([A-Z0-9]+)_.*?(_0-9+)?.MF4/\1/g")
-    local yy=$(echo "$1" | sed -E "s/^([0-9]{4}).*/\1/g")
-    local mm=$(echo "$1" | sed -E "s/^[0-9]{4}-?([0-9]{2}).*/\1/g")
-    local dd=$(echo "$1" | sed -E "s/^[0-9]{4}-?[0-9]{2}-?([0-9]{2}).*/\1/g")
-    ssh advantagedp "find /maprposix/dp.prod.munich/ad-vantage/data/store/collected/car-data/MDF4/ingest/$vin/$yy/$mm/$dd/*/*/$mf/" | grep "$1"
-}
-
-download_trace() {
-    scp -r advantagedp:"$1" .
-    chmod -R u+rwX ./*
-    local mt_re=$(echo "$1" | sed -E "s/BN_EV_FASETH_UC/MT_RE/g")
-    scp -r advantagedp:"$mt_re" .
-    chmod -R u+rwX ./*
-}
-
-download_trigger() {
-    local trigger_folder=$(find_in_advantage "$1" | xargs dirname)
-    download_trace "$trigger_folder"
-}
-
-download_dlt() {
-    local dlt=$(echo "$1" | sed -E "s/BN_EV_FASETH_UC/MPAD_DLT_high/g")
-    scp -r advantagedp:"$dlt" .
-    chmod -R u+rwX ./*
 }
 
 export GIT_PS1_SHOWDIRTYSTATE='y'
