@@ -25,6 +25,10 @@ convert_clipboard_to_unix_path() { xclip -o -sel clip | sed 's/\\/\//g' | sed 's
 
 convert_bene_trigger_to_markdown() { xclip -o -sel clip | tr -d " " | sed 's/\(^\/maprposix.*\)/ - [ ] **Trigger: \1** \n```\n\1\n```/g' | sed -e 's/Trigger.*BN_EV_FASETH_UC\/\(.*\)\//Trigger \1:/' | xclip -i -sel clip; echo "[INFO] clipboard updated."; }
 
+create_input_json() {
+    bazel run //application/adp/bmw/reprocessing/scripts:create_input_json -- ~/traces $1 && ls ~/traces | grep -E "input.+\.json" | xargs -I {} mv ~/traces/{} ~/traces/input.json
+}
+
 pinggoogle() {
     tmux new-session -s "pinggoogle" -d
     tmux send-keys -t "pinggoogle:0" "watch -n60 curl http://www.google.com/" C-m
@@ -112,6 +116,12 @@ download_trace() {
 download_trigger() {
     local trigger_folder=$(find_in_advantage "$1" | xargs dirname)
     download_trace "$trigger_folder"
+}
+
+download_dlt() {
+    local dlt=$(echo "$1" | sed -E "s/BN_EV_FASETH_UC/MPAD_DLT_high/g")
+    scp -r advantagedp:"$dlt" .
+    chmod -R u+rwX ./*
 }
 
 export GIT_PS1_SHOWDIRTYSTATE='y'
