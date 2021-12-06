@@ -14,10 +14,10 @@ return require('packer').startup(function(use)
     use {'inkarkat/vim-ReplaceWithRegister'}
     use {'machakann/vim-sandwich'}
     use {'tpope/vim-abolish'}
-    use {'tpope/vim-commentary'}
     use {'tpope/vim-dispatch'}
     use {'tpope/vim-unimpaired'}
     use {'wsdjeg/vim-fetch'}
+    use {'numToStr/Comment.nvim', config = function() require'Comment'.setup() end }
     -- use {'ggandor/lightspeed.nvim', config = function() require'lightspeed'.setup({}) end }
 
     -- undotree
