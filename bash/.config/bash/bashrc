@@ -114,6 +114,12 @@ download_trigger() {
     download_trace "$trigger_folder"
 }
 
+download_dlt() {
+    local dlt=$(echo "$1" | sed -E "s/BN_EV_FASETH_UC/MPAD_DLT_high/g")
+    scp -r advantagedp:"$dlt" .
+    chmod -R u+rwX ./*
+}
+
 export GIT_PS1_SHOWDIRTYSTATE='y'
 export GIT_PS1_SHOWSTASHSTATE='y'
 export GIT_PS1_SHOWUNTRACKEDFILES='y'
