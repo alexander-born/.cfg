@@ -10,7 +10,6 @@ function M.nvim_tree_find_file()
   if starts_with(cur_path, vim.g.project_path) then
     require('nvim-tree').find_file(true)
   else
-    require('nvim-tree').refresh()
     require('nvim-tree.lib').change_dir(cur_path)
     require('nvim-tree').find_file(true)
   end
