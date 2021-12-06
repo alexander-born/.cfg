@@ -17,7 +17,6 @@ source <sfile>:h/plugin/vsnip.vim
 let mapleader = "\<Space>"
 set number
 set relativenumber
-set cursorcolumn
 set cursorline
 set nowrap
 set splitright
