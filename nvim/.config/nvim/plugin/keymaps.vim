@@ -28,7 +28,7 @@ nnoremap <leader>fb :lua require('telescope.builtin').buffers({sort_mru = true})
 nnoremap <leader>ht :lua require('telescope.builtin').help_tags()<CR>
 nnoremap <leader>fy :lua require('telescope').extensions.neoclip.default()<CR>
 
-nnoremap <leader>f. :lua require('telescope.builtin').find_files({prompt_title = ".cfg", cwd = "$HOME/.cfg", hidden = true, file_ignore_patterns = {".git"}})<CR>
+nnoremap <leader>f. :lua require('telescope.builtin').find_files({prompt_title = ".cfg", cwd = "$HOME", search_dirs = {"$HOME/.cfg", "$HOME/.cfg_work"}, hidden = true, file_ignore_patterns = {".git"}})<CR>
 nnoremap <leader>fn :lua require('telescope.builtin').find_files({prompt_title = ".config/nvim", search_dirs = {"$HOME/.config/nvim", "$HOME/.local/share/nvim/site/pack/packer"}})<CR>
 
 nnoremap <leader>gr  :lua require('telescope.builtin').live_grep()<CR>
@@ -38,7 +38,7 @@ nnoremap <leader>grp :lua require('telescope.builtin').live_grep({search_dirs = 
 nnoremap <leader>grm :lua require('telescope.builtin').live_grep({search_dirs = {"application/adp/map"}})<CR>
 nnoremap <leader>gra :lua require('telescope.builtin').live_grep({search_dirs = {"application/adp"}})<CR>
 nnoremap <leader>grr :lua require('telescope.builtin').live_grep({search_dirs = {"application/adp/perception/road", "application/adp/map", "application/adp/activities/road"}})<CR>
-nnoremap <leader>gr. :lua require('telescope.builtin').live_grep({cwd = "$HOME/.cfg", vimgrep_arguments = { 'rg', '--color=never', '--no-heading', '--with-filename', '--line-number', '--column', '--smart-case', '--hidden' }, file_ignore_patterns = {".git"}})<CR>
+nnoremap <leader>gr. :lua require('telescope.builtin').live_grep({cwd = "$HOME", search_dirs = {"$HOME/.cfg", "$HOME/.cfg_work"}, vimgrep_arguments = { 'rg', '--color=never', '--no-heading', '--with-filename', '--line-number', '--column', '--smart-case', '--hidden' }, file_ignore_patterns = {".git"}})<CR>
 nnoremap <leader>grw :lua require('telescope.builtin').live_grep({cwd = "$HOME/projects/vimwiki"})<CR>
 nnoremap <leader>grn :lua require('telescope.builtin').live_grep({search_dirs = {"$HOME/.config/nvim", "$HOME/.local/share/nvim/site/pack/packer"}})<CR>
 
