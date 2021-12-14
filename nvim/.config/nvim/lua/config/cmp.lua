@@ -16,6 +16,7 @@ function M.setup()
        format = require'lspkind'.cmp_format({})
      },
       mapping = {
+        ['<C-Space>'] = cmp.mapping(cmp.mapping.complete(), { 'i', 'c' }),
         ['<CR>'] = cmp.mapping.confirm {
           behavior = cmp.ConfirmBehavior.Replace,
           select = true,
