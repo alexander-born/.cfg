@@ -107,6 +107,10 @@ nnoremap <C-H> <C-W><C-H>
 " esc in terminal leaves insert mode
 tnoremap <ESC> <C-\><C-n>
 
+" move selected lines up/down
+vnoremap J :m '>+1<CR>gv=gv
+vnoremap K :m '<-2<CR>gv=gv
+
 " copy full file path to clipboard
 nnoremap <Leader>f :let @+=expand("%")<CR>
 
