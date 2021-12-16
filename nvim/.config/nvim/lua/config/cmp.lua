@@ -2,9 +2,6 @@ local M = {}
 
 function M.setup()
 
-    -- Set completeopt to have a better completion experience
-    vim.o.completeopt = 'menuone,noselect'
-
     local cmp = require 'cmp'
     cmp.setup {
       snippet = {
