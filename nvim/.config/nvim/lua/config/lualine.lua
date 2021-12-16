@@ -12,8 +12,8 @@ local function lsp_not_active() return vim.tbl_isempty(vim.lsp.buf_get_clients(0
 
 local function diagnostics_ok()
     if lsp_not_active() then return '' end
-    local w = vim.lsp.diagnostic.get_count(0, 'Warning')
-    local e = vim.lsp.diagnostic.get_count(0, 'Error')
+    local w = vim.diagnostic.get(0, { severity = 'Warn' })
+    local e = vim.diagnostic.get(0, { severity = 'Error' })
     if w ~= 0 or e ~= 0 then return '' end
     return ' '
  end
