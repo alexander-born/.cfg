@@ -1,40 +1,25 @@
 local M = {}
 
-local function write_to_file(filename, lines)
-    vim.cmd('e ' .. filename)
-    vim.cmd('%delete')
-    for _,line in pairs(lines) do
-        vim.cmd("call append(line('$'), '" .. line .. "')")
+local function StartDebugger(_, code)
+    if code == 0 then
+        vim.cmd('bdelete')
+        require'dap'.run({
+            name = "Launch",
+            type = "cpptools",
+            request = "launch",
+            program = function() return require('bazel').get_bazel_test_executable() end,
+            cwd = vim.fn.getcwd(),
+            stopOnEntry = false,
+            args = {'--gtest_filter=' .. require('bazel').get_gtest_filter()},
+            runInTerminal = false,
+        })
     end
-    vim.cmd('1d')
-    vim.cmd('w')
-    vim.cmd('e#')
-end
-
-local function create_cpp_vimspector_json_for_bazel_test()
-    local test_filter = require('bazel').get_gtest_filter()
-    local executable =  require('bazel').get_bazel_test_executable()
-    local lines = {
-        '{',
-        '  "configurations": {',
-        '    "GTest": {',
-        '      "adapter": "vscode-cpptools",',
-        '      "configuration": {',
-        '        "request": "launch",',
-        '        "program": "' .. executable .. '",',
-        '        "args": ["--gtest_filter=\'\'' .. test_filter .. '\'\'"],',
-        '        "stopOnEntry": false',
-        '      }',
-        '    }',
-        '  }',
-        '}'}
-    write_to_file('.vimspector.json', lines)
 end
 
 function M.DebugThisTest()
-    create_cpp_vimspector_json_for_bazel_test()
+    vim.fn.BazelGetCurrentBufTarget()
     vim.cmd('new')
-    vim.cmd('call termopen("bazel build " . g:bazel_config . " -c dbg " . g:current_bazel_target, {"on_exit": "StartVimspector"})')
+    vim.fn.termopen('bazel build ' .. vim.g.bazel_config .. ' -c dbg ' .. vim.g.current_bazel_target, {on_exit = StartDebugger })
 end
 
 function M.setup()

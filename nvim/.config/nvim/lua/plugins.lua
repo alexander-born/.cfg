@@ -70,16 +70,19 @@ return require('packer').startup(function(use)
     use {'bazelbuild/vim-bazel'}
     use {'alexander-born/bazel-vim', config = function() require'config.bazel'.setup() end }
 
-    -- debugging
-    use {'szw/vim-maximizer'}
-    use {'puremourning/vimspector'}
-
     -- telescope
     use {'nvim-lua/popup.nvim'}
     use {'nvim-lua/plenary.nvim'}
     use {'nvim-telescope/telescope-fzy-native.nvim'}
     use {'nvim-telescope/telescope.nvim', config = function() require'config.telescope'.setup() end }
     use {'AckslD/nvim-neoclip.lua', config = function() require('neoclip').setup() end }
+
+    -- debugging
+    use {'szw/vim-maximizer'}
+    use {'rcarriga/nvim-dap-ui'}
+    use {'mfussenegger/nvim-dap', config = function() require'config.dap'.setup() end }
+    use {'nvim-telescope/telescope-dap.nvim'}
+    use {'Pocco81/DAPInstall.nvim', config = function() require("dap-install").setup() end }
 
     -- treesitter
     use {'nvim-treesitter/nvim-treesitter', run = ':TSUpdate', config = function() require'config.treesitter'.setup() end }

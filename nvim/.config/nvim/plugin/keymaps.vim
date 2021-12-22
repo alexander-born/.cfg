@@ -67,25 +67,39 @@ nnoremap <Leader>ut :UndotreeToggle<CR>
 
 " debugger
 nnoremap <leader>m :MaximizerToggle!<CR>
-nnoremap <leader>dd :call vimspector#Launch()<CR>
-nnoremap <leader>dc :call GotoWindow(g:vimspector_session_windows.code)<CR>
-nnoremap <leader>dt :call GotoWindow(g:vimspector_session_windows.tagpage)<CR>
-nnoremap <leader>dv :call GotoWindow(g:vimspector_session_windows.variables)<CR>
-nnoremap <leader>dw :call GotoWindow(g:vimspector_session_windows.watches)<CR>
-nnoremap <leader>ds :call GotoWindow(g:vimspector_session_windows.stack_trace)<CR>
-nnoremap <leader>de :call vimspector#Reset()<CR>
-nnoremap <leader>dtcb :call vimspector#CleanLineBreakpoint()<CR>
-
-nnoremap <leader>l :call vimspector#StepInto()<CR>
-nnoremap <leader>j :call vimspector#StepOver()<CR>
-nnoremap <leader>k :call vimspector#StepOut()<CR>
-nnoremap <leader>dr :call vimspector#Restart()<CR>
-nnoremap <leader>d<space> :call vimspector#Continue()<CR>
-
-nnoremap <leader>rc :call vimspector#RunToCursor()<CR>
-nnoremap <leader>bp :call vimspector#ToggleBreakpoint()<CR>
-nnoremap <leader>dbp :call vimspector#ClearBreakpoints()<CR>
+" nnoremap <leader>dd :call vimspector#Launch()<CR>
+" nnoremap <leader>dc :call GotoWindow(g:vimspector_session_windows.code)<CR>
+" nnoremap <leader>dt :call GotoWindow(g:vimspector_session_windows.tagpage)<CR>
+" nnoremap <leader>dv :call GotoWindow(g:vimspector_session_windows.variables)<CR>
+" nnoremap <leader>dw :call GotoWindow(g:vimspector_session_windows.watches)<CR>
+" nnoremap <leader>ds :call GotoWindow(g:vimspector_session_windows.stack_trace)<CR>
+" nnoremap <leader>de :call vimspector#Reset()<CR>
+" nnoremap <leader>dtcb :call vimspector#CleanLineBreakpoint()<CR>
+"
+" nnoremap <leader>l :call vimspector#StepInto()<CR>
+" nnoremap <leader>j :call vimspector#StepOver()<CR>
+" nnoremap <leader>k :call vimspector#StepOut()<CR>
+" nnoremap <leader>dr :call vimspector#Restart()<CR>
+" nnoremap <leader>d<space> :call vimspector#Continue()<CR>
+"
+" nnoremap <leader>rc :call vimspector#RunToCursor()<CR>
+" nnoremap <leader>bp :call vimspector#ToggleBreakpoint()<CR>
+" nnoremap <leader>dbp :call vimspector#ClearBreakpoints()<CR>
 " nnoremap <leader>cbp :call vimspector#ToggleBreakpoint( { trigger expr, hit count expr } )<CR>
+nnoremap <leader>dt :lua require("dapui").toggle()<CR>
+nnoremap <leader>d<space> :lua require'dap'.continue()<CR>
+nnoremap <leader>bp :lua require'dap'.toggle_breakpoint()<CR>
+nnoremap <leader>l :lua require'dap'.step_into()<CR>
+nnoremap <leader>j :lua require'dap'.step_over()<CR>
+nnoremap <leader>k :lua require'dap'.step_out()<CR>
+nnoremap <leader>rc :lua require'dap'.run_to_cursor()<CR>
+nnoremap <leader>de :lua require'dap'.close()<CR>
+nnoremap <leader>dc :Telescope dap commands<CR>
+nnoremap <leader>df :Telescope dap frames<CR>
+nnoremap <leader>dr :lua require'dap'.repl.open()<CR>
+nnoremap <leader>dh :lua require('dap.ui.widgets').hover()<CR>
+nnoremap <leader>ds :lua require('dap.ui.widgets').sidebar(require('dap.ui.widgets').scopes).toggle()<CR>
+nnoremap <leader>de :lua require('dap.ui.widgets').sidebar(require('dap.ui.widgets').expression).toggle()<CR>
 
 " todo-comments
 nnoremap <leader>tq :TodoQuickfix<CR>
