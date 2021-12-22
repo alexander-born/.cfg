@@ -94,7 +94,7 @@ nnoremap <leader>j :lua require'dap'.step_over()<CR>
 nnoremap <leader>k :lua require'dap'.step_out()<CR>
 nnoremap <leader>rc :lua require'dap'.run_to_cursor()<CR>
 nnoremap <leader>de :lua require'dap'.close()<CR>
-nnoremap <leader>dc :Telescope dap commands<CR>
+nnoremap <leader>dd :Telescope dap commands<CR>
 nnoremap <leader>df :Telescope dap frames<CR>
 nnoremap <leader>dr :lua require'dap'.repl.open()<CR>
 nnoremap <leader>dh :lua require('dap.ui.widgets').hover()<CR>
