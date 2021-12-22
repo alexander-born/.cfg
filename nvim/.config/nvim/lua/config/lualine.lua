@@ -14,7 +14,7 @@ local function diagnostics_ok()
     if lsp_not_active() then return '' end
     local w = vim.diagnostic.get(0, { severity = 'Warn' })
     local e = vim.diagnostic.get(0, { severity = 'Error' })
-    if w ~= 0 or e ~= 0 then return '' end
+    if next(w) or next(e) then return '' end
     return ' '
  end
 
