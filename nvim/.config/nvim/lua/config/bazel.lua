@@ -3,6 +3,7 @@ local M = {}
 local function StartDebugger(_, code)
     if code == 0 then
         vim.cmd('bdelete')
+        require'dapui'.open()
         require'dap'.run({
             name = "Launch",
             type = "cpptools",
