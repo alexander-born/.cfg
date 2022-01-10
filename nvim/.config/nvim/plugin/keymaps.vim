@@ -55,6 +55,7 @@ autocmd FileType bzl nnoremap <buffer> gd :call GoToBazelDefinition()<CR>
 nnoremap gbt :call GoToBazelTarget()<CR>
 nnoremap <Leader>bt  :call RunBazelHere("test " . g:bazel_config . " -c opt" )<CR>
 nnoremap <Leader>bb  :call RunBazelHere("build " . g:bazel_config . " -c opt")<CR>
+nnoremap <Leader>br  :call RunBazelHere("run " . g:bazel_config . " -c opt")<CR>
 nnoremap <Leader>bdb :call RunBazelHere("build " . g:bazel_config . " -c dbg")<CR>
 nnoremap <Leader>bdt :lua  require'config.bazel'.DebugThisTest()<CR>
 nnoremap <Leader>bl  :call RunBazel()<CR>
