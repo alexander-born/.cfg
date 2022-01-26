@@ -2,7 +2,6 @@
 lua require('plugins')
 
 source <sfile>:h/plugin/ack.vim
-source <sfile>:h/plugin/code_formatter.vim
 source <sfile>:h/plugin/color.vim
 source <sfile>:h/plugin/git.vim
 source <sfile>:h/plugin/html_clip.vim

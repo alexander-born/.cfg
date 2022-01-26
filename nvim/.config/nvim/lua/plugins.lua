@@ -61,12 +61,11 @@ return require('packer').startup(function(use)
     -- python
     use {'alfredodeza/pytest.vim'}
 
-    -- autoformat
-    use {'google/vim-codefmt'}
-    use {'google/vim-glaive'}
-    use {'google/vim-maktaba'}
+    -- null-ls for autoformat
+    use {'jose-elias-alvarez/null-ls.nvim', config = function() require'config.null-ls'.setup() end }
 
     -- bazel
+    use {'google/vim-maktaba'}
     use {'bazelbuild/vim-bazel'}
     use {'alexander-born/bazel-vim', config = function() require'config.bazel'.setup() end }
 
