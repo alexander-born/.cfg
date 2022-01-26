@@ -7,6 +7,11 @@ git config --global alias.br branch
 git config --global alias.ci commit
 git config --global alias.st status
 alias cls='printf "\033c"'
+alias ..="cd .."
+alias ...="cd ../.."
+alias ....="cd ../../.."
+alias .....="cd ../../../.."
+alias ......="cd ../../../../.."
 alias gitdelete_branches_expect_master="git co master && git br | grep -v master | xargs git branch -D"
 alias gitshowbranchesof="git for-each-ref --format='%(committerdate) %09 %(authoremail) %09 %(refname)' | sort -k5n -k2M -k3n -k4n | grep -i"
 alias gitmagic="cp /dev/null .gitattributes && git status && git checkout -- .gitattributes"
@@ -26,8 +31,6 @@ export GIT_PS1_DESCRIBE_STYLE='contains'
 export GIT_PS1_SHOWUPSTREAM='auto'
 export PS1='\[\033[32m\]\u@\h\[\033[00m\]:\[\033[34m\]\w\[\033[31m\]$(__git_ps1)\[\033[00m\]\$ '
 
-# add ddad to python path
-
 # bind F8 convert clipboard to unix directory
 bind '"\e[19~": "convert_clipboard_to_unix_path\n"'
 
@@ -36,6 +39,16 @@ bind '"\e[1;5D":backward-word'
 
 bind '"\C-n":menu-complete'
 bind '"\C-p":menu-complete-backward'
+
+# If there are multiple matches for completion, Tab should cycle through them
+bind 'TAB:menu-complete'
+
+# Display a list of the matching files
+bind "set show-all-if-ambiguous on"
+
+# Perform partial (common) completion on the first Tab press, only start
+# cycling full results on the second Tab press (from bash version 5)
+bind "set menu-complete-display-prefix on"
 
 # append to the history file, don't overwrite it
 shopt -s histappend
