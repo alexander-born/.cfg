@@ -67,6 +67,12 @@ nnoremap <Leader>a :Ack!<Space>
 nnoremap <Leader>ut :UndotreeToggle<CR>
 
 " debugger
+
+function! EndDebugSession()
+    lua require'dap'.terminate()
+    lua require'dapui'.close()
+endfunction
+
 nnoremap <leader>m :MaximizerToggle!<CR>
 " nnoremap <leader>dd :call vimspector#Launch()<CR>
 " nnoremap <leader>dc :call GotoWindow(g:vimspector_session_windows.code)<CR>
@@ -94,13 +100,13 @@ nnoremap <leader>l :lua require'dap'.step_into()<CR>
 nnoremap <leader>j :lua require'dap'.step_over()<CR>
 nnoremap <leader>k :lua require'dap'.step_out()<CR>
 nnoremap <leader>rc :lua require'dap'.run_to_cursor()<CR>
-nnoremap <leader>de :lua require'dap'.close()<CR>
+nnoremap <leader>de :call EndDebugSession()<CR>
 nnoremap <leader>dd :Telescope dap commands<CR>
 nnoremap <leader>df :Telescope dap frames<CR>
 nnoremap <leader>dr :lua require'dap'.repl.open()<CR>
 nnoremap <leader>dh :lua require('dap.ui.widgets').hover()<CR>
 nnoremap <leader>ds :lua require('dap.ui.widgets').sidebar(require('dap.ui.widgets').scopes).toggle()<CR>
-nnoremap <leader>de :lua require('dap.ui.widgets').sidebar(require('dap.ui.widgets').expression).toggle()<CR>
+" nnoremap <leader>de :lua require('dap.ui.widgets').sidebar(require('dap.ui.widgets').expression).toggle()<CR>
 
 " todo-comments
 nnoremap <leader>tq :TodoQuickfix<CR>
