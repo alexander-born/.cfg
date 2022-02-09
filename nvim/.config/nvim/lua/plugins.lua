@@ -52,7 +52,7 @@ return require('packer').startup(function(use)
     -- git
     use {'tpope/vim-fugitive'}
     use {'tpope/vim-rhubarb'}
-    use {'lewis6991/gitsigns.nvim', config = function() require'gitsigns'.setup() end }
+    use {'lewis6991/gitsigns.nvim', config = function() require'config.gitsigns'.setup() end }
     use {'rhysd/conflict-marker.vim'}
 
     -- tmux jump windows
