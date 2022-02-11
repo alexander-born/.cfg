@@ -5,6 +5,7 @@ function M.setup()
         sources = {
             require("null-ls").builtins.formatting.black,
             require("null-ls").builtins.formatting.buildifier,
+            require("null-ls").builtins.formatting.clang_format,
         },
         on_attach = function(client)
             if client.resolved_capabilities.document_formatting then

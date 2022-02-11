@@ -30,6 +30,7 @@ nnoremap <leader>fy :lua require('telescope').extensions.neoclip.default()<CR>
 
 nnoremap <leader>f. :lua require('telescope.builtin').find_files({prompt_title = ".cfg", cwd = "$HOME", search_dirs = {"$HOME/.cfg", "$HOME/.cfg_work"}, hidden = true, file_ignore_patterns = {".git"}})<CR>
 nnoremap <leader>fn :lua require('telescope.builtin').find_files({prompt_title = ".config/nvim", search_dirs = {"$HOME/.config/nvim", "$HOME/.local/share/nvim/site/pack/packer"}})<CR>
+nnoremap <leader>fa :lua require('telescope.builtin').find_files({prompt_title = "application/adp", search_dirs = {"application/adp"}, hidden = true, file_ignore_patterns = {".git"}, previewer = false})<CR>
 
 nnoremap <leader>gr  :lua require('telescope.builtin').live_grep()<CR>
 nnoremap <leader>grb :lua require('telescope.builtin').current_buffer_fuzzy_find()<CR>

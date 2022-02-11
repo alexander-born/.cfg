@@ -1,13 +1,15 @@
 local on_attach = function(client, bufnr)
     require "lsp_signature".on_attach()  -- Note: add in lsp client on-attach
-    if client.resolved_capabilities.document_formatting then
-        vim.cmd([[
-        augroup LspFormatting
-            autocmd! * <buffer>
-            autocmd BufWritePre <buffer> lua vim.lsp.buf.formatting_sync()
-        augroup END
-        ]])
-    end
+    client.resolved_capabilities.document_formatting = false
+    client.resolved_capabilities.document_range_formatting = false
+    -- if client.resolved_capabilities.document_formatting then
+    --     vim.cmd([[
+    --     augroup LspFormatting
+    --         autocmd! * <buffer>
+    --         autocmd BufWritePre <buffer> lua vim.lsp.buf.formatting_sync()
+    --     augroup END
+    --     ]])
+    -- end
 end
 
 local capabilities = vim.lsp.protocol.make_client_capabilities()
