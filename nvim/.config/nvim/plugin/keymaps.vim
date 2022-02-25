@@ -25,6 +25,7 @@ nnoremap <leader>fq :lua require('telescope.builtin').quickfix()<CR>
 nnoremap <leader>fh :lua require('telescope.builtin').command_history()<CR>
 nnoremap <leader>fr :lua require('telescope.builtin').registers()<CR>
 nnoremap <leader>fb :lua require('telescope.builtin').buffers({sort_mru = true})<CR>
+nnoremap <leader>fl :lua require('telescope.builtin').resume()<CR>
 nnoremap <leader>ht :lua require('telescope.builtin').help_tags()<CR>
 nnoremap <leader>fy :lua require('telescope').extensions.neoclip.default()<CR>
 
