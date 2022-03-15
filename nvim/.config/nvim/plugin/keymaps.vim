@@ -151,7 +151,9 @@ nnoremap gf ^f/gf
 
 " beginning/end of line
 nnoremap H ^
+vnoremap H ^
 nnoremap L $
+vnoremap L $
 
 " single line diffput/diffget shortcuts
 nnoremap <leader>dp V:diffput<cr>
