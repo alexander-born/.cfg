@@ -35,7 +35,7 @@ local colors = get_colors()
 local M = {}
 function M.setup()
   require'lualine'.setup {
-    options = { theme = vim.g.color_scheme },
+    options = { theme = vim.g.color_scheme, globalstatus = true },
     sections = {
       lualine_a = {'mode'},
       lualine_b = {{get_git_branch}},
