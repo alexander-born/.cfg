@@ -40,7 +40,7 @@ function M.setup()
       lualine_a = {'mode'},
       lualine_b = {{get_git_branch}},
       lualine_c = {{get_filename}, { 'diff', diff_color = { added = { fg = colors.green }, modified = { fg = colors.orange }, removed = { fg = colors.red }}, symbols = {added = ' ', modified = ' ', removed = ' '} }},
-      lualine_x = {{'diagnostics', sources = {'nvim_diagnostic'}, color_error = colors.red, color_warn = colors.yellow, color_info = nil, symbols = {error = ' ', warn = ' ', info = ' '}}, {diagnostics_ok}, 'filetype' }, 
+      lualine_x = {{'diagnostics', sources = {'nvim_diagnostic'}, symbols = {error = ' ', warn = ' ', info = ' '}}, {diagnostics_ok}, 'filetype' }, 
       lualine_y = {'progress'},
       lualine_z = {'location'}
     },
