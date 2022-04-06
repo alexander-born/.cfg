@@ -27,6 +27,12 @@ function M.setup()
     -- Info: to make tab completion work copy '/etc/bash_completion.d/bazel-complete.bash' to '/etc/bash_completion.d/bazel'
 
     vim.g.bazel_config = vim.g.bazel_config  or ''
+    vim.keymap.set('n', '<Leader>y', function() 
+        label = vim.fn.GetLabel()
+        print('yanking ' .. label .. 'to + and " register')
+        vim.fn.setreg('+', label) 
+        vim.fn.setreg('"', label) 
+    end)
 
     vim.cmd[[
     set errorformat=ERROR:\ %f:%l:%c:%m
