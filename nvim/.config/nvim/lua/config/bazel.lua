@@ -29,7 +29,7 @@ function M.setup()
     vim.g.bazel_config = vim.g.bazel_config  or ''
     vim.keymap.set('n', '<Leader>y', function() 
         label = vim.fn.GetLabel()
-        print('yanking ' .. label .. 'to + and " register')
+        print('yanking ' .. label .. ' to + and " register')
         vim.fn.setreg('+', label) 
         vim.fn.setreg('"', label) 
     end)
