@@ -104,6 +104,7 @@ nnoremap <leader>k :lua require'dap'.step_out()<CR>
 nnoremap <leader>rc :lua require'dap'.run_to_cursor()<CR>
 nnoremap <leader>de :call EndDebugSession()<CR>
 nnoremap <leader>dd :Telescope dap commands<CR>
+nnoremap <leader>dpa :lua require'config.dap'.set_python_args_from_input()<CR>
 nnoremap <leader>df :Telescope dap frames<CR>
 nnoremap <leader>dr :lua require'dap'.repl.open()<CR>
 nnoremap <leader>dh :lua require('dap.ui.widgets').hover()<CR>

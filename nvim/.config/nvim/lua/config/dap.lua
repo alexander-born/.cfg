@@ -1,7 +1,23 @@
 local M = {}
 
+local function split_by_space(input)
+    chunks = {}
+    for substring in input:gmatch("%S+") do
+       table.insert(chunks, substring)
+    end
+    return chunks
+end
+
+function M.set_python_args(args)
+    require'dap'.configurations.python[1].args = split_by_space(args)
+end
+
+function M.set_python_args_from_input()
+    local args = vim.fn.input("python args for debugging: ")
+    M.set_python_args(args)
+end
+
 function M.setup()
-    require('dap')
     vim.fn.sign_define('DapBreakpoint', {text='🛑', texthl='', linehl='', numhl=''})
 
     local dap_install = require("dap-install")
@@ -20,11 +36,12 @@ function M.setup()
 
     dap.configurations.python = {
       {
-        type = 'python';
-        request = 'launch';
-        name = "Launch file";
-        program = "${file}";
-        pythonPath = function() return '/usr/bin/python' end;
+        type = 'python',
+        request = 'launch',
+        name = "Launch file",
+        program = "${file}",
+        args = {},
+        pythonPath = function() return '/usr/bin/python' end,
       },
     }
 
