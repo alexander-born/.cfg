@@ -47,7 +47,7 @@ return require('packer').startup(function(use)
     use {'vimwiki/vimwiki'}
 
     -- markdown
-    use {'iamcco/markdown-preview.nvim', ft = {'markdown'}, run = 'vim.cmd("mkdp#util#install()")'}
+    use {'davidgranstrom/nvim-markdown-preview'}
 
     -- git
     use {'tpope/vim-fugitive'}
