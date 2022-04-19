@@ -6,7 +6,7 @@ local function StartDebugger(_, code)
         require'dapui'.open()
         require'dap'.run({
             name = "Launch",
-            type = "cpptools",
+            type = "cppdbg",
             request = "launch",
             program = function() return require('bazel').get_bazel_test_executable() end,
             cwd = vim.fn.getcwd(),

@@ -28,6 +28,12 @@ function M.setup()
     -- end
 
     local dap = require('dap')
+    dap.adapters.cppdbg = {
+      id = 'cppdbg',
+      type = 'executable',
+      command = vim.fn.stdpath('data') .. '/dapinstall/ccppr_vsc/extension/debugAdapters/bin/OpenDebugAD7',
+    }
+
     dap.adapters.python = {
       type = 'executable';
       command = 'python';
