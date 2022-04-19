@@ -20,18 +20,11 @@ end
 function M.setup()
     vim.fn.sign_define('DapBreakpoint', {text='🛑', texthl='', linehl='', numhl=''})
 
-    -- local dap_install = require("dap-install")
-    -- local dbg_list = require("dap-install.api.debuggers").get_installed_debuggers()
-    --
-    -- for _, debugger in ipairs(dbg_list) do
-    --     dap_install.config(debugger, {})
-    -- end
-
     local dap = require('dap')
     dap.adapters.cppdbg = {
       id = 'cppdbg',
       type = 'executable',
-      command = vim.fn.stdpath('data') .. '/dapinstall/ccppr_vsc/extension/debugAdapters/bin/OpenDebugAD7',
+      command = 'OpenDebugAD7',
     }
 
     dap.adapters.python = {
@@ -51,27 +44,6 @@ function M.setup()
       },
     }
 
-    -- dap.adapters.lldb = {
-    --   type = 'executable',
-    --   command = '/usr/bin/lldb-vscode-12',
-    --   name = "lldb"
-    -- }
-    --
-    -- dap.configurations.cpp = {
-    --   {
-    --     name = "Launch",
-    --     type = "lldb",
-    --     request = "launch",
-    --     program = function()
-    --       return vim.fn.input('Path to executable: ', vim.fn.getcwd() .. '/', 'file')
-    --     end,
-    --     cwd = '${workspaceFolder}',
-    --     stopOnEntry = true,
-    --     args = {},
-    --     runInTerminal = false,
-    --   },
-    -- }
-    
     require("dapui").setup({
       sidebar = {
         elements = {
