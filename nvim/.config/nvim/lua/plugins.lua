@@ -81,7 +81,7 @@ return require('packer').startup(function(use)
     use {'rcarriga/nvim-dap-ui'}
     use {'mfussenegger/nvim-dap', config = function() require'config.dap'.setup() end }
     use {'nvim-telescope/telescope-dap.nvim'}
-    use {'Pocco81/DAPInstall.nvim', config = function() require("dap-install").setup() end }
+    -- use {'Pocco81/DAPInstall.nvim', config = function() require("dap-install").setup() end }
 
     -- treesitter
     use {'nvim-treesitter/nvim-treesitter', run = ':TSUpdate', config = function() require'config.treesitter'.setup() end }
