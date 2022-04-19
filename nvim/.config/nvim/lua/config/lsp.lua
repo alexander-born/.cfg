@@ -16,13 +16,18 @@ local capabilities = vim.lsp.protocol.make_client_capabilities()
 capabilities = require('cmp_nvim_lsp').update_capabilities(capabilities)
 capabilities.offsetEncoding = { "utf-16" }
 
--- Configure lua language server for neovim development
+
+local runtime_path = vim.split(package.path, ';')
+table.insert(runtime_path, "lua/?.lua")
+table.insert(runtime_path, "lua/?/init.lua")
+
 local lua_settings = {
   Lua = {
     runtime = {
-      -- LuaJIT in the case of Neovim
+      -- Tell the language server which version of Lua you're using (most likely LuaJIT in the case of Neovim)
       version = 'LuaJIT',
-      path = vim.split(package.path, ';'),
+      -- Setup your lua path
+      path = runtime_path,
     },
     diagnostics = {
       -- Get the language server to recognize the `vim` global
@@ -30,13 +35,13 @@ local lua_settings = {
     },
     workspace = {
       -- Make the server aware of Neovim runtime files
-      library = {
-        [vim.fn.expand('$VIMRUNTIME/lua')] = true,
-        [vim.fn.expand('$VIMRUNTIME/lua/vim/lsp')] = true,
-        [vim.fn.expand('$HOME/.config/nvim/lua')] = true,
-      },
+      library = vim.api.nvim_get_runtime_file("", true),
     },
-  }
+    -- Do not send telemetry data containing a randomized but unique identifier
+    telemetry = {
+      enable = false,
+    },
+  },
 }
 
 local M = {}
@@ -45,35 +50,23 @@ function M.setup()
     -- Register a handler that will be called for all installed servers.
     -- Alternatively, you may also register handlers on specific server instances instead (see example below).
     lsp_installer.on_server_ready(function(server)
-        local opts = {}
-
-        -- (optional) Customize the options passed to the server
-        -- if server.name == "tsserver" then
-        --     opts.root_dir = function() ... end
-        -- end
-
         -- This setup() function is exactly the same as lspconfig's setup function.
         -- Refer to https://github.com/neovim/nvim-lspconfig/blob/master/doc/server_configurations.md
         local config = {
             capabilities = capabilities,
             on_attach = on_attach,
         }
-        if server == "lua" then
+        if server.name == "sumneko_lua" then
           config.settings = lua_settings
-        end
-        if server == "vim" then
-            local plugin_path = vim.fn.stdpath('data')..'/site/pack/packer'
-            config.init_options = { runtimepath = vim.fn.expand("~/.config/nvim/" .. ',' .. plugin_path) }
         end
         if server.name == "pyright" then
             config.settings = { python = { analysis = { extraPaths = { vim.fn.getcwd() } } } }
         end
         if server.name == "clangd" then
-            install_path = {require'nvim-lsp-installer.servers'.get_server('clangd')}
-            if install_path[1] then 
+            local install_path = {require'nvim-lsp-installer.servers'.get_server('clangd')}
+            if install_path[1] then
                 install_path = install_path[2].root_dir
-                -- config.cmd = {require"lspinstall.util".install_path("cpp") .. "/clangd/bin/clangd", "--background-index", "--cross-file-rename"};
-                config.cmd = {install_path .. "/clangd/bin/clangd", "--background-index", "--cross-file-rename", "--compile-commands-dir=" .. vim.fn.getcwd()};
+                config.cmd = {install_path .. "/clangd/bin/clangd", "--background-index", "--cross-file-rename"};
              end
         end
         server:setup(config)
