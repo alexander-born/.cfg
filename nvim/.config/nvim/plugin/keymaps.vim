@@ -21,6 +21,7 @@ nnoremap <F7> :call SwitchSourceHeader()<CR>
 " telescope
 nnoremap <leader>ff :lua require('telescope.builtin').find_files({previewer = false})<CR>
 nnoremap <leader>fo :lua require('telescope.builtin').oldfiles({previewer = false})<CR>
+nnoremap <leader>fw :lua require('telescope.builtin').oldfiles({previewer = false, cwd_only = true})<CR>
 nnoremap <leader>fq :lua require('telescope.builtin').quickfix()<CR>
 nnoremap <leader>fh :lua require('telescope.builtin').command_history()<CR>
 nnoremap <leader>fr :lua require('telescope.builtin').registers()<CR>
