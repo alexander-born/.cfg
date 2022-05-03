@@ -1,21 +1,3 @@
-local on_attach = function(client, bufnr)
-    client.resolved_capabilities.document_formatting = false
-    client.resolved_capabilities.document_range_formatting = false
-    -- if client.resolved_capabilities.document_formatting then
-    --     vim.cmd([[
-    --     augroup LspFormatting
-    --         autocmd! * <buffer>
-    --         autocmd BufWritePre <buffer> lua vim.lsp.buf.formatting_sync()
-    --     augroup END
-    --     ]])
-    -- end
-end
-
-local capabilities = vim.lsp.protocol.make_client_capabilities()
-capabilities = require('cmp_nvim_lsp').update_capabilities(capabilities)
-capabilities.offsetEncoding = { "utf-16" }
-
-
 local runtime_path = vim.split(package.path, ';')
 table.insert(runtime_path, "lua/?.lua")
 table.insert(runtime_path, "lua/?/init.lua")
@@ -47,10 +29,14 @@ local M = {}
 function M.setup()
     local servers = { "clangd", "pyright", "sumneko_lua" }
     require("nvim-lsp-installer").setup({ automatic_installation = true})
+
+    local capabilities = vim.lsp.protocol.make_client_capabilities()
+    capabilities = require('cmp_nvim_lsp').update_capabilities(capabilities)
+    capabilities.offsetEncoding = { "utf-16" }
+
     for _, server in pairs(servers) do
         local config = {
             capabilities = capabilities,
-            on_attach = on_attach,
         }
         if server == "sumneko_lua" then
           config.settings = lua_settings
