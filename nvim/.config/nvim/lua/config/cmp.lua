@@ -11,7 +11,11 @@ function M.setup()
         end,
      },
      formatting = {
-       format = require'lspkind'.cmp_format({})
+       format = function(entry, vim_item)
+         vim_item.abbr = string.sub(vim_item.abbr, 1, 100)
+         return require'lspkind'.cmp_format({})(entry, vim_item)
+       end
+
      },
       mapping = {
         ['<C-Space>'] = cmp.mapping(cmp.mapping.complete(), { 'i', 'c' }),
