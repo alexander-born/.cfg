@@ -6,7 +6,6 @@ source <sfile>:h/plugin/color.vim
 source <sfile>:h/plugin/git.vim
 source <sfile>:h/plugin/html_clip.vim
 source <sfile>:h/plugin/index_files.vim
-source <sfile>:h/plugin/keymaps.vim
 source <sfile>:h/plugin/open_errors_in_qf.vim
 source <sfile>:h/plugin/switch_source_header.vim
 source <sfile>:h/plugin/vimspector.vim

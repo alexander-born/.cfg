@@ -27,7 +27,7 @@ local lua_settings = {
 
 local M = {}
 function M.setup()
-    local servers = { "clangd", "pyright", "sumneko_lua" }
+    local servers = { "clangd", "pyright", "sumneko_lua", "bashls" }
     require("nvim-lsp-installer").setup({ automatic_installation = true})
 
     local capabilities = vim.lsp.protocol.make_client_capabilities()

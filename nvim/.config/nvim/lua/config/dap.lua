@@ -17,6 +17,11 @@ function M.set_python_args_from_input()
     M.set_python_args(args)
 end
 
+function M.end_debug_session()
+    require'dap'.terminate()
+    require'dapui'.close()
+end
+
 function M.setup()
     vim.fn.sign_define('DapBreakpoint', {text='🛑', texthl='', linehl='', numhl=''})
 
