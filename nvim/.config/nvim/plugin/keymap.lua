@@ -74,7 +74,7 @@ map('n', '<leader>dh',  require('dap.ui.widgets').hover)
 map('n', '<leader>ds',  require('dap.ui.widgets').sidebar(require('dap.ui.widgets').scopes).toggle)
 map('n', '<leader>df',  dap.frames)
 map('n', '<leader>dd',  dap.commands)
-map('n', '<leader>de',  vim.fn.EndDebugSession)
+map('n', '<leader>de',  require'config.dap'.end_debug_session)
 map('n', '<leader>d<space>', require'dap'.continue)
 
 -- todo-comments
