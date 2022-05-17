@@ -1,6 +1,6 @@
 local M = {}
 
-local function StartDebugger(program, test_filter)
+local function StartDebugger(program, args)
     require'dapui'.open()
     require'dap'.run({
         name = "Launch",
@@ -9,19 +9,19 @@ local function StartDebugger(program, test_filter)
         program = function() return program end,
         cwd = vim.fn.getcwd(),
         stopOnEntry = false,
-        args = {'--gtest_filter=' .. test_filter},
+        args = args,
         runInTerminal = false,
     })
 end
 
 function M.DebugThisTest()
     local program = require('bazel').get_bazel_test_executable()
-    local test_filter = require('bazel').get_gtest_filter()
+    local args = {'--gtest_filter=' .. require('bazel').get_gtest_filter()}
     vim.cmd('new')
     local on_exit = function(_, code)
         if code == 0 then
             vim.cmd('bdelete')
-            StartDebugger(program, test_filter)
+            StartDebugger(program, args)
         end
     end
     vim.fn.termopen('bazel build ' .. vim.g.bazel_config .. ' -c dbg ' .. vim.g.current_bazel_target, {on_exit = on_exit})
