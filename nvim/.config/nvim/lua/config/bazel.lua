@@ -11,6 +11,7 @@ local function StartDebugger(program, args)
         stopOnEntry = false,
         args = args,
         runInTerminal = false,
+        setupCommands = {{text = "-enable-pretty-printing", ignoreFailures = true}},
     })
 end
 

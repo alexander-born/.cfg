@@ -53,6 +53,7 @@ return require('packer').startup(function(use)
     -- git
     use {'tpope/vim-fugitive'}
     use {'tpope/vim-rhubarb'}
+    use {'sindrets/diffview.nvim', config = function() require'diffview'.setup() end }
     use {'lewis6991/gitsigns.nvim', config = function() require'config.gitsigns'.setup() end }
     use {'rhysd/conflict-marker.vim'}
 
