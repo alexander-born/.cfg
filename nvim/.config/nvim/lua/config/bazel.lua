@@ -25,7 +25,7 @@ function M.DebugThisTest()
             StartDebugger(program, args)
         end
     end
-    vim.fn.termopen('bazel build ' .. vim.g.bazel_config .. ' -c dbg ' .. vim.g.current_bazel_target, {on_exit = on_exit})
+    vim.fn.termopen('bazel build ' .. vim.g.bazel_config .. ' -c dbg --cxxopt=-O0 ' .. vim.g.current_bazel_target, {on_exit = on_exit})
 end
 
 function M.YankLabel()
