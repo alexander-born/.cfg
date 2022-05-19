@@ -41,12 +41,12 @@ map('n', '<leader>grw', function() builtin.live_grep({cwd = "$HOME/projects/vimw
 map('n', '<leader>grn', function() builtin.live_grep({search_dirs = {"$HOME/.config/nvim", "$HOME/.local/share/nvim/site/pack/packer"}}) end)
 
 -- git
-map('n', '<Leader>gl', function() vim.cmd('G log -n 1000') end)
-map('n', '<Leader>gd', function() vim.cmd('GitDiff') end)
-map('n', '<Leader>gs', function() vim.cmd('G | MaximizerToggle') end)
-map('v', '<Leader>gb', function() vim.cmd('GBrowse') end)
 map('n', '<leader>gb', function() builtin.git_branches({cwd = vim.fn.expand("%:p:h")}) end)
 map('n', '<leader>gc', function() builtin.git_bcommits({cwd = vim.fn.expand("%:p:h")}) end)
+map('n', '<Leader>gl', ':G log -n 1000<CR>')
+map('n', '<Leader>gd', ':GitDiff<CR>')
+map('n', '<Leader>gs', ':G | MaximizerToggle<CR>')
+map('v', '<Leader>gb', ':GBrowse<CR>')
 
 -- bazel
 vim.api.nvim_create_autocmd("FileType", { pattern = "bzl", callback = function() map('n', 'gd', vim.fn.GoToBazelDefinition, { buffer = 0 }) end })
@@ -61,7 +61,7 @@ map('n', '<Leader>bdb', function() vim.fn.RunBazelHere("build " .. vim.g.bazel_c
 
 -- debugger
 local dap = require'telescope'.extensions.dap
-map('n', '<leader>m',   function() vim.cmd('MaximizerToggle!') end)
+map('n', '<leader>m',   ':MaximizerToggle!<CR>')
 map('n', '<leader>dt',  require("dapui").toggle)
 map('n', '<leader>bp',  require'dap'.toggle_breakpoint)
 map('n', '<leader>l',   require'dap'.step_into)
@@ -78,16 +78,17 @@ map('n', '<leader>de',  require'config.dap'.end_debug_session)
 map('n', '<leader>d<space>', require'dap'.continue)
 
 -- todo-comments
-map('n', '<leader>tq', function() vim.cmd('TodoQuickfix') end)
-map('n', '<leader>ft', function() vim.cmd('TodoTelescope') end)
+map('n', '<leader>tq', ':TodoQuickfix<CR>')
+map('n', '<leader>ft', ':TodoTelescope<CR>')
 
 -- trouble
-map('n', '<leader>xx', function() vim.cmd('TroubleToggle') end)
-map('n', '<leader>xw', function() vim.cmd('TroubleToggle workspace_diagnostics') end)
-map('n', '<leader>xd', function() vim.cmd('TroubleToggle document_diagnostics') end)
-map('n', '<leader>xq', function() vim.cmd('TroubleToggle quickfix') end)
-map('n', '<leader>xl', function() vim.cmd('TroubleToggle loclist') end)
+map('n', '<leader>xx', ':TroubleToggle<CR>')
+map('n', '<leader>xw', ':TroubleToggle workspace_diagnostics<CR>')
+map('n', '<leader>xd', ':TroubleToggle document_diagnostics<CR>')
+map('n', '<leader>xq', ':TroubleToggle quickfix<CR>')
+map('n', '<leader>xl', ':TroubleToggle loclist<CR>')
 
+map('t', '<ESC>', '<C-\\><C-n>')
 -- easy navigation between window splits and tmux panes
 map('n', '<C-J>', '<C-W><C-J>')
 map('n', '<C-K>', '<C-W><C-K>')
@@ -95,14 +96,13 @@ map('n', '<C-L>', '<C-W><C-L>')
 map('n', '<C-H>', '<C-W><C-H>')
 
 -- esc in terminal leaves insert mode
-map('t', '<ESC>', '<C-\\><C-n>')
 
 -- move selected lines up/down
-map('v', 'J', function() vim.cmd("m '>+1<CR>gv=gv") end)
-map('v', 'K', function() vim.cmd("m '<-2<CR>gv=gv") end)
+map('v', 'J', [[:m '>+1<CR>gv=gv]])
+map('v', 'K', [[:m '<-2<CR>gv=gv]])
 
 -- copy full file path to clipboard
-map('n', '<Leader>f', function() vim.cmd('let @+=expand("%")') end)
+map('n', '<Leader>f', ':let @+=expand("%")<CR>')
 
 -- copy visual selection to clipboard with ctrl-c
 map('v', '<C-c>', '"+y')
