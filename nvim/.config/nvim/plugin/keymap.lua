@@ -54,9 +54,9 @@ map('n', 'gbt',         vim.fn.GoToBazelTarget)
 map('n', '<Leader>bl',  vim.fn.RunBazel)
 map('n', '<Leader>bdt', require'config.bazel'.DebugThisTest)
 map('n', '<Leader>y',   require'config.bazel'.YankLabel)
-map('n', '<Leader>bt',  function() vim.fn.RunBazelHere("test "  .. vim.g.bazel_config .. " -c opt") end)
-map('n', '<Leader>bb',  function() vim.fn.RunBazelHere("build " .. vim.g.bazel_config .. " -c opt") end)
-map('n', '<Leader>br',  function() vim.fn.RunBazelHere("run "   .. vim.g.bazel_config .. " -c opt") end)
+map('n', '<Leader>bt',  function() vim.fn.RunBazelHere("test "  .. vim.g.bazel_config) end)
+map('n', '<Leader>bb',  function() vim.fn.RunBazelHere("build " .. vim.g.bazel_config) end)
+map('n', '<Leader>br',  function() vim.fn.RunBazelHere("run "   .. vim.g.bazel_config) end)
 map('n', '<Leader>bdb', function() vim.fn.RunBazelHere("build " .. vim.g.bazel_config .. " -c dbg --cxxopt=-O0 ") end)
 
 -- debugger
