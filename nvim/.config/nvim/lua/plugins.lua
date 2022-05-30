@@ -19,6 +19,7 @@ return require('packer').startup(function(use)
     use {'tpope/vim-unimpaired'}
     use {'wsdjeg/vim-fetch'}
     use {'numToStr/Comment.nvim', config = function() require'Comment'.setup() end }
+    use {'mg979/vim-visual-multi'}
     -- use {'ggandor/lightspeed.nvim', config = function() require'lightspeed'.setup({}) end }
 
     -- undotree

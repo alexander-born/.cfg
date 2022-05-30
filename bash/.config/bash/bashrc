@@ -24,6 +24,7 @@ gencompdb() {
     cleanup_compile_commands ./compile_commands.json
 }
 
+export TERM='tmux-256color'
 export GIT_PS1_SHOWDIRTYSTATE='y'
 export GIT_PS1_SHOWSTASHSTATE='y'
 export GIT_PS1_SHOWUNTRACKEDFILES='y'
