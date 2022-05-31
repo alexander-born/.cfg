@@ -9,9 +9,3 @@ autocmd ColorScheme everforest call everforest#highlight('WarningText', g:everfo
 autocmd ColorScheme everforest call everforest#highlight('InfoText', g:everforest_palette.none, g:everforest_palette.none, 'NONE', g:everforest_palette.blue)
 autocmd ColorScheme everforest call everforest#highlight('HintText', g:everforest_palette.none, g:everforest_palette.none, 'NONE', g:everforest_palette.green)
 exe "colorscheme " . g:color_scheme
-call everforest#highlight('MultiMonoHl', g:everforest_palette.fg, g:everforest_palette.red)
-call everforest#highlight('MultiCursorHl', g:everforest_palette.fg, g:everforest_palette.orange)
-let g:VM_Mono_hl = 'MultiMonoHl'
-let g:VM_Extend_hl = 'Visual'
-let g:VM_Cursor_hl = 'MultiCursorHl'
-let g:VM_Insert_hl = 'DiffChange'
