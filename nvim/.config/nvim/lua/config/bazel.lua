@@ -1,7 +1,6 @@
 local M = {}
 
 local function StartDebugger(program, args)
-    require'dapui'.open()
     require'dap'.run({
         name = "Launch",
         type = "cppdbg",

@@ -1,7 +1,7 @@
 local M = {}
 
 local function split_by_space(input)
-    chunks = {}
+    local chunks = {}
     for substring in input:gmatch("%S+") do
        table.insert(chunks, substring)
     end
@@ -25,7 +25,11 @@ end
 function M.setup()
     vim.fn.sign_define('DapBreakpoint', {text='🛑', texthl='', linehl='', numhl=''})
 
-    local dap = require('dap')
+    local dap, dapui = require("dap"), require("dapui")
+    dap.listeners.after.event_initialized["dapui_config"] = function() dapui.open() end
+    dap.listeners.after.event_terminated["dapui_config"] = function() dapui.close() end
+    dap.listeners.after.event_exited["dapui_config"] = function() dapui.close() end
+
     dap.adapters.cppdbg = {
       id = 'cppdbg',
       type = 'executable',
@@ -49,7 +53,7 @@ function M.setup()
       },
     }
 
-    require("dapui").setup({
+    dapui.setup({
       sidebar = {
         elements = {
           -- Provide as ID strings or tables with "id" and "size" keys
