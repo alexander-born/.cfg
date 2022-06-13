@@ -1,5 +1,7 @@
 local M = {}
 
+local avail, dap = pcall(require, 'dap')
+
 local function split_by_space(input)
     local chunks = {}
     for substring in input:gmatch("%S+") do
@@ -9,7 +11,8 @@ local function split_by_space(input)
 end
 
 function M.set_python_args(args)
-    require'dap'.configurations.python[1].args = split_by_space(args)
+    if not avail then return end
+    dap.configurations.python[1].args = split_by_space(args)
 end
 
 function M.set_python_args_from_input()
@@ -18,11 +21,13 @@ function M.set_python_args_from_input()
 end
 
 function M.end_debug_session()
+    if not avail then return end
     require'dap'.terminate()
     require'dapui'.close()
 end
 
 function M.setup()
+    if not avail then return end
     vim.fn.sign_define('DapBreakpoint', {text='🛑', texthl='', linehl='', numhl=''})
 
     local dap, dapui = require("dap"), require("dapui")

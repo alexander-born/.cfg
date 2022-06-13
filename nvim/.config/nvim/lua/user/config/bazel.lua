@@ -1,7 +1,9 @@
 local M = {}
 
 local function StartDebugger(program, args)
-    require'dap'.run({
+    local avail, dap = pcall(require, 'dap')
+    if avail then
+      dap.run({
         name = "Launch",
         type = "cppdbg",
         request = "launch",
@@ -11,12 +13,15 @@ local function StartDebugger(program, args)
         args = args,
         runInTerminal = false,
         setupCommands = {{text = "-enable-pretty-printing", ignoreFailures = true}},
-    })
+      })
+    end
 end
 
 function M.DebugThisTest()
-    local program = require('bazel').get_bazel_test_executable()
-    local args = {'--gtest_filter=' .. require('bazel').get_gtest_filter()}
+    local avail, bazel = pcall(require, 'bazel')
+    if not avail then return end
+    local program = bazel.get_bazel_test_executable()
+    local args = {'--gtest_filter=' .. bazel.get_gtest_filter()}
     vim.cmd('new')
     local on_exit = function(_, code)
         if code == 0 then
@@ -28,6 +33,7 @@ function M.DebugThisTest()
 end
 
 function M.YankLabel()
+    if not vim.fn.exists('GetLabel') then return end
     local label = vim.fn.GetLabel()
     print('yanking ' .. label .. ' to + and " register')
     vim.fn.setreg('+', label)
@@ -38,6 +44,10 @@ function M.setup()
     -- Info: to make tab completion work copy '/etc/bash_completion.d/bazel-complete.bash' to '/etc/bash_completion.d/bazel'
 
     vim.g.bazel_config = vim.g.bazel_config  or ''
+    if pcall(require, 'cmp') then
+      vim.cmd [[ autocmd FileType bzl lua require'cmp'.setup.buffer { sources = { { name = 'bazel' }, { name = 'buffer' } } } ]]
+    end
+
 
     vim.cmd[[
     set errorformat=ERROR:\ %f:%l:%c:%m

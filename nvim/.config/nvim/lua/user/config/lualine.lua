@@ -45,14 +45,13 @@ end
 
 local M = {}
 function M.setup()
+  local avail, ever = pcall(require, 'lualine.themes.everforest')
+  if not avail then return end
   local colors = get_colors()
-  local theme = vim.g.color_scheme
-  if vim.g.color_scheme == "everforest" then
-      theme = require'lualine.themes.everforest'
-      local normal = theme.normal.a
-      theme.normal.a = theme.insert.a
-      theme.insert.a = normal
-  end
+  local theme = ever
+  local normal = theme.normal.a
+  theme.normal.a = theme.insert.a
+  theme.insert.a = normal
   require'lualine'.setup {
     options = { theme = theme, globalstatus = true },
     sections = {

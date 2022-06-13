@@ -1,6 +1,9 @@
 local M = {}
 
+local avail, nvim_tree = pcall(require, 'nvim-tree')
+
 function M.nvim_tree_find_file()
+  if not avail then return end
   local function starts_with(String, Start)
     return string.sub(String, 1, string.len(Start)) == Start
   end
@@ -8,27 +11,30 @@ function M.nvim_tree_find_file()
   local cur_path = vim.fn.expand('%:p:h')
 
   if starts_with(cur_path, vim.g.project_path) then
-    require('nvim-tree').find_file(true)
+    nvim_tree.find_file(true)
   else
     require('nvim-tree.lib').change_dir(cur_path)
-    require('nvim-tree').find_file(true)
+    nvim_tree.find_file(true)
   end
 end
 
 function M.nvim_tree_toggle_project()
+    if not avail then return end
     vim.cmd('lcd ' .. vim.g.project_path)
     require'nvim-tree'.toggle()
 end
 
 function M.grep_at_current_tree_node()
+    if not avail then return end
     local node = require('nvim-tree.lib').get_node_at_cursor()
     if not node then return end
     require('telescope.builtin').live_grep({search_dirs = {node.absolute_path}})
 end
 
 function M.setup()
+    if not avail then return end
     vim.g.project_path = vim.fn.getcwd()
-    require'nvim-tree'.setup {
+    nvim_tree.setup {
         disable_netrw = false,
         update_cwd = true,
         view = {
