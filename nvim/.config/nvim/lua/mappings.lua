@@ -1,4 +1,9 @@
 -- lsp
+-- Remap space as leader key
+vim.keymap.set({ 'n', 'v' }, '<Space>', '<Nop>', { silent = true })
+vim.g.mapleader = ' '
+vim.g.maplocalleader = ' '
+
 local map = vim.keymap.set
 map('n', '<leader>rn', vim.lsp.buf.rename)
 map('n', '<leader>ca', vim.lsp.buf.code_action)

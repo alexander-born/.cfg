@@ -18,13 +18,13 @@ function M.DebugThisTest()
     local program = require('bazel').get_bazel_test_executable()
     local args = {'--gtest_filter=' .. require('bazel').get_gtest_filter()}
     vim.cmd('new')
-    local on_exit = function(_, code)
-        if code == 0 then
+    local start_debugger = function(_, success)
+        if success == 0 then
             vim.cmd('bdelete')
             StartDebugger(program, args)
         end
     end
-    vim.fn.termopen('bazel build ' .. vim.g.bazel_config .. ' -c dbg --cxxopt=-O0 ' .. vim.g.current_bazel_target, {on_exit = on_exit})
+    vim.fn.termopen('bazel build ' .. vim.g.bazel_config .. ' -c dbg --cxxopt=-O0 ' .. vim.g.current_bazel_target, {on_exit = start_debugger })
 end
 
 function M.YankLabel()
