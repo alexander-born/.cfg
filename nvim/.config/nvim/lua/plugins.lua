@@ -37,7 +37,7 @@ return require('packer').startup(function(use)
     use {'sainnhe/everforest', config = function() require'config.everforest'.setup() end }
 
     -- wiki
-    use {'vimwiki/vimwiki'}
+    use {'vimwiki/vimwiki', config = function() require'config.vimwiki'.setup() end }
 
     -- markdown
     use {'davidgranstrom/nvim-markdown-preview'}
@@ -48,7 +48,7 @@ return require('packer').startup(function(use)
     use {'tpope/vim-rhubarb'}
     use {'sindrets/diffview.nvim', config = function() require'diffview'.setup() end }
     use {'lewis6991/gitsigns.nvim', config = function() require'gitsigns'.setup() end }
-    use {'rhysd/conflict-marker.vim'}
+    use {'rhysd/conflict-marker.vim', config = function() require'config.conflict_marker'.setup() end }
 
     -- tmux jump windows
     use {'christoomey/vim-tmux-navigator'}

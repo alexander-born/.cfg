@@ -11,6 +11,14 @@ function M.setup()
     vim.g.mapleader = ' '
     vim.g.maplocalleader = ' '
 
+    -- multi cursor <M-...> = <Alt-...>
+    vim.g.VM_maps = {
+      ["Add Cursor Down"]    = "<M-j>",
+      ["Add Cursor Up"]      = "<M-k>",
+      ["Find Subword Under"] = "<M-n>",
+      ["Find Under"]         = "<M-n>"
+    }
+
     wk.register({
       ["<leader>f"]  = { name = "+find"},
       ["<leader>gr"] = { name = "+grep"},

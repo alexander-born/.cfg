@@ -1,3 +1,5 @@
+vim.o.updatetime=100 -- faster update (default 4000)
+vim.o.signcolumn="auto:2"
 vim.o.termguicolors = true
 vim.o.number = true
 vim.o.relativenumber = true
