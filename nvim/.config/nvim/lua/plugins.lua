@@ -43,10 +43,11 @@ return require('packer').startup(function(use)
     use {'davidgranstrom/nvim-markdown-preview'}
 
     -- git
+    use {'TimUntersberger/neogit'}
     use {'tpope/vim-fugitive'}
     use {'tpope/vim-rhubarb'}
     use {'sindrets/diffview.nvim', config = function() require'diffview'.setup() end }
-    use {'lewis6991/gitsigns.nvim', config = function() require'config.gitsigns'.setup() end }
+    use {'lewis6991/gitsigns.nvim', config = function() require'gitsigns'.setup() end }
     use {'rhysd/conflict-marker.vim'}
 
     -- tmux jump windows
@@ -102,6 +103,9 @@ return require('packer').startup(function(use)
     -- snippets
     use {'hrsh7th/vim-vsnip'}
     use {'rafamadriz/friendly-snippets'}
+
+    -- mappings
+    use {'folke/which-key.nvim', config = function() require'config.mappings'.setup() end }
 
   -- Automatically set up your configuration after cloning packer.nvim
   -- Put this at the end after all plugins
