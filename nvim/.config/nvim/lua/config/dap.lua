@@ -54,16 +54,23 @@ function M.setup()
     }
 
     dapui.setup({
-      sidebar = {
-        elements = {
-          -- Provide as ID strings or tables with "id" and "size" keys
-          { id = "scopes", size = 0.25 },
-          { id = "breakpoints", size = 0.25 },
-          { id = "watches", size = 00.25 },
+      layouts = {
+        {
+          elements = {
+            'scopes',
+            'breakpoints',
+            'watches',
+          },
+          size = 40,
+          position = 'left',
         },
-      },
-      tray = {
-        elements = { "repl" },
+        {
+          elements = {
+            'repl',
+          },
+          size = 10,
+          position = 'bottom',
+        },
       },
     })
 end
