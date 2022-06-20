@@ -35,13 +35,12 @@ pip install debugpy
  - c++
 ```bash
 mkdir -p ~/.local/bin
-mkdir -p ~/.local/share/nvim
-cd ~/.local/share/nvim
-mkdir debug_adapters
-cd debug_adapters
+mkdir -p ~/.local/share/nvim/debug_adapters
+cd ~/.local/share/nvim/debug_adapters
 wget $(curl -s https://api.github.com/repos/microsoft/vscode-cpptools/releases/latest | grep browser_ | cut -d\" -f 4 | grep linux.vsix)
 mv cpptools-linux.vsix cpptools-linux.zip
 unzip cpptools-linux.zip -d ./cpptools-linux
+rm cpptools-linux.zip
 chmod +x cpptools-linux/extension/debugAdapters/bin/OpenDebugAD7
 ln -s ~/.local/share/nvim/debug_adapters/cpptools-linux/extension/debugAdapters/bin/OpenDebugAD7 ~/.local/bin/OpenDebugAD7
 ```
