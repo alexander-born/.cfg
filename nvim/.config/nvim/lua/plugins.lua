@@ -1,14 +1,11 @@
-local install_path = vim.fn.stdpath('data')..'/site/pack/packer/start/packer.nvim'
-if vim.fn.empty(vim.fn.glob(install_path)) > 0 then
-  vim.fn.system({'git', 'clone', 'https://github.com/wbthomason/packer.nvim', install_path})
-  vim.cmd('packadd packer.nvim')
+local fn = vim.fn
+local install_path = fn.stdpath('data')..'/site/pack/packer/start/packer.nvim'
+if fn.empty(fn.glob(install_path)) > 0 then
+  packer_bootstrap = fn.system({'git', 'clone', '--depth', '1', 'https://github.com/wbthomason/packer.nvim', install_path})
+  vim.cmd[[packadd packer.nvim]]
 end
 
-local packer_group = vim.api.nvim_create_augroup('Packer', { clear = true })
-vim.api.nvim_create_autocmd('BufWritePost', { command = 'source <afile> | PackerCompile', group = packer_group, pattern = 'init.lua' })
-
 return require('packer').startup(function(use)
-    -- Packer can manage itself
     use {'wbthomason/packer.nvim'}
 
     -- general
@@ -20,7 +17,6 @@ return require('packer').startup(function(use)
     use {'wsdjeg/vim-fetch'}
     use {'numToStr/Comment.nvim', config = function() require'Comment'.setup() end }
     use {'mg979/vim-visual-multi'}
-    -- use {'ggandor/lightspeed.nvim', config = function() require'lightspeed'.setup({}) end }
 
     -- undotree
     use {'mbbill/undotree'}
@@ -38,31 +34,24 @@ return require('packer').startup(function(use)
     use {'kyazdani42/nvim-tree.lua', config = function() require'config.nvimtree'.setup() end }
 
     -- colorschemes
-    use {'sainnhe/everforest'}
-    use {'sainnhe/gruvbox-material'}
-    use {'ChristianChiarulli/nvcode-color-schemes.vim'}
-
-    -- grep
-    use {'mileszs/ack.vim'}
+    use {'sainnhe/everforest', config = function() require'config.everforest'.setup() end }
 
     -- wiki
-    use {'vimwiki/vimwiki'}
+    use {'vimwiki/vimwiki', config = function() require'config.vimwiki'.setup() end }
 
     -- markdown
     use {'davidgranstrom/nvim-markdown-preview'}
 
     -- git
+    use {'TimUntersberger/neogit'}
     use {'tpope/vim-fugitive'}
     use {'tpope/vim-rhubarb'}
     use {'sindrets/diffview.nvim', config = function() require'diffview'.setup() end }
-    use {'lewis6991/gitsigns.nvim', config = function() require'config.gitsigns'.setup() end }
-    use {'rhysd/conflict-marker.vim'}
+    use {'lewis6991/gitsigns.nvim', config = function() require'gitsigns'.setup() end }
+    use {'rhysd/conflict-marker.vim', config = function() require'config.conflict_marker'.setup() end }
 
     -- tmux jump windows
     use {'christoomey/vim-tmux-navigator'}
-
-    -- python
-    use {'alfredodeza/pytest.vim'}
 
     -- null-ls for autoformat
     use {'jose-elias-alvarez/null-ls.nvim', config = function() require'config.null-ls'.setup() end }
@@ -108,12 +97,20 @@ return require('packer').startup(function(use)
     use {'hrsh7th/cmp-nvim-lsp'}
     use {'hrsh7th/cmp-path'}
     use {'hrsh7th/cmp-buffer'}
-    use {'hrsh7th/cmp-vsnip'}
+    use {'hrsh7th/cmp-vsnip', config = function() require'config.vsnip'.setup() end }
     use {'alexander-born/cmp-bazel'}
 
     -- snippets
     use {'hrsh7th/vim-vsnip'}
     use {'rafamadriz/friendly-snippets'}
 
+    -- mappings
+    use {'folke/which-key.nvim', config = function() require'config.mappings'.setup() end }
 
+  -- Automatically set up your configuration after cloning packer.nvim
+  -- Put this at the end after all plugins
+  if packer_bootstrap then
+    require('packer').sync()
+  end
 end)
+

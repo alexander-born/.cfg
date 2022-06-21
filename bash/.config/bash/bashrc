@@ -19,11 +19,6 @@ alias gitmegamagic="git rm --cached -r .; git reset --hard"
 
 convert_clipboard_to_unix_path() { xclip -o -sel clip | sed 's/\\/\//g' | sed 's/^file:/smb:/' | xclip -i -sel clip; echo "[INFO] clipboard updated."; }
 
-gencompdb() { 
-    bazel-compdb
-    cleanup_compile_commands ./compile_commands.json
-}
-
 export TERM='tmux-256color'
 export GIT_PS1_SHOWDIRTYSTATE='y'
 export GIT_PS1_SHOWSTASHSTATE='y'
