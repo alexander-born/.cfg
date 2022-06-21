@@ -1,0 +1,22 @@
+[/]
+list=['b1dcc9dd-5262-4d8d-a863-c897e6d979b9', '1648dbbb-cd65-46aa-979c-067760b5576b']
+
+[:1648dbbb-cd65-46aa-979c-067760b5576b]
+background-color='#002240'
+bold-color='#2cc55d'
+bold-color-same-as-fg=true
+font='UbuntuMono Nerd Font Mono 11'
+foreground-color='#2cc55d'
+palette=['#222d3f', '#a82320', '#32a548', '#e58d11', '#3167ac', '#781aa0', '#2c9370', '#b0b6ba', '#212c3c', '#d4312e', '#2d9440', '#e5be0c', '#3c7dd2', '#8230a7', '#35b387', '#e7eced']
+use-system-font=false
+use-theme-background=false
+use-theme-colors=false
+visible-name='terminal.flat.theme'
+
+[:b1dcc9dd-5262-4d8d-a863-c897e6d979b9]
+background-color='rgb(47,56,62)'
+font='UbuntuMono Nerd Font Mono 11'
+foreground-color='rgb(211,198,170)'
+palette=['rgb(47,56,62)', 'rgb(230,126,128)', 'rgb(167,192,128)', 'rgb(219,188,127)', 'rgb(127,187,179)', 'rgb(214,153,182)', 'rgb(131,192,146)', 'rgb(211,198,170)', 'rgb(62,71,77)', 'rgb(248,157,159)', 'rgb(194,216,159)', 'rgb(245,220,170)', 'rgb(171,214,208)', 'rgb(230,177,202)', 'rgb(166,211,177)', 'rgb(224,212,188)']
+use-system-font=false
+use-theme-colors=false
