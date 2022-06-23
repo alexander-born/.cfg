@@ -25,23 +25,21 @@ local lua_settings = {
   },
 }
 
-
-local function add_bazel_extra_paths(config)
-    local cwd = vim.fn.getcwd()
-    local buf = vim.api.nvim_create_buf(false, false)
-    vim.api.nvim_win_set_buf(0, buf)
-    local add_extra_paths = function(_, return_code)
-        if return_code == 0 then
-            for _, path in ipairs(vim.api.nvim_buf_get_lines(buf, 0, -1, false)) do
-                table.insert(config.settings.python.analysis.extraPaths, path)
+local function get_bazel_extra_paths()
+    local Path = require'plenary.path'
+    local extra_paths = {}
+    local add_extra_paths = function(_, stdout)
+        for _, line in ipairs(stdout) do
+            if Path:new(line):exists() and line ~= "" then
+                table.insert(extra_paths, line)
             end
-            table.insert(config.settings.python.analysis.extraPaths, vim.fn.getcwd())
-            require('lspconfig').pyright.setup(config)
         end
-        vim.api.nvim_buf_delete(buf, {})
     end
     local find_python_modules = [[find . | grep __init__.py | grep -v .runfiles | xargs -r dirname | xargs -r dirname | grep -v "\.$" | awk '$0 ~ "^"r"\\/"{ next }{ r=$0 }1' | sort | uniq | xargs -r readlink -f;]]
-    vim.fn.termopen("cd external && " .. find_python_modules .. " cd " .. cwd .. " && cd bazel-bin && " .. find_python_modules, { on_exit = add_extra_paths })
+    local jobid = vim.fn.jobstart("cd external && " .. find_python_modules .. " cd " .. vim.fn.getcwd() .. " && cd bazel-bin && " .. find_python_modules, { on_stdout = add_extra_paths })
+    vim.fn.jobwait({jobid})
+    table.insert(extra_paths, vim.fn.getcwd())
+    return extra_paths
 end
 
 local M = {}
@@ -61,9 +59,7 @@ function M.setup()
           config.settings = lua_settings
         end
         if server == "pyright" then
-            local cwd = vim.fn.getcwd()
-            config.settings = { python = { analysis = { extraPaths = {cwd} } } }
-            add_bazel_extra_paths(config)
+            config.settings = { python = { analysis = { extraPaths = get_bazel_extra_paths() } } }
         end
         if server == "clangd" then
             local install_path = {require'nvim-lsp-installer.servers'.get_server('clangd')}
