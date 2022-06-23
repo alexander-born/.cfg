@@ -25,6 +25,24 @@ local lua_settings = {
   },
 }
 
+
+local function add_bazel_extra_paths(config)
+    local cwd = vim.fn.getcwd()
+    local buf = vim.api.nvim_create_buf(false, false)
+    vim.api.nvim_win_set_buf(0, buf)
+    local add_extra_paths = function(_, return_code)
+        if return_code == 0 then
+            for _, v in ipairs(vim.api.nvim_buf_get_lines(buf, 0, -1, false)) do
+                table.insert(config.settings.python.analysis.extraPaths, v)
+            end
+            require('lspconfig').pyright.setup(config)
+        end
+        vim.api.nvim_buf_delete(buf, {})
+    end
+    local find_python_modules = [[find . | grep __init__.py | grep -v .runfiles | xargs dirname | xargs dirname | grep -v "\.$" | awk '$0 ~ "^"r"\\/"{ next }{ r=$0 }1' | sort | uniq | xargs readlink -f;]]
+    vim.fn.termopen("cd external && " .. find_python_modules .. " cd " .. cwd .. " && cd bazel-bin && " .. find_python_modules, { on_exit = add_extra_paths })
+end
+
 local M = {}
 function M.setup()
     local servers = { "clangd", "pyright", "sumneko_lua", "bashls", "vimls" }
@@ -42,7 +60,9 @@ function M.setup()
           config.settings = lua_settings
         end
         if server == "pyright" then
-            config.settings = { python = { analysis = { extraPaths = { vim.fn.getcwd() } } } }
+            local cwd = vim.fn.getcwd()
+            config.settings = { python = { analysis = { extraPaths = {cwd} } } }
+            add_bazel_extra_paths(config)
         end
         if server == "clangd" then
             local install_path = {require'nvim-lsp-installer.servers'.get_server('clangd')}
