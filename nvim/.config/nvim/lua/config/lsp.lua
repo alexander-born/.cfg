@@ -40,7 +40,7 @@ local function add_bazel_extra_paths(config)
         end
         vim.api.nvim_buf_delete(buf, {})
     end
-    local find_python_modules = [[find . | grep __init__.py | grep -v .runfiles | xargs dirname | xargs dirname | grep -v "\.$" | awk '$0 ~ "^"r"\\/"{ next }{ r=$0 }1' | sort | uniq | xargs readlink -f;]]
+    local find_python_modules = [[find . | grep __init__.py | grep -v .runfiles | xargs -r dirname | xargs -r dirname | grep -v "\.$" | awk '$0 ~ "^"r"\\/"{ next }{ r=$0 }1' | sort | uniq | xargs -r readlink -f;]]
     vim.fn.termopen("cd external && " .. find_python_modules .. " cd " .. cwd .. " && cd bazel-bin && " .. find_python_modules, { on_exit = add_extra_paths })
 end
 
