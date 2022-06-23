@@ -32,9 +32,10 @@ local function add_bazel_extra_paths(config)
     vim.api.nvim_win_set_buf(0, buf)
     local add_extra_paths = function(_, return_code)
         if return_code == 0 then
-            for _, v in ipairs(vim.api.nvim_buf_get_lines(buf, 0, -1, false)) do
-                table.insert(config.settings.python.analysis.extraPaths, v)
+            for _, path in ipairs(vim.api.nvim_buf_get_lines(buf, 0, -1, false)) do
+                table.insert(config.settings.python.analysis.extraPaths, path)
             end
+            table.insert(config.settings.python.analysis.extraPaths, vim.fn.getcwd())
             require('lspconfig').pyright.setup(config)
         end
         vim.api.nvim_buf_delete(buf, {})
