@@ -4,6 +4,15 @@ function M.setup()
 
     local map = vim.keymap.set
     local wk = require("which-key")
+    local show = wk.show
+    wk.show = function(keys, opts)
+        if vim.bo.filetype == "TelescopePrompt" then
+            local map_cr = "<c-r>"
+            local key = vim.api.nvim_replace_termcodes(map_cr, true, false, true)
+            vim.api.nvim_feedkeys(key, "i", true)
+        end
+        show(keys, opts)
+    end
     wk.setup {}
 
     -- Remap space as leader key

@@ -58,3 +58,7 @@ git clone https://github.com/tmux-plugins/tpm ~/.tmux/plugins/tpm
 ```
 Open tmux and install plugins with `<Ctrl-a>I`.
 
+## Add everforest colorscheme to gnome terminal
+```bash
+dconf load /org/gnome/terminal/legacy/profiles:/ < ~/.cfg/gnome-terminal-profiles.dconf
+```
