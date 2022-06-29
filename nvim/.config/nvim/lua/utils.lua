@@ -56,6 +56,7 @@ function UpdateConfig()
     vim.cmd('!git -C ~/.cfg_work pull')
     vim.cmd('!stow nvim -d ~/.cfg -t ~')
     vim.cmd('!stow nvim -d ~/.cfg_work -t ~')
+    vim.cmd('!for f in ~/.config/bash/*; do source $f; done')
 end
 
 vim.cmd[[command! UpdateConfig execute "lua UpdateConfig()"]]
