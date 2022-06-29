@@ -1,12 +1,12 @@
 local M = {}
 
-local function StartDebugger(program, args)
+local function StartDebugger(program, args, bazel_root)
     require'dap'.run({
         name = "Launch",
         type = "cppdbg",
         request = "launch",
         program = function() return program end,
-        cwd = vim.fn.getcwd(),
+        cwd = bazel_root,
         stopOnEntry = false,
         args = args,
         runInTerminal = false,
@@ -17,14 +17,15 @@ end
 function M.DebugThisTest()
     local program = require('bazel').get_bazel_test_executable()
     local args = {'--gtest_filter=' .. require('bazel').get_gtest_filter()}
+    local bazel_root = require'bazel'.get_bazel_workspace()
     vim.cmd('new')
     local start_debugger = function(_, success)
         if success == 0 then
             vim.cmd('bdelete')
-            StartDebugger(program, args)
+            StartDebugger(program, args, bazel_root)
         end
     end
-    vim.fn.termopen('bazel build ' .. vim.g.bazel_config .. ' -c dbg --cxxopt=-O0 ' .. vim.g.current_bazel_target, {on_exit = start_debugger })
+    vim.fn.termopen('bazel build ' .. vim.g.bazel_config .. ' -c dbg --cxxopt=-O0 ' .. vim.g.current_bazel_target, {on_exit = start_debugger, cwd = bazel_root })
 end
 
 function M.YankLabel()
