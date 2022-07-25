@@ -17,7 +17,7 @@ end
 function M.DebugThisTest()
     local program = require('bazel').get_bazel_test_executable()
     local args = {'--gtest_filter=' .. require('bazel').get_gtest_filter()}
-    local bazel_root = require'bazel'.get_bazel_workspace_root()
+    local bazel_root = require'bazel'.get_bazel_workspace()
     vim.cmd('new')
     local start_debugger = function(_, success)
         if success == 0 then
