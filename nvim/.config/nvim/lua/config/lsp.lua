@@ -45,7 +45,8 @@ end
 local M = {}
 function M.setup()
     local servers = { "clangd", "pyright", "sumneko_lua", "bashls", "vimls" }
-    require("nvim-lsp-installer").setup({ automatic_installation = true})
+    require("mason").setup()
+    require("mason-lspconfig").setup({ ensure_installed = servers, automatic_installation = true})
 
     local capabilities = vim.lsp.protocol.make_client_capabilities()
     capabilities = require('cmp_nvim_lsp').update_capabilities(capabilities)
@@ -62,11 +63,7 @@ function M.setup()
             config.settings = { python = { analysis = { extraPaths = get_bazel_extra_paths() } } }
         end
         if server == "clangd" then
-            local install_path = {require'nvim-lsp-installer.servers'.get_server('clangd')}
-            if install_path[1] then
-                install_path = install_path[2].root_dir
-                config.cmd = {install_path .. "/clangd/bin/clangd", "--background-index", "--cross-file-rename"};
-             end
+            config.cmd = {require'mason-core.path'.bin_prefix('clangd'), "--background-index", "--cross-file-rename"};
         end
         require('lspconfig')[server].setup(config)
     end

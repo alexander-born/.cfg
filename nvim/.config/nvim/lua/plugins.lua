@@ -83,7 +83,8 @@ return require('packer').startup(function(use)
     use {'folke/trouble.nvim', config = function() require'trouble'.setup() end }
 
     -- lsp
-    use {'williamboman/nvim-lsp-installer'}
+    use {'williamboman/mason.nvim'}
+    use {'williamboman/mason-lspconfig.nvim'}
     use {'neovim/nvim-lspconfig', config = function() require'config.lsp'.setup() end }
     use {'ray-x/lsp_signature.nvim', config = function() require'lsp_signature'.setup({hint_enable = false}) end }
     use {'j-hui/fidget.nvim', config = function() require'fidget'.setup() end }
