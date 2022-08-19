@@ -42,25 +42,32 @@ local function get_bazel_extra_paths()
     return extra_paths
 end
 
+local function get_capabilities()
+    local capabilities = vim.lsp.protocol.make_client_capabilities()
+    capabilities = require('cmp_nvim_lsp').update_capabilities(capabilities)
+    capabilities.offsetEncoding = { "utf-16" }
+    return capabilities
+end
+
 local M = {}
+
+function M.setup_pyright_with_bazel()
+    local config = { capabilities = get_capabilities() }
+    config.settings = { python = { analysis = { extraPaths = get_bazel_extra_paths() } } }
+    require('lspconfig')['pyright'].setup(config)
+end
+
 function M.setup()
     local servers = { "clangd", "pyright", "sumneko_lua", "bashls", "vimls" }
     require("mason").setup()
     require("mason-lspconfig").setup({ ensure_installed = servers, automatic_installation = true})
 
-    local capabilities = vim.lsp.protocol.make_client_capabilities()
-    capabilities = require('cmp_nvim_lsp').update_capabilities(capabilities)
-    capabilities.offsetEncoding = { "utf-16" }
+    local capabilities = get_capabilities()
 
     for _, server in pairs(servers) do
-        local config = {
-            capabilities = capabilities,
-        }
+        local config = { capabilities = capabilities }
         if server == "sumneko_lua" then
           config.settings = lua_settings
-        end
-        if server == "pyright" then
-            config.settings = { python = { analysis = { extraPaths = get_bazel_extra_paths() } } }
         end
         if server == "clangd" then
             config.cmd = {require'mason-core.path'.bin_prefix('clangd'), "--background-index", "--cross-file-rename"};
