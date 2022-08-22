@@ -97,8 +97,8 @@ function M.setup()
     map('v', '<Leader>gb', ':GBrowse<CR>', {desc = "Git Browse"})
 
     -- Navigation
-    map('n', ']c', "&diff ? ']c' : '<cmd>Gitsigns next_hunk<CR>'", {expr=true, desc="Next Hunk"})
-    map('n', '[c', "&diff ? '[c' : '<cmd>Gitsigns prev_hunk<CR>'", {expr=true, desc="Previous Hunk"})
+    map('n', ']c', function() if vim.wo.diff then return ']c' end vim.schedule(function() package.loaded.gitsigns.next_hunk() end) return '<Ignore>' end, {expr=true, desc="Next Hunk"})
+    map('n', '[c', function() if vim.wo.diff then return '[c' end vim.schedule(function() package.loaded.gitsigns.prev_hunk() end) return '<Ignore>' end, {expr=true, desc="Previous Hunk"})
 
     -- Actions
     local gs = require'gitsigns'
