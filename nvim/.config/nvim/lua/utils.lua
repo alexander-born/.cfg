@@ -74,4 +74,5 @@ function UpdateConfig()
 end
 
 vim.cmd[[command! UpdateConfig execute "lua UpdateConfig()"]]
-vim.cmd[[command! SetupPyrightForBazel execute "lua require'config.lsp'.setup_pyright_with_bazel()"]]
+vim.cmd[[command! SetupPyrightForBazel execute "lua require'config.bazel'.setup_pyright_with_bazel()"]]
+vim.cmd[[command! PyrightForBazelSetup execute "lua require'config.bazel'.setup_pyright_with_bazel()"]]

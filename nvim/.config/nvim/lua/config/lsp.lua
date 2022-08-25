@@ -25,36 +25,13 @@ local lua_settings = {
   },
 }
 
-local function get_bazel_extra_paths()
-    local Path = require'plenary.path'
-    local extra_paths = {}
-    local add_extra_paths = function(_, stdout)
-        for _, line in ipairs(stdout) do
-            if Path:new(line):exists() and line ~= "" then
-                table.insert(extra_paths, line)
-            end
-        end
-    end
-    local find_python_modules = [[find . | grep __init__.py | grep -v .runfiles | xargs -r dirname | xargs -r dirname | grep -v "\.$" | awk '$0 ~ "^"r"\\/"{ next }{ r=$0 }1' | sort | uniq | xargs -r readlink -f;]]
-    local jobid = vim.fn.jobstart("cd external && " .. find_python_modules .. " cd " .. vim.fn.getcwd() .. " && cd bazel-bin && " .. find_python_modules, { on_stdout = add_extra_paths })
-    vim.fn.jobwait({jobid})
-    table.insert(extra_paths, vim.fn.getcwd())
-    return extra_paths
-end
+local M = {}
 
-local function get_capabilities()
+function M.get_capabilities()
     local capabilities = vim.lsp.protocol.make_client_capabilities()
     capabilities = require('cmp_nvim_lsp').update_capabilities(capabilities)
     capabilities.offsetEncoding = { "utf-16" }
     return capabilities
-end
-
-local M = {}
-
-function M.setup_pyright_with_bazel()
-    local config = { capabilities = get_capabilities() }
-    config.settings = { python = { analysis = { extraPaths = get_bazel_extra_paths() } } }
-    require('lspconfig')['pyright'].setup(config)
 end
 
 function M.setup()
@@ -62,7 +39,7 @@ function M.setup()
     require("mason").setup()
     require("mason-lspconfig").setup({ ensure_installed = servers, automatic_installation = true})
 
-    local capabilities = get_capabilities()
+    local capabilities = M.get_capabilities()
 
     for _, server in pairs(servers) do
         local config = { capabilities = capabilities }
