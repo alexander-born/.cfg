@@ -1,3 +1,17 @@
+function Dirname(str)
+	if str:match(".-/.-") then
+		local name = string.gsub(str, "(.*/)(.*)", "%1")
+		return name
+	else
+		return ''
+	end
+end
+
+function Basename(str)
+	local name = string.gsub(str, "(.*/)(.*)", "%2")
+	return name
+end
+
 vim.cmd[[
 function! CopyFormatted(line1, line2)
     execute a:line1 . "," . a:line2 . "TOhtml"

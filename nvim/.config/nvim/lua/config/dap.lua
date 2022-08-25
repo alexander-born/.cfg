@@ -9,7 +9,8 @@ local function split_by_space(input)
 end
 
 function M.set_python_args(args)
-    require'dap'.configurations.python[1].args = split_by_space(args)
+    vim.g.python_debug_args = split_by_space(args)
+    require'dap'.configurations.python[1].args = vim.g.python_debug_args
 end
 
 function M.set_python_args_from_input()

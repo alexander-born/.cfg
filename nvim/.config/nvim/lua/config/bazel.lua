@@ -35,6 +35,57 @@ function M.YankLabel()
     vim.fn.setreg('"', label)
 end
 
+local function get_bazel_python_modules(program, bazel_root)
+    local Path = require'plenary.path'
+    local extra_paths = {}
+    local add_extra_paths = function(_, stdout)
+        for _, line in ipairs(stdout) do
+            if Path:new(line):exists() and line ~= "" then
+                table.insert(extra_paths, line)
+            end
+        end
+    end
+    local find_python_modules = [[sed 's/.* //' ]] .. program .. [[.runfiles_manifest | grep __init__.py | xargs -r dirname | xargs -r dirname | grep -v "external$" | sort | uniq | awk '! /\/$/ { $0 = $0 "/" } last && last == substr($0, 1, length(last)) { next; } { last = $0; sub(/\/$/, "", $0); print }']]
+    local jobid = vim.fn.jobstart(find_python_modules, { on_stdout = add_extra_paths })
+    vim.fn.jobwait({jobid})
+    table.insert(extra_paths, program .. ".runfiles/" .. Basename(bazel_root))
+    return extra_paths
+end
+
+local function get_python_path(program, bazel_root)
+    local extra_paths = get_bazel_python_modules(program, bazel_root)
+    local env = ""
+    local sep = ""
+    for _, extra_path in pairs(extra_paths) do
+        env = env .. sep .. extra_path
+        sep = ":"
+    end
+    return env
+end
+
+function M.DebugBazelPython()
+    local program = require('bazel').get_bazel_test_executable()
+    local bazel_root = require'bazel'.get_bazel_workspace()
+    vim.cmd('new')
+    local start_debugger = function(_, success)
+        if success == 0 then
+            vim.cmd('bdelete')
+            require'dap'.run({
+                name = "Launch",
+                type = "python",
+                request = "launch",
+                program = "${file}",
+                args = vim.g.python_debug_args or {""},
+                cwd = bazel_root,
+                env = {PYTHONPATH = get_python_path(program, bazel_root)},
+                stopOnEntry = false,
+                runInTerminal = false,
+            })
+        end
+    end
+    vim.fn.termopen('bazel build ' .. vim.g.bazel_config .. ' ' .. vim.g.current_bazel_target, {on_exit = start_debugger, cwd = bazel_root })
+end
+
 function M.setup()
     -- Info: to make tab completion work copy '/etc/bash_completion.d/bazel-complete.bash' to '/etc/bash_completion.d/bazel'
 
