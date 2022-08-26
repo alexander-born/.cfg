@@ -12,6 +12,41 @@ function Basename(str)
 	return name
 end
 
+--- Return a table with files and directories present in a path
+--@path the path
+--@prepend_path_to_filename if True, prepend path to filenames
+function GetFiles(path, prepend_path_to_filenames)
+   if path:sub(-1) ~= '/' then
+      path = path..'/'
+   end
+   local pipe = io.popen('ls '..path..' 2> /dev/null')
+   local output = pipe:read'*a'
+   pipe:close()
+   -- If your file names contain national characters
+   -- output = convert_OEM_to_ANSI(output)
+   local files = {}
+   for filename in output:gmatch('[^\n]+') do
+      if prepend_path_to_filenames then
+         filename = path..filename
+      end
+      table.insert(files, filename)
+   end
+   return files
+end
+
+function BufDir()
+    local bufnr = vim.fn.bufnr()
+    return vim.fn.expand(('#%d:p:h'):format(bufnr))
+end
+
+function Split(s, delimiter)
+    local result = {};
+    for match in (s..delimiter):gmatch("(.-)"..delimiter) do
+        table.insert(result, match);
+    end
+    return result;
+end
+
 vim.cmd[[
 function! CopyFormatted(line1, line2)
     execute a:line1 . "," . a:line2 . "TOhtml"
@@ -74,5 +109,4 @@ function UpdateConfig()
 end
 
 vim.cmd[[command! UpdateConfig execute "lua UpdateConfig()"]]
-vim.cmd[[command! SetupPyrightForBazel execute "lua require'config.bazel'.setup_pyright_with_bazel()"]]
-vim.cmd[[command! PyrightForBazelSetup execute "lua require'config.bazel'.setup_pyright_with_bazel()"]]
+vim.cmd[[command! SetupPyrightWithBazelForThisTarget execute "lua require'config.bazel'.setup_pyright_with_bazel_for_this_target()"]]

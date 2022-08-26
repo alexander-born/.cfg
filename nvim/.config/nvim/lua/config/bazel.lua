@@ -8,11 +8,11 @@ local function StartDebugger(type, program, args, bazel_root, env)
         type = type,
         request = "launch",
         program = function() return program end,
-        cwd = bazel_root,
-        stopOnEntry = false,
-        args = args,
         env = env,
+        args = args,
+        cwd = bazel_root,
         runInTerminal = false,
+        stopOnEntry = false,
         setupCommands = {{text = "-enable-pretty-printing", ignoreFailures = true}},
     })
 end
@@ -25,39 +25,35 @@ function M.YankLabel()
 end
 
 
-function M.get_paths_from_shell(command)
-    local Path = require'plenary.path'
-    local extra_paths = {}
+local function get_output(command)
+    local out = {}
     local add_extra_paths = function(_, stdout)
         for _, line in ipairs(stdout) do
-            if Path:new(line):exists() and line ~= "" then
-                table.insert(extra_paths, line)
-            end
+            table.insert(out, line)
         end
     end
     local jobid = vim.fn.jobstart(command, { on_stdout = add_extra_paths })
     vim.fn.jobwait({jobid})
+    return out
+end
+
+local function get_python_imports(program)
+    local command = "grep 'python_imports =' "  .. program .. [[ | sed "s|.*'\(.*\)'|\1|"]]
+    return get_output(command)[1]
+end
+
+local function get_bazel_python_modules(program)
+    local runfiles = program .. ".runfiles"
+    local extra_paths = { runfiles, BufDir(), runfiles .. '/' .. Basename(bazel.get_bazel_workspace()) }
+    local imports = Split(get_python_imports(program), ':')
+    for _, import in pairs(imports) do
+        table.insert(extra_paths, runfiles .. '/' .. import)
+    end
     return extra_paths
 end
 
-function M.get_bazel_extra_paths()
-    local root = bazel.get_bazel_workspace()
-    local find_python_modules = [[find . | grep __init__.py | grep -v .runfiles | xargs -r dirname | xargs -r dirname | grep -v "\.$" | awk '$0 ~ "^"r"\\/"{ next }{ r=$0 }1' | sort | uniq | xargs -r readlink -f;]]
-    local shell_command = "cd " .. root .. "/external && " .. find_python_modules .. " cd " .. root .. "/bazel-bin && " .. find_python_modules
-    local extra_paths = M.get_paths_from_shell(shell_command)
-    table.insert(extra_paths, root)
-    return extra_paths
-end
-
-function M.get_bazel_python_modules(program, bazel_root)
-    local find_python_modules = [[sed 's/.* //' ]] .. program .. [[.runfiles_manifest | grep __init__.py | xargs -r dirname | xargs -r dirname | grep -v "external$" | sort | uniq | awk '! /\/$/ { $0 = $0 "/" } last && last == substr($0, 1, length(last)) { next; } { last = $0; sub(/\/$/, "", $0); print }']]
-    local extra_paths = M.get_paths_from_shell(find_python_modules)
-    table.insert(extra_paths, program .. ".runfiles/" .. Basename(bazel_root))
-    return extra_paths
-end
-
-local function get_python_path(program, bazel_root)
-    local extra_paths = M.get_bazel_python_modules(program, bazel_root)
+local function get_python_path(program)
+    local extra_paths = get_bazel_python_modules(program)
     local env = ""
     local sep = ""
     for _, extra_path in pairs(extra_paths) do
@@ -67,24 +63,31 @@ local function get_python_path(program, bazel_root)
     return env
 end
 
-function M.setup_pyright_with_bazel()
-    local config = { capabilities = require'config.lsp'.get_capabilities() }
-    -- config.settings = { python = { analysis = { extraPaths = M.get_bazel_python_modules(bazel.get_bazel_test_executable(), bazel.get_bazel_workspace()) } } }
-    config.settings = { python = { analysis = { extraPaths = M.get_bazel_extra_paths() } } }
-    require('lspconfig')['pyright'].setup(config)
+function M.setup_pyright_with_bazel_for_this_target()
+    local program = bazel.get_bazel_test_executable()
+    local root = bazel.get_bazel_workspace()
+    local setup_pyright = function(_, success)
+        if success == 0 then
+            vim.cmd('bdelete')
+            local config = { capabilities = require'config.lsp'.get_capabilities() }
+            config.settings = { python = { analysis = { extraPaths = get_bazel_python_modules(program) } } }
+            require('lspconfig')['pyright'].setup(config)
+        end
+    end
+    vim.cmd('new')
+    vim.fn.termopen('bazel build ' .. vim.g.bazel_config .. ' ' .. vim.g.current_bazel_target, {on_exit = setup_pyright, cwd = root })
 end
-
 
 function M.DebugBazelPython()
     local program = bazel.get_bazel_test_executable()
     local bazel_root = bazel.get_bazel_workspace()
-    vim.cmd('new')
     local start_debugger = function(_, success)
         if success == 0 then
             vim.cmd('bdelete')
-            StartDebugger('python', "${file}", vim.g.python_debug_args or {""}, bazel_root, {PYTHONPATH = get_python_path(program, bazel_root)})
+            StartDebugger('python', "${file}", vim.g.python_debug_args or {""}, program .. '.runfiles/' .. Basename(bazel_root), {PYTHONPATH = get_python_path(program)})
         end
     end
+    vim.cmd('new')
     vim.fn.termopen('bazel build ' .. vim.g.bazel_config .. ' ' .. vim.g.current_bazel_target, {on_exit = start_debugger, cwd = bazel_root })
 end
 
