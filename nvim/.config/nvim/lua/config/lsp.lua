@@ -47,7 +47,12 @@ function M.setup()
           config.settings = lua_settings
         end
         if server == "clangd" then
-            config.cmd = {require'mason-core.path'.bin_prefix('clangd'), "--background-index", "--cross-file-rename"};
+            config.cmd = {require'mason-core.path'.bin_prefix('clangd'), "--background-index" }
+            if require'bazel'.is_bazel_workspace() then
+                table.insert(config.cmd, "--header-insertion=never")
+                table.insert(config.cmd, "--query-driver=**")
+                table.insert(config.cmd, "--compile-commands-dir=".. require'bazel'.get_bazel_workspace())
+            end
         end
         require('lspconfig')[server].setup(config)
     end
