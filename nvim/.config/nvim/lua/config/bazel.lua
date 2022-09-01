@@ -2,7 +2,7 @@ local bazel = require'bazel'
 
 local M = {}
 
-local function StartDebugger(type, program, args, bazel_root, env)
+local function StartDebugger(type, program, args, cwd, env)
     require'dap'.run({
         name = "Launch",
         type = type,
@@ -10,7 +10,7 @@ local function StartDebugger(type, program, args, bazel_root, env)
         program = function() return program end,
         env = env,
         args = args,
-        cwd = bazel_root,
+        cwd = cwd,
         runInTerminal = false,
         stopOnEntry = false,
         setupCommands = {{text = "-enable-pretty-printing", ignoreFailures = true}},
@@ -78,31 +78,59 @@ function M.setup_pyright_with_bazel_for_this_target()
     vim.fn.termopen('bazel build ' .. vim.g.bazel_config .. ' ' .. vim.g.current_bazel_target, {on_exit = setup_pyright, cwd = root })
 end
 
-function M.DebugBazelPython()
-    local program = bazel.get_bazel_test_executable()
+local function default_program(bazel_executable) return bazel_executable end
+local function default_env(_) return {} end
+
+function M.DebugBazel(type, bazel_config, get_program, args, get_env)
+    local bazel_executable = bazel.get_bazel_test_executable()
     local bazel_root = bazel.get_bazel_workspace()
-    local start_debugger = function(_, success)
+    local on_exit = function(_, success)
         if success == 0 then
             vim.cmd('bdelete')
-            StartDebugger('python', "${file}", vim.g.python_debug_args or {""}, program .. '.runfiles/' .. Basename(bazel_root), {PYTHONPATH = get_python_path(program)})
+            local cwd = bazel_executable .. '.runfiles/' .. Basename(bazel_root)
+            local env = get_env(bazel_executable)
+            StartDebugger(type, get_program(bazel_executable), args, cwd, env)
         end
     end
     vim.cmd('new')
-    vim.fn.termopen('bazel build ' .. vim.g.bazel_config .. ' ' .. vim.g.current_bazel_target, {on_exit = start_debugger, cwd = bazel_root })
+    vim.fn.termopen('bazel build ' .. bazel_config .. ' ' .. vim.g.current_bazel_target, {on_exit = on_exit, cwd = bazel_root })
 end
 
-function M.DebugThisTest()
-    local program = bazel.get_bazel_test_executable()
+function M.DebugBazelPy(get_program)
+    local args = vim.g.python_debug_args or {""}
+    local get_env = function(bazel_executable) return { PYTHONPATH = get_python_path(bazel_executable) } end
+    M.DebugBazel("python", vim.g.bazel_config, get_program, args, get_env)
+end
+
+function M.DebugPythonBinary()
+    M.DebugBazelPy(function(_) return "${file}" end)
+end
+
+function M.DebugPytest()
+    M.DebugBazelPy(function(bazel_executable) return bazel_executable .. '_pytest_runner.py' end)
+end
+
+function M.DebugGTest()
     local args = {'--gtest_filter=' .. bazel.get_gtest_filter()}
-    local bazel_root = bazel.get_bazel_workspace()
-    vim.cmd('new')
-    local start_debugger = function(_, success)
-        if success == 0 then
-            vim.cmd('bdelete')
-            StartDebugger("cppdbg", program, args, bazel_root, {})
-        end
+    M.DebugBazel("cppdbg", vim.g.bazel_config_dbg, default_program, args, default_env)
+end
+
+function M.DebugTest()
+    if vim.bo.filetype == "python" then
+        M.DebugPytest()
+    elseif vim.bo.filetype == "cpp" then
+        M.DebugGTest()
+    else
+        print("Debugging not supported for this filetype")
     end
-    vim.fn.termopen('bazel build ' .. vim.g.bazel_config .. ' -c dbg --cxxopt=-O0 ' .. vim.g.current_bazel_target, {on_exit = start_debugger, cwd = bazel_root })
+end
+
+function M.DebugRun()
+    if vim.bo.filetype == "python" then
+        M.DebugPythonBinary()
+    else
+        vim.fn.RunBazelHere("run "   .. vim.g.bazel_config_dbg)
+    end
 end
 
 function M.setup()
