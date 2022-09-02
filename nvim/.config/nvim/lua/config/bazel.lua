@@ -44,7 +44,7 @@ end
 
 local function get_bazel_python_modules(program)
     local runfiles = program .. ".runfiles"
-    local extra_paths = { runfiles, BufDir(), runfiles .. '/' .. Basename(bazel.get_bazel_workspace()) }
+    local extra_paths = { runfiles, BufDir(), runfiles .. '/' .. Basename(bazel.get_workspace()) }
     local imports = Split(get_python_imports(program), ':')
     for _, import in pairs(imports) do
         table.insert(extra_paths, runfiles .. '/' .. import)
@@ -64,8 +64,8 @@ local function get_python_path(program)
 end
 
 function M.setup_pyright_with_bazel_for_this_target()
-    local program = bazel.get_bazel_test_executable()
-    local root = bazel.get_bazel_workspace()
+    local program = bazel.get_executable()
+    local root = bazel.get_workspace()
     local setup_pyright = function(_, success)
         if success == 0 then
             vim.cmd('bdelete')
@@ -82,8 +82,8 @@ local function default_program(bazel_executable) return bazel_executable end
 local function default_env(_) return {} end
 
 function M.DebugBazel(type, bazel_config, get_program, args, get_env)
-    local bazel_executable = bazel.get_bazel_test_executable()
-    local bazel_root = bazel.get_bazel_workspace()
+    local bazel_executable = bazel.get_executable()
+    local bazel_root = bazel.get_workspace()
     local on_exit = function(_, success)
         if success == 0 then
             vim.cmd('bdelete')
@@ -130,6 +130,17 @@ function M.DebugRun()
         M.DebugPythonBinary()
     else
         vim.fn.RunBazelHere("run "   .. vim.g.bazel_config_dbg)
+    end
+end
+
+function M.root_dir_clangd()
+    return function(fname)
+        if bazel.is_bazel_cache(fname) then
+            return bazel.get_workspace_from_cache(fname)
+        elseif bazel.is_bazel_workspace(fname) then
+            return bazel.get_workspace(fname)
+        end
+        return require'lspconfig.server_configurations.clangd'.default_config.root_dir(fname)
     end
 end
 
