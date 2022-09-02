@@ -24,22 +24,9 @@ function M.YankLabel()
     vim.fn.setreg('"', label)
 end
 
-
-local function get_output(command)
-    local out = {}
-    local add_extra_paths = function(_, stdout)
-        for _, line in ipairs(stdout) do
-            table.insert(out, line)
-        end
-    end
-    local jobid = vim.fn.jobstart(command, { on_stdout = add_extra_paths })
-    vim.fn.jobwait({jobid})
-    return out
-end
-
 local function get_python_imports(program)
     local command = "grep 'python_imports =' "  .. program .. [[ | sed "s|.*'\(.*\)'|\1|"]]
-    return get_output(command)[1]
+    return vim.fn.system(command):gsub("\n","")
 end
 
 local function get_bazel_python_modules(program)
