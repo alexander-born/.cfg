@@ -18,32 +18,20 @@ local function get_python_path(workspace)
   return vim.fn.exepath('python3') or vim.fn.exepath('python') or 'python'
 end
 
-local runtime_path = vim.split(package.path, ';')
-table.insert(runtime_path, "lua/?.lua")
-table.insert(runtime_path, "lua/?/init.lua")
+local function get_lua_settings()
+  local runtime_path = vim.split(package.path, ';')
+  table.insert(runtime_path, "lua/?.lua")
+  table.insert(runtime_path, "lua/?/init.lua")
 
-local lua_settings = {
-  Lua = {
-    runtime = {
-      -- Tell the language server which version of Lua you're using (most likely LuaJIT in the case of Neovim)
-      version = 'LuaJIT',
-      -- Setup your lua path
-      path = runtime_path,
+  return {
+    Lua = {
+      runtime = { version = 'LuaJIT', path = runtime_path },
+      diagnostics = { globals = {'vim'} },
+      workspace = { library = vim.api.nvim_get_runtime_file("", true) },
+      telemetry = { enable = false },
     },
-    diagnostics = {
-      -- Get the language server to recognize the `vim` global
-      globals = {'vim'},
-    },
-    workspace = {
-      -- Make the server aware of Neovim runtime files
-      library = vim.api.nvim_get_runtime_file("", true),
-    },
-    -- Do not send telemetry data containing a randomized but unique identifier
-    telemetry = {
-      enable = false,
-    },
-  },
-}
+  }
+end
 
 local M = {}
 
@@ -64,7 +52,7 @@ function M.setup()
     for _, server in pairs(servers) do
         local config = { capabilities = capabilities }
         if server == "sumneko_lua" then
-          config.settings = lua_settings
+          config.settings = get_lua_settings()
         end
         if server == "pyright" then
             config.on_init = function(client) client.config.settings.python.pythonPath = get_python_path(client.config.root_dir) end
