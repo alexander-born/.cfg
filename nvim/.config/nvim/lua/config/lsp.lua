@@ -70,7 +70,7 @@ function M.setup()
             config.on_init = function(client) client.config.settings.python.pythonPath = get_python_path(client.config.root_dir) end
         end
         if server == "clangd" then
-            config.cmd = { require'mason-core.path'.bin_prefix('clangd'), "--background-index", "--header-insertion=never" }
+            config.cmd = { "clangd", "--background-index", "--header-insertion=never" }
             config.root_dir = require'config.bazel'.root_dir_clangd()
         end
         require('lspconfig')[server].setup(config)
