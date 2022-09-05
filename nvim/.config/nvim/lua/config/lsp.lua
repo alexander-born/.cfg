@@ -11,7 +11,11 @@ local function get_python_path(workspace)
   local pipfile = path.join(workspace, 'Pipfile')
   if vim.fn.filereadable(pipfile) then
     local venv = vim.fn.trim(vim.fn.system('PIPENV_PIPFILE=' .. pipfile .. ' pipenv --venv'))
-    return path.join(venv, 'bin', 'python')
+    if vim.v.shell_error == 0 then
+        return path.join(venv, 'bin', 'python')
+    else
+        print("Virtual environment of Pipfile not yet created. To create: cd " .. workspace .. "; pipenv shell;")
+    end
   end
 
   -- Fallback to system Python.
