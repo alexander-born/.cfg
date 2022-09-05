@@ -50,42 +50,39 @@ local function get_python_path(program)
     return env
 end
 
-function M.setup_pyright_with_bazel_for_this_target()
-    local program = bazel.get_executable()
-    local root = bazel.get_workspace()
-    local setup_pyright = function(_, success)
-        if success == 0 then
-            vim.cmd('bdelete')
-            local config = { capabilities = require'config.lsp'.get_capabilities() }
-            config.settings = { python = { analysis = { extraPaths = get_bazel_python_modules(program) } } }
-            require('lspconfig')['pyright'].setup(config)
-        end
-    end
-    vim.cmd('new')
-    vim.fn.termopen('bazel build ' .. vim.g.bazel_config .. ' ' .. vim.g.current_bazel_target, {on_exit = setup_pyright, cwd = root })
-end
-
-local function default_program(bazel_executable) return bazel_executable end
-local function default_env(_) return {} end
-
-function M.DebugBazel(type, bazel_config, get_program, args, get_env)
-    local bazel_executable = bazel.get_executable()
-    local bazel_root = bazel.get_workspace()
+local function bazel_build(bazel_config, callback)
+    local executable = bazel.get_executable()
+    local workspace = bazel.get_workspace()
     local on_exit = function(_, success)
         if success == 0 then
             vim.cmd('bdelete')
-            local cwd = bazel_executable .. '.runfiles/' .. Basename(bazel_root)
-            local env = get_env(bazel_executable)
-            StartDebugger(type, get_program(bazel_executable), args, cwd, env)
+            callback(executable, workspace)
         end
     end
     vim.cmd('new')
-    vim.fn.termopen('bazel build ' .. bazel_config .. ' ' .. vim.g.current_bazel_target, {on_exit = on_exit, cwd = bazel_root })
+    vim.fn.termopen('bazel build ' .. bazel_config .. ' ' .. vim.g.current_bazel_target, {on_exit = on_exit, cwd = workspace })
+end
+
+function M.setup_pyright_with_bazel_for_this_target()
+    local callback = function(executable, _)
+        local config = { capabilities = require'config.lsp'.get_capabilities() }
+        config.settings = { python = { analysis = { extraPaths = get_bazel_python_modules(executable) } } }
+        require('lspconfig')['pyright'].setup(config)
+    end
+    bazel_build(vim.g.bazel_config, callback)
+end
+
+function M.DebugBazel(type, bazel_config, get_program, args, get_env)
+    local callback = function(executable, workspace)
+        local cwd = executable .. '.runfiles/' .. Basename(workspace)
+        StartDebugger(type, get_program(executable), args, cwd, get_env(executable))
+    end
+    bazel_build(bazel_config, callback)
 end
 
 function M.DebugBazelPy(get_program)
     local args = vim.g.python_debug_args or {""}
-    local get_env = function(bazel_executable) return { PYTHONPATH = get_python_path(bazel_executable) } end
+    local get_env = function(executable) return { PYTHONPATH = get_python_path(executable) } end
     M.DebugBazel("python", vim.g.bazel_config, get_program, args, get_env)
 end
 
@@ -96,6 +93,9 @@ end
 function M.DebugPytest()
     M.DebugBazelPy(function(bazel_executable) return bazel_executable .. '_pytest_runner.py' end)
 end
+
+local function default_program(executable) return executable end
+local function default_env(_) return {} end
 
 function M.DebugGTest()
     local args = {'--gtest_filter=' .. bazel.get_gtest_filter()}
