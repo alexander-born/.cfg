@@ -26,7 +26,7 @@ end
 
 local function get_python_imports(program)
     local command = "grep 'python_imports =' "  .. program .. [[ | sed "s|.*'\(.*\)'|\1|"]]
-    return vim.fn.system(command):gsub("\n","")
+    return vim.fn.trim(vim.fn.system(command))
 end
 
 local function get_bazel_python_modules(program)
