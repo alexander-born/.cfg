@@ -63,13 +63,39 @@ local function bazel_build(bazel_config, callback)
     vim.fn.termopen('bazel build ' .. bazel_config .. ' ' .. vim.g.current_bazel_target, {on_exit = on_exit, cwd = workspace })
 end
 
-function M.setup_pyright_with_bazel_for_this_target()
-    local callback = function(executable, _)
-        local config = { capabilities = require'config.lsp'.get_capabilities() }
-        config.settings = { python = { analysis = { extraPaths = get_bazel_python_modules(executable) } } }
-        require('lspconfig')['pyright'].setup(config)
+local function setup_pyright(extra_paths)
+    local config = { capabilities = require'config.lsp'.get_capabilities() }
+    config.settings = { python = { analysis = { extraPaths = extra_paths } } }
+    require('lspconfig')['pyright'].setup(config)
+end
+
+local function add_python_deps_to_pyright(target, workspace)
+    local query = "bazel cquery " .. vim.g.bazel_config .. " '" .. target .. "' --output starlark --starlark:expr='providers(target)[\"PyInfo\"].imports'"
+
+    local ws_name = Basename(workspace)
+    local function parse_and_add_extra_path(_, stdout)
+        local extra_paths = {workspace}
+        local query_output = stdout[1]
+        local depset = query_output:match("depset%(%[(.*)%]")
+        if depset == nil then return end
+        for extra_path in depset:gmatch('"(.-)"') do
+            if extra_path:match("^" .. ws_name) then
+                local path = extra_path:gsub("^" .. ws_name, workspace .. "/bazel-bin")
+                table.insert(extra_paths, path)
+            else
+                table.insert(extra_paths, workspace .. "/external/" .. extra_path)
+            end
+        end
+        setup_pyright(extra_paths)
     end
-    bazel_build(vim.g.bazel_config, callback)
+
+    vim.fn.jobstart(query, { on_stdout = parse_and_add_extra_path })
+end
+
+function M.setup_pyright_with_bazel_for_this_target()
+    local workspace = bazel.get_workspace()
+    vim.fn.BazelGetCurrentBufTarget()
+    add_python_deps_to_pyright(vim.g.current_bazel_target, workspace)
 end
 
 function M.DebugBazel(type, bazel_config, get_program, args, get_env)
