@@ -59,8 +59,7 @@ local function bazel_build(bazel_config, callback)
             callback(executable, workspace)
         end
     end
-    vim.cmd('new')
-    vim.fn.termopen('bazel build ' .. bazel_config .. ' ' .. vim.g.current_bazel_target, {on_exit = on_exit, cwd = workspace })
+    bazel.run('build ' .. bazel_config .. ' ' .. vim.g.current_bazel_target, {on_exit = on_exit, cwd = workspace })
 end
 
 local function setup_pyright(extra_paths)
