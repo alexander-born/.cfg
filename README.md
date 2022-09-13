@@ -10,7 +10,8 @@ sudo apt install tmux stow neovim gnome-tweaks tree ripgrep peek xclip fd-find g
 ```
 Clone repository:
 ```bash
-git clone git@github.com:alexander-born/.cfg.git ~/.cfg
+git clone git@github.com:alexander-born/.cfg.git ~/.cfg       # if ssh is configured
+git clone https://github.com/alexander-born/.cfg.git ~/.cfg   # if ssh is not configured
 ```
 Stow the wanted configurations like this:
 ```bash
