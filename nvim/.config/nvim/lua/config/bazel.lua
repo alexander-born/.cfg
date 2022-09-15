@@ -129,7 +129,7 @@ function M.DebugRun()
     if vim.bo.filetype == "python" then
         M.DebugPythonBinary()
     else
-        vim.fn.RunBazelHere("run "   .. vim.g.bazel_config_dbg)
+        M.DebugBazel("cppdbg", vim.g.bazel_config_dbg, default_program, {}, default_env)
     end
 end
 
