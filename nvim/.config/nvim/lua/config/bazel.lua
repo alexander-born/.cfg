@@ -31,7 +31,7 @@ end
 
 local function get_bazel_python_modules(program)
     local runfiles = program .. ".runfiles"
-    local extra_paths = { runfiles, BufDir(), runfiles .. '/' .. Basename(bazel.get_workspace()) }
+    local extra_paths = { runfiles, BufDir(), runfiles .. '/' .. bazel.get_workspace_name() }
     local imports = Split(get_python_imports(program), ':')
     for _, import in pairs(imports) do
         table.insert(extra_paths, runfiles .. '/' .. import)
@@ -87,7 +87,7 @@ end
 
 function M.DebugBazel(type, bazel_config, get_program, args, get_env)
     local start_debugger = function(bazel_info)
-        local cwd = bazel_info.runfiles .. "/" .. Basename(bazel_info.workspace)
+        local cwd = bazel_info.runfiles .. "/" .. bazel_info.workspace_name
         StartDebugger(type, get_program(bazel_info.executable), args, cwd, get_env(bazel_info.executable))
     end
     bazel.run_here('build', bazel_config, { on_success = start_debugger})
