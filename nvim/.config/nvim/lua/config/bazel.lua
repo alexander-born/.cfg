@@ -59,7 +59,7 @@ end
 local function add_python_deps_to_pyright(target, workspace)
     local query = "bazel cquery " .. vim.g.bazel_config .. " '" .. target .. "' --output starlark --starlark:expr='providers(target)[\"PyInfo\"].imports'"
 
-    local ws_name = Basename(workspace)
+    local ws_name = bazel.get_workspace_name(workspace)
     local function parse_and_add_extra_path(_, stdout)
         local extra_paths = {workspace}
         local query_output = stdout[1]
@@ -67,7 +67,7 @@ local function add_python_deps_to_pyright(target, workspace)
         if depset == nil then return end
         for extra_path in depset:gmatch('"(.-)"') do
             if extra_path:match("^" .. ws_name) then
-                local path = extra_path:gsub("^" .. ws_name, workspace .. "/bazel-bin")
+                local path = extra_path:gsub("^" .. ws_name, workspace)
                 table.insert(extra_paths, path)
             else
                 table.insert(extra_paths, workspace .. "/external/" .. extra_path)
