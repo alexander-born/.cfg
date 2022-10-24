@@ -67,7 +67,7 @@ local function add_python_deps_to_pyright(target, workspace)
         if depset == nil then return end
         for extra_path in depset:gmatch('"(.-)"') do
             if extra_path:match("^" .. ws_name) then
-                local path = extra_path:gsub("^" .. ws_name, workspace)
+                local path = extra_path:gsub("^" .. ws_name, workspace .. "/bazel-bin")
                 table.insert(extra_paths, path)
             else
                 table.insert(extra_paths, workspace .. "/external/" .. extra_path)
