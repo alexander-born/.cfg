@@ -30,6 +30,7 @@ function M.setup()
 
     wk.register({
       ["<leader>f"]  = { name = "+find"},
+      ["<leader>t"]  = { name = "+test"},
       ["<leader>gr"] = { name = "+grep"},
       ["<leader>b"]  = { name = "+bazel"},
       ["<leader>bd"] = { name = "+debug"},
@@ -130,18 +131,23 @@ function M.setup()
     map('n', '<Leader>bdb', function() bazel.run_here("build", vim.g.bazel_config_dbg) end, {desc = "Bazel Debug Build"})
 
     -- debugger
-    local dap = require'telescope'.extensions.dap
+    local dap = require'dap'
+    local mydap = require'config.dap'
+    local dap_telescope = require'telescope'.extensions.dap
     map('n', '<leader>m',   ':MaximizerToggle!<CR>', {desc = "Maximize Window Toggle"})
-    map('n', '<leader>db',  require'dap'.toggle_breakpoint, {desc = "Set Breakpoint"})
-    map('n', '<leader>l',   require'dap'.step_into, {desc = "Step Into (debugger)"})
-    map('n', '<leader>j',   require'dap'.step_over, {desc = "Step Over (debugger)"})
-    map('n', '<leader>k',   require'dap'.step_out, {desc = "Step Out (debugger)"})
-    map('n', '<leader>dc',  require'dap'.run_to_cursor, {desc = "Run to Cursor"})
-    map('n', '<leader>dp', require'config.dap'.set_python_args_from_input, {desc = "Set Python Arguments"})
-    map('n', '<leader>df',  dap.frames, {desc = "Frames"})
-    map('n', '<leader>dd',  dap.commands, {desc = "Available Commands"})
-    map('n', '<leader>de',  require'config.dap'.end_debug_session, {desc = "End Debugger"})
-    map('n', '<leader>d<space>', require'dap'.continue, {desc = "Continue (debugger)"})
+    map('n', '<leader>db',  dap.toggle_breakpoint, {desc = "Set Breakpoint"})
+    map('n', '<leader>l',   dap.step_into, {desc = "Step Into (debugger)"})
+    map('n', '<leader>j',   dap.step_over, {desc = "Step Over (debugger)"})
+    map('n', '<leader>k',   dap.step_out, {desc = "Step Out (debugger)"})
+    map('n', '<leader>dr',  dap.run_to_cursor, {desc = "Run to Cursor"})
+    map('n', '<leader>dap', mydap.set_python_args_from_input, {desc = "Set Python Arguments"})
+    map('n', '<leader>dp',  require('dap-python').test_method, {desc = "Debug python test_method"})
+    map('n', '<leader>df',  dap_telescope.frames, {desc = "Frames"})
+    map('n', '<leader>dl',  dap.run_last, {desc = "Debug Last"})
+    map('n', '<leader>dd',  function() require('dap.ext.vscode').load_launchjs() dap_telescope.configurations() end, {desc = "Available Debug Configurations"})
+    map('n', '<leader>de',  mydap.end_debug_session, {desc = "End Debugger"})
+    map('n', '<leader>dc',  ':e .vscode/launch.json<CR>', {desc = "Edit Debug Configurations"})
+    map('n', '<leader>d<space>', dap.continue, {desc = "Continue (debugger)"})
 
     -- trouble
     map('n', '<leader>xx', ':TroubleToggle<CR>', {desc = "Toggle Trouble"})
@@ -175,7 +181,13 @@ function M.setup()
     -- map('n', '<leader>dp', 'V:diffput<CR>', {desc = ""})
     -- map('n', '<leader>do', 'V:diffget<CR>', {desc = ""})
 
-
+    local neotest = require("neotest")
+    map('n', '<leader>to',  neotest.output.open, {desc = "Toggle Test Output"})
+    map('n', '<leader>tt',  neotest.run.run, {desc = "Test Nearest Test"})
+    map('n', '<leader>tl',  neotest.run.run_last, {desc = "Test Last"})
+    map('n', '<leader>tf',  function() neotest.run.run(vim.fn.expand("%")) end, {desc = "Test File"})
+    map('n', '<leader>tdt', function() neotest.run.run({strategy = "dap"}) end, {desc = "Test Debug Nearest Test"})
+    map('n', '<leader>tdf', function() neotest.run.run({vim.fn.expand("%"), strategy = "dap"}) end, {desc = "Test Debug File"})
 
 
 end

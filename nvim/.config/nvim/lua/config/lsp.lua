@@ -41,7 +41,7 @@ local M = {}
 
 function M.get_capabilities()
     local capabilities = vim.lsp.protocol.make_client_capabilities()
-    capabilities = require('cmp_nvim_lsp').update_capabilities(capabilities)
+    capabilities = require('cmp_nvim_lsp').default_capabilities(capabilities)
     capabilities.offsetEncoding = { "utf-16" }
     return capabilities
 end
@@ -63,6 +63,7 @@ function M.setup()
         end
         if server == "clangd" then
             config.cmd = { "clangd", "--background-index", "--header-insertion=never" }
+            -- config.cmd = { "clangd", "--background-index", "--header-insertion=never", "--query-driver=**"  }
             config.root_dir = require'config.bazel'.root_dir_clangd()
         end
         require('lspconfig')[server].setup(config)

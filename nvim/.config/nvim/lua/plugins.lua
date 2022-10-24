@@ -16,6 +16,7 @@ return require('packer').startup(function(use)
     use {'wsdjeg/vim-fetch'}
     use {'numToStr/Comment.nvim', config = function() require'Comment'.setup() end }
     use {'mg979/vim-visual-multi'}
+    use {'ggandor/leap.nvim', config = function() require('leap').add_default_mappings() end}
 
     -- undotree
     use {'mbbill/undotree'}
@@ -70,8 +71,13 @@ return require('packer').startup(function(use)
     use {'szw/vim-maximizer'}
     use {'rcarriga/nvim-dap-ui'}
     use {'mfussenegger/nvim-dap', config = function() require'config.dap'.setup() end }
+    use {'mfussenegger/nvim-dap-python', config = function() require'dap-python'.setup() end }
     use {'nvim-telescope/telescope-dap.nvim'}
     -- use {'Pocco81/DAPInstall.nvim', config = function() require("dap-install").setup() end }
+
+    -- testing
+    use { "nvim-neotest/neotest", requires = { "antoinemadec/FixCursorHold.nvim", "nvim-neotest/neotest-python"},
+    	    config = function() require'config.neotest'.setup() end}
 
     -- treesitter
     use {'nvim-treesitter/nvim-treesitter', run = ':TSUpdate', config = function() require'config.treesitter'.setup() end }
@@ -104,7 +110,7 @@ return require('packer').startup(function(use)
     use {'rafamadriz/friendly-snippets'}
 
     -- mappings
-    use {'folke/which-key.nvim', config = function() require'config.mappings'.setup() end }
+    use {'folke/which-key.nvim', config = function() require'config.mappings'.setup() end , after = "neotest"}
 
   -- Automatically set up your configuration after cloning packer.nvim
   -- Put this at the end after all plugins

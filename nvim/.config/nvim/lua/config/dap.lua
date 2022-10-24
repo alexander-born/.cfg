@@ -25,6 +25,8 @@ end
 
 function M.setup()
     vim.fn.sign_define('DapBreakpoint', {text='🛑', texthl='', linehl='', numhl=''})
+    require('dap-python').test_runner = 'pytest'
+    require('dap.ext.vscode').load_launchjs()
 
     local dap, dapui = require("dap"), require("dapui")
     dap.listeners.after.event_initialized["dapui_config"] = function() dapui.open() end
@@ -37,22 +39,22 @@ function M.setup()
       command = 'OpenDebugAD7',
     }
 
-    dap.adapters.python = {
-      type = 'executable';
-      command = 'python';
-      args = { '-m', 'debugpy.adapter' };
-    }
+    -- dap.adapters.python = {
+    --   type = 'executable';
+    --   command = 'python';
+    --   args = { '-m', 'debugpy.adapter' };
+    -- }
 
-    dap.configurations.python = {
-      {
-        type = 'python',
-        request = 'launch',
-        name = "Launch file",
-        program = "${file}",
-        args = {},
-        pythonPath = function() return '/usr/bin/python' end,
-      },
-    }
+    -- dap.configurations.python = {
+    --   {
+    --     type = 'python',
+    --     request = 'launch',
+    --     name = "Launch file",
+    --     program = "${file}",
+    --     args = {},
+    --     pythonPath = function() return '/usr/bin/python' end,
+    --   },
+    -- }
 
     dapui.setup({
       layouts = {
@@ -61,6 +63,7 @@ function M.setup()
             'scopes',
             'breakpoints',
             'watches',
+            'stacks',
           },
           size = 40,
           position = 'left',
@@ -68,6 +71,7 @@ function M.setup()
         {
           elements = {
             'repl',
+            'console',
           },
           size = 10,
           position = 'bottom',
