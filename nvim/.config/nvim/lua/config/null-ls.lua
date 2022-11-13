@@ -32,6 +32,7 @@ function M.setup()
 			require("null-ls").builtins.formatting.buildifier,
 			require("null-ls").builtins.formatting.clang_format,
 			require("null-ls").builtins.formatting.json_tool,
+			require("null-ls").builtins.formatting.prettierd,
 			-- require("null-ls").builtins.formatting.stylua,
 		},
 		on_attach = on_attach,
