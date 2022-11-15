@@ -133,14 +133,15 @@ function M.DebugRun()
     end
 end
 
-function M.root_dir_clangd()
+function M.root_dir(default_root_dir)
     return function(fname)
         if bazel.is_bazel_cache(fname) then
             return bazel.get_workspace_from_cache(fname)
         elseif bazel.is_bazel_workspace(fname) then
             return bazel.get_workspace(fname)
         end
-        return require'lspconfig.server_configurations.clangd'.default_config.root_dir(fname)
+
+        return default_root_dir(fname)
     end
 end
 

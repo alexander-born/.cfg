@@ -60,11 +60,12 @@ function M.setup()
         end
         if server == "pyright" then
             config.on_init = function(client) client.config.settings.python.pythonPath = get_python_path(client.config.root_dir) end
+            config.root_dir = require'config.bazel'.root_dir(require'lspconfig.server_configurations.pyright'.default_config.root_dir)
         end
         if server == "clangd" then
             config.cmd = { "clangd", "--background-index", "--header-insertion=never" }
             -- config.cmd = { "clangd", "--background-index", "--header-insertion=never", "--query-driver=**"  }
-            config.root_dir = require'config.bazel'.root_dir_clangd()
+            config.root_dir = require'config.bazel'.root_dir(require'lspconfig.server_configurations.clangd'.default_config.root_dir)
         end
         require('lspconfig')[server].setup(config)
     end
