@@ -71,6 +71,7 @@ function M.setup()
     -- telescope
     local builtin = require'telescope.builtin'
     map('n', '<leader>ff',  function() builtin.find_files({previewer = false}) end, {desc = "Find Files"})
+    map('n', '<leader>fs',  function() builtin.find_files({previewer = false, search_file = vim.fn.expand('<cword>')}) end, {desc = "Find Files String (Current Word under Cursor)"})
     map('n', '<leader>fo',  function() builtin.oldfiles({previewer = false}) end, {desc = "Find Oldfiles"})
     map('n', '<leader>fw',  function() builtin.oldfiles({previewer = false, cwd_only = true}) end, {desc = "Find Cwd"})
     map('n', '<leader>fb',  function() builtin.buffers({sort_mru = true}) end, {desc = "Find Buffers"})
