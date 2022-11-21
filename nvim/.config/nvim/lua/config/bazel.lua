@@ -29,6 +29,11 @@ local function get_python_imports(program)
     return vim.fn.trim(vim.fn.system(command))
 end
 
+local function get_python_test_executable(bazel_info)
+    local command = [[grep -oP "rel_path = '.*'" ]] .. bazel_info.executable .. [[ | grep -o "'.*'" | tail -c +2 | head -c -2]]
+    return bazel_info.runfiles .. "/" .. vim.fn.trim(vim.fn.system(command))
+end
+
 local function get_bazel_python_modules(program)
     local runfiles = program .. ".runfiles"
     local extra_paths = { runfiles, BufDir(), runfiles .. '/' .. bazel.get_workspace_name() }
@@ -88,14 +93,14 @@ end
 function M.DebugBazel(type, bazel_config, get_program, args, get_env)
     local start_debugger = function(bazel_info)
         local cwd = bazel_info.runfiles .. "/" .. bazel_info.workspace_name
-        StartDebugger(type, get_program(bazel_info.executable), args, cwd, get_env(bazel_info.executable))
+        StartDebugger(type, get_program(bazel_info), args, cwd, get_env(bazel_info))
     end
     bazel.run_here('build', bazel_config, { on_success = start_debugger})
 end
 
 function M.DebugBazelPy(get_program)
     local args = vim.g.python_debug_args or {""}
-    local get_env = function(executable) return { PYTHONPATH = get_python_path(executable) } end
+    local get_env = function(bazel_info) return { PYTHONPATH = get_python_path(bazel_info.executable), RUNFILES_DIR = bazel_info.runfiles } end
     M.DebugBazel("python", vim.g.bazel_config, get_program, args, get_env)
 end
 
@@ -104,10 +109,10 @@ function M.DebugPythonBinary()
 end
 
 function M.DebugPytest()
-    M.DebugBazelPy(function(bazel_executable) return bazel_executable .. '_pytest_runner.py' end)
+    M.DebugBazelPy(function(bazel_info) return get_python_test_executable(bazel_info) end)
 end
 
-local function default_program(executable) return executable end
+local function default_program(bazel_info) return bazel_info.executable end
 local function default_env(_) return {} end
 
 function M.DebugGTest()
