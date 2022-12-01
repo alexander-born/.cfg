@@ -18,6 +18,9 @@ return require('packer').startup(function(use)
     use {'mg979/vim-visual-multi'}
     use {'ggandor/leap.nvim', config = function() require('leap').add_default_mappings() end}
 
+    -- pair programming
+    use {'jbyuki/instant.nvim', config = function() vim.g.instant_username = vim.fn.expand('$USER') end }
+
     -- undotree
     use {'mbbill/undotree'}
 
