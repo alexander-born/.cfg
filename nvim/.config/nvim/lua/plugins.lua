@@ -99,9 +99,10 @@ return require('packer').startup(function(use)
     -- lsp
     use {'williamboman/mason.nvim'}
     use {'williamboman/mason-lspconfig.nvim'}
-    use {'neovim/nvim-lspconfig', config = function() require'config.lsp'.setup() end }
+    use {'neovim/nvim-lspconfig', config = function() require'config.lsp'.setup() end}
     use {'ray-x/lsp_signature.nvim', config = function() require'lsp_signature'.setup({hint_enable = false}) end }
     use {'j-hui/fidget.nvim', config = function() require'fidget'.setup() end }
+    use {"folke/neodev.nvim"}
 
     -- completion
     use {'onsails/lspkind-nvim', config = function() require'lspkind'.init() end }

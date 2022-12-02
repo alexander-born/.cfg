@@ -22,21 +22,6 @@ local function get_python_path(workspace)
   return vim.fn.exepath('python3') or vim.fn.exepath('python') or 'python'
 end
 
-local function get_lua_settings()
-  local runtime_path = vim.split(package.path, ';')
-  table.insert(runtime_path, "lua/?.lua")
-  table.insert(runtime_path, "lua/?/init.lua")
-
-  return {
-    Lua = {
-      runtime = { version = 'LuaJIT', path = runtime_path },
-      diagnostics = { globals = {'vim'} },
-      workspace = { library = vim.api.nvim_get_runtime_file("", true) },
-      telemetry = { enable = false },
-    },
-  }
-end
-
 local M = {}
 
 function M.get_capabilities()
@@ -48,6 +33,7 @@ end
 
 function M.setup()
     local servers = { "clangd", "pyright", "sumneko_lua", "bashls", "vimls" }
+    require("neodev").setup()
     require("mason").setup { providers = { "mason.providers.client", } }
     require("mason-lspconfig").setup({ ensure_installed = servers, automatic_installation = true})
 
@@ -55,9 +41,6 @@ function M.setup()
 
     for _, server in pairs(servers) do
         local config = { capabilities = capabilities }
-        if server == "sumneko_lua" then
-          config.settings = get_lua_settings()
-        end
         if server == "pyright" then
             config.on_init = function(client) client.config.settings.python.pythonPath = get_python_path(client.config.root_dir) end
             config.root_dir = require'config.bazel'.root_dir(require'lspconfig.server_configurations.pyright'.default_config.root_dir)
