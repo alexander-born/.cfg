@@ -2,7 +2,7 @@ local bazel = require'bazel'
 
 local M = {}
 
-local function StartDebugger(type, program, args, cwd, env)
+local function StartDebugger(type, program, args, cwd, env, workspace)
     require'dap'.run({
         name = "Launch",
         type = type,
@@ -14,6 +14,7 @@ local function StartDebugger(type, program, args, cwd, env)
         runInTerminal = false,
         stopOnEntry = false,
         setupCommands = {{text = "-enable-pretty-printing", ignoreFailures = true}},
+        sourceFileMap = { ["/proc/self/cwd"] = workspace },
     })
 end
 
@@ -93,7 +94,7 @@ end
 function M.DebugBazel(type, bazel_config, get_program, args, get_env)
     local start_debugger = function(bazel_info)
         local cwd = bazel_info.runfiles .. "/" .. bazel_info.workspace_name
-        StartDebugger(type, get_program(bazel_info), args, cwd, get_env(bazel_info))
+        StartDebugger(type, get_program(bazel_info), args, cwd, get_env(bazel_info), bazel_info.workspace)
     end
     bazel.run_here('build', bazel_config, { on_success = start_debugger})
 end
