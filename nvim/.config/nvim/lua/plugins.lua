@@ -45,12 +45,13 @@ return require('packer').startup(function(use)
     use {'davidgranstrom/nvim-markdown-preview'}
 
     -- git
-    use {'TimUntersberger/neogit'}
-    use {'tpope/vim-fugitive'}
+    use {'tpope/vim-fugitive',
+      cmd = { "G", "Git", "Gdiffsplit", "Gread", "Gwrite", "Ggrep", "GMove", "GDelete", "GBrowse", "GRemove", "GRename", "Glgrep", "Gedit" },
+      ft = {"fugitive"} }
     use {'tpope/vim-rhubarb'}
-    use {'sindrets/diffview.nvim', config = function() require'diffview'.setup() end }
-    use {'lewis6991/gitsigns.nvim', config = function() require'gitsigns'.setup() end }
-    use {'rhysd/conflict-marker.vim', config = function() require'config.conflict_marker'.setup() end }
+    use {'sindrets/diffview.nvim', config = function() require'diffview'.setup() end}
+    use {'lewis6991/gitsigns.nvim', config = function() require'gitsigns'.setup() end}
+    use {'rhysd/conflict-marker.vim', config = function() require'config.conflict_marker'.setup() end}
 
     -- tmux jump windows
     use {'christoomey/vim-tmux-navigator'}
@@ -84,7 +85,7 @@ return require('packer').startup(function(use)
     	    config = function() require'config.neotest'.setup() end}
 
     -- treesitter
-    use {'nvim-treesitter/nvim-treesitter', run = ':TSUpdate', config = function() require'config.treesitter'.setup() end }
+    use {'nvim-treesitter/nvim-treesitter', run = ':TSUpdate', config = function() require'config.treesitter'.setup() end}
     use {'nvim-treesitter/nvim-treesitter-textobjects'}
     use {'nvim-treesitter/playground'}
 

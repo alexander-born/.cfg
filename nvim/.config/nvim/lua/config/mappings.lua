@@ -100,7 +100,6 @@ function M.setup()
     map('n', '<Leader>gl', ':G log -n 1000<CR>', {desc = "Git Log"})
     map('n', '<Leader>gd', ':GitDiff<CR>', {desc = "Git Diff"})
     map('n', '<Leader>gs', ':G | MaximizerToggle<CR>', {desc = "Git Status"})
-    map('n', '<Leader>gg', ':Neogit<CR>', {desc = "Neogit"})
     map('v', '<Leader>gb', ':GBrowse<CR>', {desc = "Git Browse"})
 
     -- Navigation
