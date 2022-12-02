@@ -69,6 +69,7 @@ return require('packer').startup(function(use)
     use {'nvim-telescope/telescope-fzf-native.nvim', run = 'make' }
     use {'nvim-telescope/telescope.nvim', config = function() require'config.telescope'.setup() end }
     use {'AckslD/nvim-neoclip.lua', config = function() require('neoclip').setup() end }
+    use {'nvim-telescope/telescope-project.nvim'}
 
     -- debugging
     use {'szw/vim-maximizer'}
