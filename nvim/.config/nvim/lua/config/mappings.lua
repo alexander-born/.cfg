@@ -59,8 +59,9 @@ function M.setup()
     map('n', '<leader>q', vim.diagnostic.setqflist, {desc = "Send Diagnostics to Quickfix"})
 
     -- filetree
-    map('n', '<C-n>', require'config.nvimtree'.nvim_tree_toggle_project, {desc = "Toggle Explorer"})
-    map('n', '<Leader>n', require'config.nvimtree'.nvim_tree_find_file, {desc = "Find File in Explorer"})
+    local my_nvim_tree = require'config.nvimtree'
+    map('n', '<C-n>', my_nvim_tree.nvim_tree_toggle_project, {desc = "Toggle Explorer"})
+    map('n', '<Leader>n', my_nvim_tree.nvim_tree_find_file, {desc = "Find File in Explorer"})
 
     -- parse errors from terminal and put them in quickfix list
     map('n', '<Leader>e',  vim.fn.OpenErrorInQuickfix, {desc = "Errors to Quickfix"})
