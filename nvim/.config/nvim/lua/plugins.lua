@@ -7,6 +7,9 @@ end
 return require('packer').startup(function(use)
     use {'wbthomason/packer.nvim'}
 
+    -- dashboard
+    use { 'goolord/alpha-nvim', config = function () require'config.dashboard'.setup() end }
+
     -- general
     use {'inkarkat/vim-ReplaceWithRegister'}
     use {'machakann/vim-sandwich'}
@@ -70,7 +73,8 @@ return require('packer').startup(function(use)
     use {'nvim-telescope/telescope-fzf-native.nvim', run = 'make' }
     use {'nvim-telescope/telescope.nvim', config = function() require'config.telescope'.setup() end }
     use {'AckslD/nvim-neoclip.lua', config = function() require('neoclip').setup() end }
-    use {'nvim-telescope/telescope-project.nvim'}
+    -- use {'nvim-telescope/telescope-project.nvim'}
+    use {'gerryhernandez/telescope-project.nvim', branch = "configureDefaultAction"}
 
     -- debugging
     use {'szw/vim-maximizer'}

@@ -48,7 +48,7 @@ end
 
 function M.setup()
     local servers = { "clangd", "pyright", "sumneko_lua", "bashls", "vimls" }
-    require("mason").setup()
+    require("mason").setup { providers = { "mason.providers.client", } }
     require("mason-lspconfig").setup({ ensure_installed = servers, automatic_installation = true})
 
     local capabilities = M.get_capabilities()

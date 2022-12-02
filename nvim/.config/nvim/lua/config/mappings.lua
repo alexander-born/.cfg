@@ -58,6 +58,9 @@ function M.setup()
     map('n', '<leader>r', vim.lsp.buf.references, {desc = "References (LSP)"})
     map('n', '<leader>q', vim.diagnostic.setqflist, {desc = "Send Diagnostics to Quickfix"})
 
+    -- dashboard
+    map('n', '<leader>;', ":Alpha<CR>", { desc = "Open Dashboard" })
+
     -- filetree
     local my_nvim_tree = require'config.nvimtree'
     map('n', '<C-n>', my_nvim_tree.nvim_tree_toggle_project, {desc = "Toggle Explorer"})
