@@ -24,16 +24,6 @@ local function diagnostics_ok()
 	return " "
 end
 
-local function get_colors()
-	if vim.g.color_scheme == "everforest" then
-		return { red = "#e67e80", green = "#a7c080", yellow = "#dbbc7f", orange = "#e69875" }
-	end
-	if vim.g.color_scheme == "nord" then
-		return { red = "#BF616A", green = "#A3BE8C", yellow = "#EBCB8B", orange = "#D08770" }
-	end
-	return { red = "#fb4934", green = "#b8bb26", yellow = "#fabd2f", orange = "#fe8019" }
-end
-
 local function get_git_branch()
 	local head = vim.fn.FugitiveHead(6)
 	if head == "" then
@@ -76,16 +66,8 @@ end
 
 local M = {}
 function M.setup()
-	local colors = get_colors()
-	local theme = vim.g.color_scheme
-	if vim.g.color_scheme == "everforest" then
-		theme = require("lualine.themes.everforest")
-		local normal = theme.normal.a
-		theme.normal.a = theme.insert.a
-		theme.insert.a = normal
-	end
 	require("lualine").setup({
-		options = { theme = theme, globalstatus = true },
+		options = { theme = vim.g.color_scheme, globalstatus = true },
 		sections = {
 			lualine_a = { "mode" },
 			lualine_b = { { get_git_branch } },
@@ -93,11 +75,6 @@ function M.setup()
 				{ get_filename },
 				{
 					"diff",
-					diff_color = {
-						added = { fg = colors.green },
-						modified = { fg = colors.orange },
-						removed = { fg = colors.red },
-					},
 					symbols = { added = " ", modified = " ", removed = " " },
 				},
 			},
@@ -106,7 +83,6 @@ function M.setup()
 					"diagnostics",
 					sources = { "nvim_diagnostic" },
 					symbols = { error = " ", warn = " ", info = " " },
-					diagnostics_color = { hint = { fg = colors.green } },
 				},
 				{ diagnostics_ok },
 				{ lsp_client_names },
@@ -117,5 +93,4 @@ function M.setup()
 		},
 	})
 end
-
 return M
