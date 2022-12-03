@@ -135,7 +135,7 @@ function M.setup()
     map('n', '<Leader>bt',  function() bazel.run_here("test",  vim.g.bazel_config)     end, {desc = "Bazel Test"})
     map('n', '<Leader>bb',  function() bazel.run_here("build", vim.g.bazel_config)     end, {desc = "Bazel Build"})
     map('n', '<Leader>br',  function() bazel.run_here("run",   vim.g.bazel_config)     end, {desc = "Bazel Run"})
-    map('n', '<Leader>bdb', function() bazel.run_here("build", vim.g.bazel_config_dbg) end, {desc = "Bazel Debug Build"})
+    map('n', '<Leader>bdb', function() bazel.run_here("build", vim.g.bazel_config .. " --compilation_mode dbg --copt=-O0") end, {desc = "Bazel Debug Build"})
 
     -- debugger
     local dap = require'dap'

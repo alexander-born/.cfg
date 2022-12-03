@@ -118,7 +118,7 @@ local function default_env(_) return {} end
 
 function M.DebugGTest()
     local args = {'--gtest_filter=' .. bazel.get_gtest_filter()}
-    M.DebugBazel("cppdbg", vim.g.bazel_config_dbg, default_program, args, default_env)
+    M.DebugBazel("cppdbg", vim.g.bazel_config .. " --compilation_mode dbg --copt -O0", default_program, args, default_env)
 end
 
 function M.DebugTest()
@@ -135,7 +135,7 @@ function M.DebugRun()
     if vim.bo.filetype == "python" then
         M.DebugPythonBinary()
     else
-        M.DebugBazel("cppdbg", vim.g.bazel_config_dbg, default_program, {}, default_env)
+        M.DebugBazel("cppdbg", vim.g.bazel_config .. " --compilation_mode dbg --copt=-O0", default_program, {}, default_env)
     end
 end
 
@@ -155,7 +155,6 @@ function M.setup()
     -- Info: to make tab completion work copy '/etc/bash_completion.d/bazel-complete.bash' to '/etc/bash_completion.d/bazel'
 
     vim.g.bazel_config = vim.g.bazel_config  or ''
-    vim.g.bazel_config_dbg = vim.g.bazel_config_dbg  or ''
 
     vim.cmd[[
     set errorformat=ERROR:\ %f:%l:%c:%m
