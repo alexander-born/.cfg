@@ -24,7 +24,8 @@ function M.end_debug_session()
 end
 
 function M.setup()
-    vim.fn.sign_define('DapBreakpoint', {text='🛑', texthl='', linehl='', numhl=''})
+    vim.fn.sign_define('DapBreakpoint', {text='', texthl='DiagnosticSignError', linehl='', numhl=''})
+    vim.fn.sign_define('DapStopped', {text='', texthl='DiagnosticSignWarn', linehl='Visual', numhl='DiagnosticSignWarn'})
     require('dap-python').test_runner = 'pytest'
     require('dap.ext.vscode').load_launchjs()
 

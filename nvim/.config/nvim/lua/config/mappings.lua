@@ -197,7 +197,7 @@ function M.setup()
     map('n', '<leader>tdt', function() neotest.run.run({strategy = "dap"}) end, {desc = "Test Debug Nearest Test"})
     map('n', '<leader>tdf', function() neotest.run.run({vim.fn.expand("%"), strategy = "dap"}) end, {desc = "Test Debug File"})
 
-
+    pcall(require, 'user.mappings')
 end
 
 return M
