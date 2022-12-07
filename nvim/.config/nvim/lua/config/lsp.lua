@@ -46,7 +46,7 @@ function M.setup()
             config.root_dir = require'config.bazel'.root_dir(require'lspconfig.server_configurations.pyright'.default_config.root_dir)
         end
         if server == "clangd" then
-            config.cmd = { "clangd", "--background-index", "--header-insertion=never" }
+            config.cmd = { "clangd", "--background-index", "--header-insertion=never", "--offset-encoding=utf-16" }
             -- config.cmd = { "clangd", "--background-index", "--header-insertion=never", "--query-driver=**"  }
             config.root_dir = require'config.bazel'.root_dir(require'lspconfig.server_configurations.clangd'.default_config.root_dir)
         end
