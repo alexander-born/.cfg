@@ -50,11 +50,12 @@ bind "set menu-complete-display-prefix on"
 shopt -s histappend
 
 # for setting history length see HISTSIZE and HISTFILESIZE in bash(1)
-HISTSIZE=100000
-HISTFILESIZE=200000
+export HISTFILESIZE=1000000
+export HISTSIZE=1000000
 export HISTCONTROL=ignoreboth:erasedups
 #export PROMPT_COMMAND="history -a; history -c; history -r; $PROMPT_COMMAND"
 export PROMPT_COMMAND="history -a; history -n"
+export HISTIGNORE='ls:bg:fg:history:ll:cd'
 
  # . ~/Applications/z/z.sh
  . /usr/share/doc/fzf/examples/key-bindings.bash
