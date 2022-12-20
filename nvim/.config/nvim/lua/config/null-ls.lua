@@ -6,6 +6,7 @@ local lsp_formatting = function(bufnr)
             return client.name ~= "clangd"
         end,
         bufnr = bufnr,
+        timeout_ms = 2000,
     })
 end
 
