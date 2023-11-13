@@ -48,9 +48,9 @@ refresh_compile_commands()
     add_refresh_compile_commands_target $1
     local config="${@:2}"
     bazel run //:refresh_compile_commands -- $config --keep_going
-    git co WORKSPACE
-    git co BUILD
-    git co .gitignore
+    git checkout WORKSPACE
+    git checkout BUILD
+    git checkout .gitignore
     popd
 }
 
